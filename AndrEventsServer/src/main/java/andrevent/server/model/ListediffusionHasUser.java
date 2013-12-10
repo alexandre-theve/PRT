@@ -22,7 +22,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "listediffusion_has_user")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ListediffusionHasUser.findAll", query = "SELECT l FROM ListediffusionHasUser l"),
     @NamedQuery(name = "ListediffusionHasUser.findByListeDiffusionid", query = "SELECT l FROM ListediffusionHasUser l WHERE l.listediffusionHasUserPK.listeDiffusionid = :listeDiffusionid"),

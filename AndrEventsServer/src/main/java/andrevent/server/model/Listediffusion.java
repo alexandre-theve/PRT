@@ -29,7 +29,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "listediffusion")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Listediffusion.findAll", query = "SELECT l FROM Listediffusion l"),
     @NamedQuery(name = "Listediffusion.findById", query = "SELECT l FROM Listediffusion l WHERE l.id = :id"),
