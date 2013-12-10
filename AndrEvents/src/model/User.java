@@ -82,13 +82,6 @@ public class User implements Serializable{
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getFullname() {
-		return prenom + " " + nom;
-	}
-	public boolean isSubscribedTo(Evenement evenement) {
-		return evenements.contains(evenement);
-	}
-	
 	
 	
 	

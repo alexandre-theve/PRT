@@ -11,12 +11,18 @@ import android.widget.TextView;
 
 import com.ig2i.andrevents.R;
 
+import controller.EvenementController;
+import controller.UserController;
+
 /**
  * Fragment that appears in the "content_frame", shows a planet
  */
 public class HomeFragment extends Fragment {
 	public static final String FRAGMENT_NUMBER = "fragment_number";
-
+	
+	private UserController userControler;
+	private EvenementController evenementControler;
+	
 	private User connectedUser;
 
 	public HomeFragment() {
@@ -28,6 +34,8 @@ public class HomeFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_home, container,
 				false);
+	
+		
 
 		int i = getArguments().getInt(FRAGMENT_NUMBER);
 		String title = getResources().getStringArray(R.array.titles_array)[i];
@@ -41,8 +49,10 @@ public class HomeFragment extends Fragment {
     public void onStart() {
     	// TODO Auto-generated method stub
     	super.onStart();	
-    	connectedUser = ((MyApplication)getActivity().getApplicationContext()).getUserConnected();
+    	this.userControler = ((MyApplication)getActivity().getApplicationContext()).getUserController();
+		this.evenementControler = ((MyApplication)getActivity().getApplicationContext()).getEvenementController();
+		
     	TextView text = (TextView) getView().findViewById(R.id.textView1);
-        text.setText(getResources().getString(R.string.welcome_text) + connectedUser.getFullname());
+        text.setText(getResources().getString(R.string.welcome_text)+ this.userControler.getFullname(userControler.getUserConnected()));
     }
 }

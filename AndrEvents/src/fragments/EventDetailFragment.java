@@ -1,7 +1,7 @@
 package fragments;
 
+import helpers.EvenementHelper;
 import model.Evenement;
-import model.User;
 import activities.MyApplication;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -9,11 +9,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.ig2i.andrevents.R;
 
 import controller.EvenementController;
+import controller.UserController;
 
 /**
  * Fragment that appears in the "content_frame", shows a planet
@@ -39,7 +39,10 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 	private Evenement evenement;
 	private static View view;
 	private ImageView participateIcone;
-	private User userConnected;
+	
+	private UserController userControler;
+	private EvenementController evenementControler;
+	
 	
 	public EventDetailFragment() {
 		// Empty constructor required for fragment subclasses
@@ -65,8 +68,10 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		this.evenement = (Evenement) getArguments().getParcelable("evenement");
-		this.userConnected = ((MyApplication)getActivity().getApplicationContext()).getUserConnected();
+		this.evenement = (Evenement) getArguments().getSerializable("evenement");
+		this.userControler = ((MyApplication) getActivity().getApplicationContext()).getUserController();
+		this.evenementControler = ((MyApplication) getActivity().getApplicationContext()).getEvenementController();
+		
 		
 		if (googleMap == null) {
 			googleMap = ((MapFragment) getFragmentManager().findFragmentById(
@@ -91,10 +96,10 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 		}
 		
 		((TextView)getView().findViewById(R.id.textViewDetailEventTitle)).setText(this.evenement.getNom());
-		((TextView)getView().findViewById(R.id.textViewDetailEventDate)).setText(this.evenement.getFormattedDate());
+		((TextView)getView().findViewById(R.id.textViewDetailEventDate)).setText(EvenementHelper.getFormattedDate(evenement));
 		((TextView)getView().findViewById(R.id.textViewDetailEventLocation)).setText(this.evenement.getLieu());
 		((TextView)getView().findViewById(R.id.textViewDetailEventDescription)).setText(this.evenement.getDescription());
-		((TextView)getView().findViewById(R.id.textViewDetailEventCreator)).setText("Contact : "+ this.evenement.getCreator().getFullname());
+		((TextView)getView().findViewById(R.id.textViewDetailEventCreator)).setText("Contact : "+ userControler.getFullname(evenement.getCreator()));
 		ImageView phoneIcone = (ImageView) getActivity().findViewById(
 				R.id.imageDetailEventPhone);
 		phoneIcone.setOnClickListener(this);
@@ -105,7 +110,7 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 				R.id.imageViewParticipate);
 		participateIcone.setOnClickListener(this);
 		participateIcone.setImageResource(R.drawable.participerbutton);	
-		if(userConnected.isSubscribedTo(evenement)){
+		if(userControler.isSubscribedTo(userControler.getUserConnected(), evenement)){
 			participateIcone.setImageResource(R.drawable.participatingbutton);			
 		}
 
@@ -128,7 +133,7 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 			// need this to prompts email client only
 			email.setType("message/rfc822");
 			email.putExtra(Intent.EXTRA_SUBJECT, "A propos de " + evenement.getNom());
-            email.putExtra(Intent.EXTRA_TEXT, "Bonjour, " + evenement.getCreator().getFullname());
+            email.putExtra(Intent.EXTRA_TEXT, "Bonjour, " + userControler.getFullname(evenement.getCreator()));
 			startActivity(Intent.createChooser(email, "Choissez un client e-mail"));
 			return;
 		}
@@ -139,11 +144,11 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 			return;	
 		}
 		if (arg0.getId() == R.id.imageViewParticipate){
-			if (userConnected.isSubscribedTo(evenement))return;
+			if (userControler.isSubscribedTo(userControler.getUserConnected(), evenement))return;
 			
 			ProgressDialog dialog = ProgressDialog.show(getActivity(), "Patientez...", 
                     "Inscription en cours", true);
-			if(!EvenementController.subscribe(evenement,userConnected)){
+			if(!evenementControler.subscribe(evenement,userControler.getUserConnected())){
 				dialog.dismiss();
 				AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
 				alert.setTitle(getActivity().getResources().getString(R.string.error));

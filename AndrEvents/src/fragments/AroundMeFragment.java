@@ -9,16 +9,12 @@ import model.Evenement;
 import activities.MyApplication;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.location.Location;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.ig2i.andrevents.R;
 
 import controller.EvenementController;
+import controller.UserController;
 
 /**
  * Fragment that appears in the "content_frame", shows a planet
@@ -41,6 +38,8 @@ public class AroundMeFragment extends Fragment implements
 		OnInfoWindowClickListener {
 	public static final String FRAGMENT_NUMBER = "fragment_number";
 
+	private UserController userControler;
+	private EvenementController evenementControler;
 	// Google Map
 	private GoogleMap googleMap;
 	private GPSHelper GPShelper;
@@ -71,7 +70,8 @@ public class AroundMeFragment extends Fragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		
+		this.userControler = ((MyApplication) getActivity().getApplicationContext()).getUserController();
+		this.evenementControler = ((MyApplication) getActivity().getApplicationContext()).getEvenementController();
 	
 
 		if (googleMap == null) {
@@ -138,10 +138,10 @@ public class AroundMeFragment extends Fragment implements
 			// TODO Auto-generated constructor stub
 			this.frag = frag;
 		}
-
+ 
 		@Override
 		protected ArrayList<Evenement> doInBackground(Location... params) {
-			return EvenementController.findEvenementsAround(
+			return evenementControler.findEvenementsAround(
 					params[0].getLatitude(), params[0].getLongitude(), 30);
 		}
 
@@ -167,7 +167,7 @@ public class AroundMeFragment extends Fragment implements
 
 		EventDetailFragment fragment = new EventDetailFragment();
 		Bundle bundle = new Bundle();
-		bundle.putParcelable("evenement", evenement);
+		bundle.putSerializable("evenement", evenement);
 		fragment.setArguments(bundle);
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()

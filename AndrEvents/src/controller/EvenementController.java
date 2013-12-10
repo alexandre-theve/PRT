@@ -1,21 +1,19 @@
 package controller;
 
+import helpers.DateHelper;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-
-
-
-
-
-
 import model.Evenement;
 import model.User;
 
+import org.joda.time.Period;
+
 public class EvenementController {
-	public static ArrayList<Evenement> findEvenementsAround(double lat, double longitude, int rayon){
+	public ArrayList<Evenement> findEvenementsAround(double lat, double longitude, int rayon){
 		ArrayList<Evenement> toReturn = new ArrayList<Evenement>();
 		Calendar cal =  Calendar.getInstance();
 		cal.set(2013, 10, 01,8, 00,00);
@@ -54,8 +52,10 @@ public class EvenementController {
 		
 	}
 
-	public static boolean subscribe(Evenement evenement, User userConnected) {
+	public boolean subscribe(Evenement evenement, User userConnected) {
 		userConnected.getEvenements().add(evenement);
 		return true;
 	}
+	
+	
 }

@@ -1,20 +1,11 @@
 package model;
 
-import helpers.DateHelper;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
-
-import org.joda.time.Interval;
-import org.joda.time.Period;
-
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class Evenement implements Serializable,Parcelable{
+public class Evenement implements Serializable{
 	private int id;
 	private String nom;
 	private Timestamp dateDebut;
@@ -109,22 +100,6 @@ public class Evenement implements Serializable,Parcelable{
 	public LatLng getPosition(){
 		return new LatLng(latitude, longitude);
 	}
-	@Override
-	public int describeContents() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
 		
-	}
-	public String getFormattedDate() {
-		Period interval = new Period(dateDebut.getTime(),dateFin.getTime()); 
-		if(interval.getDays() > 0){
-			return "Du "+DateHelper.FORMATTED_DATE_FORMAT.format(new Date(dateDebut.getTime())) + " au " + DateHelper.FORMATTED_DATE_FORMAT.format(new Date(dateFin.getTime()));
-		}
-		return "Le " + DateHelper.FORMATTED_DATE_FORMAT.format(new Date(dateDebut.getTime())) + " à " + DateHelper.TIME_FORMAT.format(new Date(dateFin.getTime()));
-	}
 	
 }
