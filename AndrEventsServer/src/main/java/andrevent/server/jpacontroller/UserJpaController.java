@@ -32,24 +32,22 @@ public class UserJpaController implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -8596178501405393351L;
+	
 	@PersistenceContext
-	private EntityManager em = null;
+	private EntityManager em;
 
 	@Transactional
-	public void create(User user) throws PreexistingEntityException,
-			RollbackFailureException, Exception {
+	public void create(User user) {
 		em.persist(user);
 	}
 
 	@Transactional
-	public void edit(User user) throws IllegalOrphanException,
-			NonexistentEntityException, RollbackFailureException, Exception {
+	public void edit(User user) {
 		user = em.merge(user);
 	}
 
 	@Transactional
-	public void destroy(User user) throws IllegalOrphanException,
-			NonexistentEntityException, RollbackFailureException, Exception {
+	public void destroy(User user) {
 		em.remove(user);
 	}
 
@@ -75,6 +73,10 @@ public class UserJpaController implements Serializable {
 
 	public User findUser(Integer id) {
 		return em.find(User.class, id);
+	}
+	
+	public User findUserByLogin(String login) {
+		return (User) em.createNamedQuery("User.findByLogin").setParameter("login", login).setMaxResults(1).getSingleResult();
 	}
 
 	public int getUserCount() {
