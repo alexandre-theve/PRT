@@ -84,7 +84,7 @@ public class Listediffusion implements Serializable {
         this.titre = titre;
     }
 
-    @XmlTransient
+    
     public List<Evenement> getEvenementList() {
         return evenementList;
     }
@@ -93,7 +93,7 @@ public class Listediffusion implements Serializable {
         this.evenementList = evenementList;
     }
 
-    @XmlTransient
+    
     public List<ListediffusionHasUser> getListediffusionHasUserList() {
         return listediffusionHasUserList;
     }

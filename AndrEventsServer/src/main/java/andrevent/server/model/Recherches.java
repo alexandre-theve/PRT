@@ -83,7 +83,7 @@ public class Recherches implements Serializable {
         this.keyword = keyword;
     }
 
-    @XmlTransient
+    
     public List<Tags> getTagsList() {
         return tagsList;
     }

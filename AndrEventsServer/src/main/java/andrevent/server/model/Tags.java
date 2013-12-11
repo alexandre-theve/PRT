@@ -77,7 +77,7 @@ public class Tags implements Serializable {
         this.titre = titre;
     }
 
-    @XmlTransient
+    
     public List<Evenement> getEvenementList() {
         return evenementList;
     }
@@ -86,7 +86,7 @@ public class Tags implements Serializable {
         this.evenementList = evenementList;
     }
 
-    @XmlTransient
+    
     public List<Recherches> getRecherchesList() {
         return recherchesList;
     }

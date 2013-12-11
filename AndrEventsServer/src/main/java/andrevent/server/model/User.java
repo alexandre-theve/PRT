@@ -147,7 +147,7 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    @XmlTransient
+    
     public List<ListediffusionHasUser> getListediffusionHasUserList() {
         return listediffusionHasUserList;
     }
@@ -156,7 +156,7 @@ public class User implements Serializable {
         this.listediffusionHasUserList = listediffusionHasUserList;
     }
 
-    @XmlTransient
+    
     public List<Evenement> getEvenementList() {
         return evenementList;
     }
@@ -165,7 +165,7 @@ public class User implements Serializable {
         this.evenementList = evenementList;
     }
 
-    @XmlTransient
+    
     public List<Recherches> getRecherchesList() {
         return recherchesList;
     }
@@ -174,7 +174,7 @@ public class User implements Serializable {
         this.recherchesList = recherchesList;
     }
 
-    @XmlTransient
+    
     public List<UserHasEvenement> getUserHasEvenementList() {
         return userHasEvenementList;
     }

@@ -180,7 +180,6 @@ public class Evenement implements Serializable {
         this.valide = valide;
     }
 
-    @XmlTransient
     public List<Tags> getTagsList() {
         return tagsList;
     }
@@ -189,7 +188,6 @@ public class Evenement implements Serializable {
         this.tagsList = tagsList;
     }
 
-    @XmlTransient
     public List<Listediffusion> getListediffusionList() {
         return listediffusionList;
     }
@@ -198,7 +196,6 @@ public class Evenement implements Serializable {
         this.listediffusionList = listediffusionList;
     }
 
-    @XmlTransient
     public List<Notifications> getNotificationsList() {
         return notificationsList;
     }
@@ -215,7 +212,7 @@ public class Evenement implements Serializable {
         this.createur = createur;
     }
 
-    @XmlTransient
+    
     public List<UserHasEvenement> getUserHasEvenementList() {
         return userHasEvenementList;
     }

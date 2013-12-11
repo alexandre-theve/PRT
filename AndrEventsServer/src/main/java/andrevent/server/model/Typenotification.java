@@ -75,7 +75,7 @@ public class Typenotification implements Serializable {
         this.titre = titre;
     }
 
-    @XmlTransient
+    
     public List<Notifications> getNotificationsList() {
         return notificationsList;
     }
