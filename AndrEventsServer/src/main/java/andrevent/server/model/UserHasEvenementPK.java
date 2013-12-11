@@ -5,6 +5,7 @@
 package andrevent.server.model;
 
 import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -16,7 +17,12 @@ import javax.validation.constraints.NotNull;
  */
 @Embeddable
 public class UserHasEvenementPK implements Serializable {
-    @Basic(optional = false)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -556835049580182989L;
+	
+	@Basic(optional = false)
     @NotNull
     @Column(name = "User_id")
     private int userid;

@@ -57,9 +57,10 @@ public class UserHasEvenementJpaController implements Serializable {
 		return findUserHasEvenementEntities(false, maxResults, firstResult);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<UserHasEvenement> findUserHasEvenementEntities(boolean all,
 			int maxResults, int firstResult) {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<UserHasEvenement> cq = em.getCriteriaBuilder().createQuery(UserHasEvenement.class);
 		cq.select(cq.from(UserHasEvenement.class));
 		Query q = em.createQuery(cq);
 		if (!all) {
@@ -75,7 +76,7 @@ public class UserHasEvenementJpaController implements Serializable {
 	}
 
 	public int getUserHasEvenementCount() {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Long> cq = em.getCriteriaBuilder().createQuery(Long.class);
 		Root<UserHasEvenement> rt = cq.from(UserHasEvenement.class);
 		cq.select(em.getCriteriaBuilder().count(rt));
 		Query q = em.createQuery(cq);

@@ -8,22 +8,14 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.transaction.UserTransaction;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import andrevent.server.jpacontroller.exceptions.NonexistentEntityException;
-import andrevent.server.jpacontroller.exceptions.PreexistingEntityException;
-import andrevent.server.jpacontroller.exceptions.RollbackFailureException;
-import andrevent.server.model.Evenement;
 import andrevent.server.model.Notifications;
-import andrevent.server.model.Typenotification;
 
 /**
  * 
@@ -62,9 +54,10 @@ public class NotificationsJpaController implements Serializable {
 		return findNotificationsEntities(false, maxResults, firstResult);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<Notifications> findNotificationsEntities(boolean all,
 			int maxResults, int firstResult) {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Notifications> cq = em.getCriteriaBuilder().createQuery(Notifications.class);
 		cq.select(cq.from(Notifications.class));
 		Query q = em.createQuery(cq);
 		if (!all) {
@@ -79,7 +72,7 @@ public class NotificationsJpaController implements Serializable {
 	}
 
 	public int getNotificationsCount() {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Long> cq = em.getCriteriaBuilder().createQuery(Long.class);
 		Root<Notifications> rt = cq.from(Notifications.class);
 		cq.select(em.getCriteriaBuilder().count(rt));
 		Query q = em.createQuery(cq);

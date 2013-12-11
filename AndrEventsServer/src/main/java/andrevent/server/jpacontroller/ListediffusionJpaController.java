@@ -5,30 +5,17 @@
 package andrevent.server.jpacontroller;
 
 import java.io.Serializable;
-
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
-import andrevent.server.model.Evenement;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.transaction.UserTransaction;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import andrevent.server.jpacontroller.exceptions.IllegalOrphanException;
-import andrevent.server.jpacontroller.exceptions.NonexistentEntityException;
-import andrevent.server.jpacontroller.exceptions.PreexistingEntityException;
-import andrevent.server.jpacontroller.exceptions.RollbackFailureException;
 import andrevent.server.model.Listediffusion;
-import andrevent.server.model.ListediffusionHasUser;
 
 /**
  * 
@@ -67,9 +54,10 @@ public class ListediffusionJpaController implements Serializable {
 		return findListediffusionEntities(false, maxResults, firstResult);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<Listediffusion> findListediffusionEntities(boolean all,
 			int maxResults, int firstResult) {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Listediffusion> cq = em.getCriteriaBuilder().createQuery(Listediffusion.class);
 		cq.select(cq.from(Listediffusion.class));
 		Query q = em.createQuery(cq);
 		if (!all) {
@@ -84,7 +72,7 @@ public class ListediffusionJpaController implements Serializable {
 	}
 
 	public int getListediffusionCount() {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Long> cq = em.getCriteriaBuilder().createQuery(Long.class);
 		Root<Listediffusion> rt = cq.from(Listediffusion.class);
 		cq.select(em.getCriteriaBuilder().count(rt));
 		Query q = em.createQuery(cq);

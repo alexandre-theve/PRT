@@ -16,10 +16,6 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import andrevent.server.jpacontroller.exceptions.IllegalOrphanException;
-import andrevent.server.jpacontroller.exceptions.NonexistentEntityException;
-import andrevent.server.jpacontroller.exceptions.PreexistingEntityException;
-import andrevent.server.jpacontroller.exceptions.RollbackFailureException;
 import andrevent.server.model.User;
 
 /**
@@ -59,9 +55,10 @@ public class UserJpaController implements Serializable {
 		return findUserEntities(false, maxResults, firstResult);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<User> findUserEntities(boolean all, int maxResults,
 			int firstResult) {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<User> cq = em.getCriteriaBuilder().createQuery(User.class);
 		cq.select(cq.from(User.class));
 		Query q = em.createQuery(cq);
 		if (!all) {
@@ -80,7 +77,7 @@ public class UserJpaController implements Serializable {
 	}
 
 	public int getUserCount() {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Long> cq = em.getCriteriaBuilder().createQuery(Long.class);
 		Root<User> rt = cq.from(User.class);
 		cq.select(em.getCriteriaBuilder().count(rt));
 		Query q = em.createQuery(cq);

@@ -5,32 +5,17 @@
 package andrevent.server.jpacontroller;
 
 import java.io.Serializable;
-
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
-import andrevent.server.model.User;
-import andrevent.server.model.Tags;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.transaction.UserTransaction;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import andrevent.server.jpacontroller.exceptions.IllegalOrphanException;
-import andrevent.server.jpacontroller.exceptions.NonexistentEntityException;
-import andrevent.server.jpacontroller.exceptions.RollbackFailureException;
 import andrevent.server.model.Evenement;
-import andrevent.server.model.Listediffusion;
-import andrevent.server.model.Notifications;
-import andrevent.server.model.UserHasEvenement;
 
 /**
  * 
@@ -68,9 +53,10 @@ public class EvenementJpaController implements Serializable {
 		return findEvenementEntities(false, maxResults, firstResult);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<Evenement> findEvenementEntities(boolean all, int maxResults,
 			int firstResult) {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Evenement> cq = em.getCriteriaBuilder().createQuery(Evenement.class);
 		cq.select(cq.from(Evenement.class));
 		Query q = em.createQuery(cq);
 		if (!all) {
@@ -85,7 +71,7 @@ public class EvenementJpaController implements Serializable {
 	}
 
 	public int getEvenementCount() {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Long> cq = em.getCriteriaBuilder().createQuery(Long.class);
 		Root<Evenement> rt = cq.from(Evenement.class);
 		cq.select(em.getCriteriaBuilder().count(rt));
 		Query q = em.createQuery(cq);

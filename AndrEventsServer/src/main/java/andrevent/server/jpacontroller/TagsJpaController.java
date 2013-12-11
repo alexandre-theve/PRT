@@ -5,28 +5,16 @@
 package andrevent.server.jpacontroller;
 
 import java.io.Serializable;
-
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
-import andrevent.server.model.Evenement;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.transaction.UserTransaction;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import andrevent.server.jpacontroller.exceptions.NonexistentEntityException;
-import andrevent.server.jpacontroller.exceptions.PreexistingEntityException;
-import andrevent.server.jpacontroller.exceptions.RollbackFailureException;
-import andrevent.server.model.Recherches;
 import andrevent.server.model.Tags;
 
 /**
@@ -65,9 +53,10 @@ public class TagsJpaController implements Serializable {
 		return findTagsEntities(false, maxResults, firstResult);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<Tags> findTagsEntities(boolean all, int maxResults,
 			int firstResult) {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Tags> cq = em.getCriteriaBuilder().createQuery(Tags.class);
 		cq.select(cq.from(Tags.class));
 		Query q = em.createQuery(cq);
 		if (!all) {
@@ -82,7 +71,7 @@ public class TagsJpaController implements Serializable {
 	}
 
 	public int getTagsCount() {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Long> cq = em.getCriteriaBuilder().createQuery(Long.class);
 		Root<Tags> rt = cq.from(Tags.class);
 		cq.select(em.getCriteriaBuilder().count(rt));
 		Query q = em.createQuery(cq);

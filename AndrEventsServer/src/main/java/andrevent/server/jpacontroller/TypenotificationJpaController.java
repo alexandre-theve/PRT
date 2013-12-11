@@ -5,28 +5,16 @@
 package andrevent.server.jpacontroller;
 
 import java.io.Serializable;
-
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
-import andrevent.server.model.Notifications;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.transaction.UserTransaction;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import andrevent.server.jpacontroller.exceptions.IllegalOrphanException;
-import andrevent.server.jpacontroller.exceptions.NonexistentEntityException;
-import andrevent.server.jpacontroller.exceptions.PreexistingEntityException;
-import andrevent.server.jpacontroller.exceptions.RollbackFailureException;
 import andrevent.server.model.Typenotification;
 
 /**
@@ -66,9 +54,10 @@ public class TypenotificationJpaController implements Serializable {
 		return findTypenotificationEntities(false, maxResults, firstResult);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<Typenotification> findTypenotificationEntities(boolean all,
 			int maxResults, int firstResult) {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Typenotification> cq = em.getCriteriaBuilder().createQuery(Typenotification.class);
 		cq.select(cq.from(Typenotification.class));
 		Query q = em.createQuery(cq);
 		if (!all) {
@@ -83,7 +72,7 @@ public class TypenotificationJpaController implements Serializable {
 	}
 
 	public int getTypenotificationCount() {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Long> cq = em.getCriteriaBuilder().createQuery(Long.class);
 		Root<Typenotification> rt = cq.from(Typenotification.class);
 		cq.select(em.getCriteriaBuilder().count(rt));
 		Query q = em.createQuery(cq);

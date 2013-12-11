@@ -8,21 +8,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.transaction.UserTransaction;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import andrevent.server.jpacontroller.exceptions.NonexistentEntityException;
-import andrevent.server.jpacontroller.exceptions.PreexistingEntityException;
-import andrevent.server.jpacontroller.exceptions.RollbackFailureException;
-import andrevent.server.model.User;
-import andrevent.server.model.Listediffusion;
 import andrevent.server.model.ListediffusionHasUser;
 import andrevent.server.model.ListediffusionHasUserPK;
 
@@ -63,9 +55,10 @@ public class ListediffusionHasUserJpaController implements Serializable {
 		return findListediffusionHasUserEntities(false, maxResults, firstResult);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<ListediffusionHasUser> findListediffusionHasUserEntities(
 			boolean all, int maxResults, int firstResult) {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<ListediffusionHasUser> cq = em.getCriteriaBuilder().createQuery(ListediffusionHasUser.class);
 		cq.select(cq.from(ListediffusionHasUser.class));
 		Query q = em.createQuery(cq);
 		if (!all) {
@@ -81,7 +74,7 @@ public class ListediffusionHasUserJpaController implements Serializable {
 	}
 
 	public int getListediffusionHasUserCount() {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery<Long> cq = em.getCriteriaBuilder().createQuery(Long.class);
 		Root<ListediffusionHasUser> rt = cq.from(ListediffusionHasUser.class);
 		cq.select(em.getCriteriaBuilder().count(rt));
 		Query q = em.createQuery(cq);
