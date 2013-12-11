@@ -6,6 +6,7 @@ package andrevent.server.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 /**
  *
  * @author Alex
@@ -32,6 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Notifications.findById", query = "SELECT n FROM Notifications n WHERE n.id = :id"),
     @NamedQuery(name = "Notifications.findByDate", query = "SELECT n FROM Notifications n WHERE n.date = :date"),
     @NamedQuery(name = "Notifications.findByTitre", query = "SELECT n FROM Notifications n WHERE n.titre = :titre")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@NotificationsId")
 public class Notifications implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -121,7 +126,7 @@ public class Notifications implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Notifications[ id=" + id + " ]";
+        return "andrevent.server.model.Notifications[ id=" + id + " ]";
     }
     
 }

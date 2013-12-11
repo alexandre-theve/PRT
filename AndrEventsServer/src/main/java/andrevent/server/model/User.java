@@ -6,10 +6,12 @@ package andrevent.server.model;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -19,6 +21,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  *
@@ -31,7 +39,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
     @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM User u WHERE u.login = :login"),
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")})
+    @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
+    @NamedQuery(name = "User.findByNom", query = "SELECT u FROM User u WHERE u.nom = :nom"),
+    @NamedQuery(name = "User.findByPrenom", query = "SELECT u FROM User u WHERE u.prenom = :prenom"),
+    @NamedQuery(name = "User.findByPhone", query = "SELECT u FROM User u WHERE u.phone = :phone")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@UserId")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -49,13 +61,27 @@ public class User implements Serializable {
     @Size(max = 45)
     @Column(name = "email")
     private String email;
+    @Size(max = 45)
+    @Column(name = "nom")
+    private String nom;
+    @Size(max = 45)
+    @Column(name = "prenom")
+    private String prenom;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    @Size(max = 45)
+    @Column(name = "phone")
+    private String phone;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<ListediffusionHasUser> listediffusionHasUserList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createur")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Evenement> evenementList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Recherches> recherchesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<UserHasEvenement> userHasEvenementList;
 
     public User() {
@@ -95,6 +121,30 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @XmlTransient
@@ -155,7 +205,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "model.User[ id=" + id + " ]";
+        return "andrevent.server.model.User[ id=" + id + " ]";
     }
     
 }

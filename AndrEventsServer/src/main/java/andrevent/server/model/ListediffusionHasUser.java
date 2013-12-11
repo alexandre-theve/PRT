@@ -5,6 +5,7 @@
 package andrevent.server.model;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -15,6 +16,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  *
@@ -27,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ListediffusionHasUser.findByListeDiffusionid", query = "SELECT l FROM ListediffusionHasUser l WHERE l.listediffusionHasUserPK.listeDiffusionid = :listeDiffusionid"),
     @NamedQuery(name = "ListediffusionHasUser.findByUserid", query = "SELECT l FROM ListediffusionHasUser l WHERE l.listediffusionHasUserPK.userid = :userid"),
     @NamedQuery(name = "ListediffusionHasUser.findByNotifications", query = "SELECT l FROM ListediffusionHasUser l WHERE l.notifications = :notifications")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@ListediffusionHasUserId")
 public class ListediffusionHasUser implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -106,7 +111,7 @@ public class ListediffusionHasUser implements Serializable {
 
     @Override
     public String toString() {
-        return "model.ListediffusionHasUser[ listediffusionHasUserPK=" + listediffusionHasUserPK + " ]";
+        return "andrevent.server.model.ListediffusionHasUser[ listediffusionHasUserPK=" + listediffusionHasUserPK + " ]";
     }
     
 }

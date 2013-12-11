@@ -75,7 +75,7 @@ public class ListediffusionHasUserPK implements Serializable {
 
     @Override
     public String toString() {
-        return "model.ListediffusionHasUserPK[ listeDiffusionid=" + listeDiffusionid + ", userid=" + userid + " ]";
+        return "andrevent.server.model.ListediffusionHasUserPK[ listeDiffusionid=" + listeDiffusionid + ", userid=" + userid + " ]";
     }
     
 }

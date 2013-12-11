@@ -6,6 +6,7 @@ package andrevent.server.model;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,12 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 /**
  *
  * @author Alex
@@ -29,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Tags.findAll", query = "SELECT t FROM Tags t"),
     @NamedQuery(name = "Tags.findById", query = "SELECT t FROM Tags t WHERE t.id = :id"),
     @NamedQuery(name = "Tags.findByTitre", query = "SELECT t FROM Tags t WHERE t.titre = :titre")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@TagsId")
 public class Tags implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,8 +48,10 @@ public class Tags implements Serializable {
     @Column(name = "titre")
     private String titre;
     @ManyToMany(mappedBy = "tagsList")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Evenement> evenementList;
     @ManyToMany(mappedBy = "tagsList")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Recherches> recherchesList;
 
     public Tags() {
@@ -107,7 +117,7 @@ public class Tags implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Tags[ id=" + id + " ]";
+        return "andrevent.server.model.Tags[ id=" + id + " ]";
     }
     
 }

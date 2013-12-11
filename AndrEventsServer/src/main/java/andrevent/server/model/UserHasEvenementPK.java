@@ -75,7 +75,7 @@ public class UserHasEvenementPK implements Serializable {
 
     @Override
     public String toString() {
-        return "model.UserHasEvenementPK[ userid=" + userid + ", evenementid=" + evenementid + " ]";
+        return "andrevent.server.model.UserHasEvenementPK[ userid=" + userid + ", evenementid=" + evenementid + " ]";
     }
     
 }
