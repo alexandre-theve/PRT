@@ -41,6 +41,21 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+	<dependency>
+        <groupId>org.springframework.android</groupId>
+        <artifactId>spring-android-rest-template</artifactId>
+        <version>1.0.1.RELEASE</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.android</groupId>
+        <artifactId>spring-android-auth</artifactId>
+        <version>1.0.1.RELEASE</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.android</groupId>
+        <artifactId>spring-android-core</artifactId>
+        <version>1.0.1.RELEASE</version>
+    </dependency>
 		<!-- Log4j dependencies -->
 		<dependency>
 			<groupId>log4j</groupId>

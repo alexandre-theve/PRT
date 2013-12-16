@@ -22,7 +22,7 @@ import controller.UserController;
 /**
  * Fragment that appears in the "content_frame", shows a planet
  */
-public class MyEventsFragment extends ListFragment implements
+public class AtAnEventListFragment extends ListFragment implements
 		OnItemClickListener {
 	public static final String FRAGMENT_NUMBER = "fragment_number";
 
@@ -30,7 +30,7 @@ public class MyEventsFragment extends ListFragment implements
 	private EvenementController evenementControler;
 	private User connectedUser;
 
-	public MyEventsFragment() {
+	public AtAnEventListFragment() {
 		// Empty constructor required for fragment subclasses
 	}
 
@@ -77,14 +77,14 @@ public class MyEventsFragment extends ListFragment implements
 		if (arg0.getId() == R.id.list) {
 			Evenement evenement = (Evenement)arg0.getItemAtPosition(position);
 
-			EventDetailFragment fragment = new EventDetailFragment();
+			AtAnEventFragment fragment = new AtAnEventFragment();
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("evenement", evenement);
 			fragment.setArguments(bundle);
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment)
-					.addToBackStack("MyEvents").commit();
+					.addToBackStack("AtAnEvent").commit();
 		}
 	}
 

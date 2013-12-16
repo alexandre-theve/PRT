@@ -14,14 +14,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-
-
 public class EvenementAdapter extends BaseAdapter {
 
 	private List<Evenement> evenements;
 	private LayoutInflater inflater;
-	
-	public EvenementAdapter(Context context,List<Evenement> evenements) {
+
+	public EvenementAdapter(Context context, List<Evenement> evenements) {
 		inflater = LayoutInflater.from(context);
 		this.evenements = evenements;
 	}
@@ -40,23 +38,27 @@ public class EvenementAdapter extends BaseAdapter {
 	public long getItemId(int arg0) {
 		return arg0;
 	}
-	
+
 	private class ViewHolder {
 		TextView eventTitle;
 		TextView eventDate;
 		TextView eventLocation;
 	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 
-		if(convertView == null) {
+		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = inflater.inflate(R.layout.listitemsingleevent, null);
 
-			holder.eventTitle = (TextView)convertView.findViewById(R.id.EvenementListItemeventTitle);
-			holder.eventDate = (TextView)convertView.findViewById(R.id.EvenementListItemeventDate);
-			holder.eventLocation = (TextView)convertView.findViewById(R.id.EvenementListItemeventLocation);
+			holder.eventTitle = (TextView) convertView
+					.findViewById(R.id.EvenementListItemeventTitle);
+			holder.eventDate = (TextView) convertView
+					.findViewById(R.id.EvenementListItemeventDate);
+			holder.eventLocation = (TextView) convertView
+					.findViewById(R.id.EvenementListItemeventLocation);
 
 			convertView.setTag(holder);
 		} else {
@@ -64,7 +66,8 @@ public class EvenementAdapter extends BaseAdapter {
 		}
 
 		holder.eventTitle.setText(evenements.get(position).getNom());
-		holder.eventDate.setText(EvenementHelper.getFormattedDate(evenements.get(position)));
+		holder.eventDate.setText(EvenementHelper.getFormattedDate(evenements
+				.get(position)));
 		holder.eventLocation.setText(evenements.get(position).getLieu());
 
 		return convertView;

@@ -34,12 +34,8 @@ public class HomeFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_home, container,
 				false);
-	
-		
-
-		int i = getArguments().getInt(FRAGMENT_NUMBER);
+			int i = getArguments().getInt(FRAGMENT_NUMBER);
 		String title = getResources().getStringArray(R.array.titles_array)[i];
-
 		getActivity().setTitle(title);
 
 		return rootView;

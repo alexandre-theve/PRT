@@ -16,6 +16,7 @@
 
 package activities;
 
+import model.User;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -37,6 +38,7 @@ import com.ig2i.andrevents.R;
 import controller.EvenementController;
 import controller.UserController;
 import fragments.AroundMeFragment;
+import fragments.AtAnEventListFragment;
 import fragments.HomeFragment;
 import fragments.MyEventsFragment;
 
@@ -60,7 +62,7 @@ public class MainActivity extends Activity {
 		
 		this.userControler = andrEvents.getUserController();
 		this.evenementControler = andrEvents.getEvenementController();
-		userControler.setUserConnected(UserController.getUser1());
+		userControler.setUserConnected((User)getIntent().getExtras().getSerializable("user"));
 
 
 		setContentView(R.layout.activity_main);
@@ -178,6 +180,11 @@ public class MainActivity extends Activity {
 		case 2:
 			fragment = new AroundMeFragment();
 			args.getInt(((AroundMeFragment) fragment).FRAGMENT_NUMBER, position);
+			fragment.setArguments(args);
+			break;
+		case 3:
+			fragment = new AtAnEventListFragment();
+			args.getInt(((AtAnEventListFragment) fragment).FRAGMENT_NUMBER, position);
 			fragment.setArguments(args);
 			break;
 

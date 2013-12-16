@@ -3,6 +3,9 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable{
 	private int id;
 	private String login;
@@ -11,8 +14,7 @@ public class User implements Serializable{
 	private String prenom;
 	private String email;
 	private String phone;
-	private ArrayList<Evenement> evenements;
-	private ArrayList<String> tags;
+	private ArrayList<Evenement> evenementList;
 	
 	
 	public int getId() {
@@ -21,8 +23,13 @@ public class User implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	
+	public User() {
+		super();
+	}
 	public User(int id, String login, String password, String nom,
-			String prenom, String email,String Phone) {
+			String prenom, String email,String phone) {
 		super();
 		this.id = id;
 		this.login = login;
@@ -31,8 +38,8 @@ public class User implements Serializable{
 		this.prenom = prenom;
 		this.email = email;
 		this.phone = phone;
-		this.evenements = new ArrayList<Evenement>();
-		this.tags = new  ArrayList<String>();
+		this.evenementList = new ArrayList<Evenement>();
+
 	}
 	public String getLogin() {
 		return login;
@@ -64,18 +71,14 @@ public class User implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public ArrayList<Evenement> getEvenements() {
-		return evenements;
+	
+	public ArrayList<Evenement> getEvenementList() {
+		return evenementList;
 	}
-	public void setEvenements(ArrayList<Evenement> evenements) {
-		this.evenements = evenements;
+	public void setEvenementList(ArrayList<Evenement> evenements) {
+		this.evenementList = evenements;
 	}
-	public ArrayList<String> getTags() {
-		return tags;
-	}
-	public void setTags(ArrayList<String> tags) {
-		this.tags = tags;
-	}
+
 	public String getPhone() {
 		return phone;
 	}

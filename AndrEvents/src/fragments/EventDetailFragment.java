@@ -99,7 +99,7 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 		((TextView)getView().findViewById(R.id.textViewDetailEventDate)).setText(EvenementHelper.getFormattedDate(evenement));
 		((TextView)getView().findViewById(R.id.textViewDetailEventLocation)).setText(this.evenement.getLieu());
 		((TextView)getView().findViewById(R.id.textViewDetailEventDescription)).setText(this.evenement.getDescription());
-		((TextView)getView().findViewById(R.id.textViewDetailEventCreator)).setText("Contact : "+ userControler.getFullname(evenement.getCreator()));
+		((TextView)getView().findViewById(R.id.textViewDetailEventCreator)).setText("Contact : "+ userControler.getFullname(evenement.getCreateur()));
 		ImageView phoneIcone = (ImageView) getActivity().findViewById(
 				R.id.imageDetailEventPhone);
 		phoneIcone.setOnClickListener(this);
@@ -128,17 +128,17 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 	public void onClick(View arg0) {
 		if (arg0.getId() == R.id.imageDetailEventMail) {
 			Intent email = new Intent(Intent.ACTION_SEND);
-			String to = evenement.getCreator().getEmail();
+			String to = evenement.getCreateur().getEmail();
 			email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
 			// need this to prompts email client only
 			email.setType("message/rfc822");
 			email.putExtra(Intent.EXTRA_SUBJECT, "A propos de " + evenement.getNom());
-            email.putExtra(Intent.EXTRA_TEXT, "Bonjour, " + userControler.getFullname(evenement.getCreator()));
+            email.putExtra(Intent.EXTRA_TEXT, "Bonjour, " + userControler.getFullname(evenement.getCreateur()));
 			startActivity(Intent.createChooser(email, "Choissez un client e-mail"));
 			return;
 		}
 		if (arg0.getId() == R.id.imageDetailEventPhone){
-			String phone = evenement.getCreator().getPhone();
+			String phone = evenement.getCreateur().getPhone();
 			Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+phone));
 			startActivity(intent);
 			return;	

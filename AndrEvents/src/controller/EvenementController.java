@@ -53,7 +53,7 @@ public class EvenementController {
 	}
 
 	public boolean subscribe(Evenement evenement, User userConnected) {
-		userConnected.getEvenements().add(evenement);
+		userConnected.getEvenementList().add(evenement);
 		return true;
 	}
 	

@@ -20,6 +20,7 @@
         <item>Accueil</item>
         <item>Mes évènements</item>
         <item>Près de moi</item>
+        <item>Je suis à un évènement</item>
         <item>Recherche</item>
         <item>Paramètres</item>
     </string-array>
@@ -31,5 +32,6 @@
     <string name="error">Erreur</string>
     <string name="errorInscription">Votre inscription n\'a pu être validée, veuillez réssayer.</string>
     <string name="noEventMessage">Vous n\'êtes inscrit à aucun évènement !</string>
+    <string name="atAnEventExplanationMessage">Vous êtes à cet évènement? Scannez votre ticket ou beamez avec l\'organisateur pour valider votre ticket!</string>
   
 </resources>

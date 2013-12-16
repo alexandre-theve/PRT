@@ -16,9 +16,8 @@ public class Evenement implements Serializable{
 	private double longitude;
 	private String description;
 	private boolean valide;
-	private User creator;
-	
-	
+	private User createur;
+		
 	public Evenement() {
 		super();
 	}
@@ -33,7 +32,7 @@ public class Evenement implements Serializable{
 		this.longitude = longitude;
 		this.description = description;
 		this.valide = false;
-		this.creator = creator;
+		this.createur = creator;
 	}
 	public int getId() {
 		return id;
@@ -90,11 +89,11 @@ public class Evenement implements Serializable{
 	public void setValide(boolean valide) {
 		this.valide = valide;
 	}
-	public User getCreator() {
-		return creator;
+	public User getCreateur() {
+		return createur;
 	}
-	public void setCreator(User creator) {
-		this.creator = creator;
+	public void setCreateur(User creator) {
+		this.createur = creator;
 	}
 	
 	public LatLng getPosition(){
