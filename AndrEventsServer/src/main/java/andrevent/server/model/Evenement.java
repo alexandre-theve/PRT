@@ -49,7 +49,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
     @NamedQuery(name = "Evenement.findByLatitude", query = "SELECT e FROM Evenement e WHERE e.latitude = :latitude"),
     @NamedQuery(name = "Evenement.findByLongitude", query = "SELECT e FROM Evenement e WHERE e.longitude = :longitude"),
     @NamedQuery(name = "Evenement.findByDescription", query = "SELECT e FROM Evenement e WHERE e.description = :description"),
-    @NamedQuery(name = "Evenement.findByValide", query = "SELECT e FROM Evenement e WHERE e.valide = :valide")})
+    @NamedQuery(name = "Evenement.findByValide", query = "SELECT e FROM Evenement e WHERE e.valide = :valide"),
+    @NamedQuery(name = "Evenement.findByLocation", query = "SELECT e FROM Evenement e WHERE POW(e.latitude - :latitude, 2) + POW(e.longitude - :longitude, 2) <= POW(:rayon, 2)")})
 @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@EvenementId")
 public class Evenement implements Serializable {
     private static final long serialVersionUID = 1L;

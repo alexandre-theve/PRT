@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import andrevent.server.model.Evenement;
@@ -21,6 +22,7 @@ import andrevent.server.model.Evenement;
  * 
  * @author Alex
  */
+@Component
 public class EvenementJpaController implements Serializable {
 	/**
 	 * 
@@ -76,6 +78,12 @@ public class EvenementJpaController implements Serializable {
 		cq.select(em.getCriteriaBuilder().count(rt));
 		Query q = em.createQuery(cq);
 		return ((Long) q.getSingleResult()).intValue();
+	}
+
+	public List<Evenement> findEvenementByLocation(Double latitude,
+			Double longitude, int rayon) {
+		return em.createNamedQuery("Evenement.findByLocation", Evenement.class).setParameter("latitude", latitude)
+							.setParameter("longitude", longitude).setParameter("rayon", rayon).getResultList();
 	}
 
 }

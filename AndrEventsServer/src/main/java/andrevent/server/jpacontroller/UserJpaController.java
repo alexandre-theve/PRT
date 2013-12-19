@@ -73,7 +73,12 @@ public class UserJpaController implements Serializable {
 	}
 	
 	public User findUserByLogin(String login) {
-		return (User) em.createNamedQuery("User.findByLogin").setParameter("login", login).setMaxResults(1).getSingleResult();
+		try {
+			return (User) em.createNamedQuery("User.findByLogin").setParameter("login", login).setMaxResults(1).getSingleResult();
+		} catch (Exception e) {
+			return new User();
+		}
+		
 	}
 
 	public int getUserCount() {

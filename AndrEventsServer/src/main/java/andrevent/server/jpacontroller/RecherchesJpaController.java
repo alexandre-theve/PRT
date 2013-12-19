@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import andrevent.server.model.Recherches;
@@ -21,6 +22,7 @@ import andrevent.server.model.Recherches;
  * 
  * @author Alex
  */
+@Component
 public class RecherchesJpaController implements Serializable {
 	/**
 	 * 

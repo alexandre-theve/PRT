@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import andrevent.server.model.ListediffusionHasUser;
@@ -22,6 +23,7 @@ import andrevent.server.model.ListediffusionHasUserPK;
  * 
  * @author Alex
  */
+@Component
 public class ListediffusionHasUserJpaController implements Serializable {
 	/**
 	 * 

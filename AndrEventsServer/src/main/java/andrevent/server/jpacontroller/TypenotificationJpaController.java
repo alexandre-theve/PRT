@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import andrevent.server.model.Typenotification;
@@ -21,6 +22,7 @@ import andrevent.server.model.Typenotification;
  * 
  * @author Alex
  */
+@Component
 public class TypenotificationJpaController implements Serializable {
 	/**
 	 * 
