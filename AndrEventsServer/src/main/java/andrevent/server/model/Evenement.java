@@ -82,7 +82,7 @@ public class Evenement implements Serializable {
     @Column(name = "description")
     private String description;
     @Column(name = "valide")
-    private Boolean valide;
+    private Boolean valide = false;
     @JoinTable(name = "evenement_has_tags", joinColumns = {
         @JoinColumn(name = "Evenement_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "Tags_id", referencedColumnName = "id")})

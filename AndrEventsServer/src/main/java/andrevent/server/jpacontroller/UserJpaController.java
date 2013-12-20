@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import andrevent.server.model.Evenement;
+import andrevent.server.model.Listediffusion;
+import andrevent.server.model.ListediffusionHasUser;
+import andrevent.server.model.ListediffusionHasUserPK;
 import andrevent.server.model.User;
 import andrevent.server.model.UserHasEvenement;
 import andrevent.server.model.UserHasEvenementPK;
@@ -102,16 +105,16 @@ public class UserJpaController implements Serializable {
 	}
 
 	@Transactional
-	public User subscribeToEvent(Integer idUser, Integer idEvent) {
+	public User subscribeToEvent(Integer idUser, Integer idEvent, Boolean push) {
 		User user = em.find(User.class, idUser);
 		Evenement evenement = em.find(Evenement.class, idEvent);
 		
 		if (user != null && evenement != null) {
 			UserHasEvenement userHasEvenement = new UserHasEvenement(idUser, idEvent);
 			if(!user.getUserHasEvenementList().contains(userHasEvenement)) {
+				userHasEvenement.setNotifications(push);
 				userHasEvenement.setCode(UUID.randomUUID().toString());
 				user.getUserHasEvenementList().add(userHasEvenement);
-				evenement.getUserHasEvenementList().add(userHasEvenement);
 				user = em.merge(user);
 			}
 		}
@@ -137,4 +140,74 @@ public class UserJpaController implements Serializable {
 		return user;
 	}
 
+	@Transactional
+	public Boolean editSubscriptionToEvent(Integer idUser, Integer idEvent,
+			Boolean push) {
+		User user = em.find(User.class, idUser);
+		
+		if(user != null) {
+			int index = user.getUserHasEvenementList().indexOf(new UserHasEvenement(idUser, idEvent));
+			if(index >= 0 && index < user.getUserHasEvenementList().size()) {
+				user.getUserHasEvenementList().get(index).setNotifications(push);
+				em.merge(user);
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	@Transactional
+	public User subscribeToListe(Integer idUser, Integer idListe, Boolean push) {
+		User user = em.find(User.class, idUser);
+		Listediffusion listediffusion = em.find(Listediffusion.class, idListe);
+		
+		if (user != null && listediffusion != null) {
+			ListediffusionHasUser listediffusionHasUser = new ListediffusionHasUser(idListe, idUser);
+			if(!user.getListediffusionHasUserList().contains(listediffusionHasUser)) {
+				listediffusionHasUser.setNotifications(push);
+				user.getListediffusionHasUserList().add(listediffusionHasUser);
+				user = em.merge(user);
+			}
+		}
+
+		return user;
+	}
+
+	@Transactional
+	public User unsubscribeToListe(Integer idUser, Integer idListe) {
+		User user = em.find(User.class, idUser);
+		Listediffusion listediffusion = em.find(Listediffusion.class, idListe);
+		
+		if (user != null && listediffusion != null) {
+			ListediffusionHasUser listediffusionHasUser = em.find(ListediffusionHasUser.class, new ListediffusionHasUserPK(idListe, idUser));
+
+			user.getListediffusionHasUserList().remove(listediffusionHasUser);
+			listediffusion.getListediffusionHasUserList().remove(listediffusionHasUser);
+			
+			user = em.merge(user);
+		}
+
+		return user;
+	}
+
+	@Transactional
+	public Boolean editSubscriptionToListe(Integer idUser, Integer idListe,
+			Boolean push) {
+		User user = em.find(User.class, idUser);
+		
+		if(user != null) {
+			int index = user.getListediffusionHasUserList().indexOf(new ListediffusionHasUser(idListe, idUser));
+			if(index >= 0 && index < user.getListediffusionHasUserList().size()) {
+				user.getListediffusionHasUserList().get(index).setNotifications(push);
+				em.merge(user);
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 }

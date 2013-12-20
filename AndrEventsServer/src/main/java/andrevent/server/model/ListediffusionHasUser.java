@@ -35,9 +35,8 @@ public class ListediffusionHasUser implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ListediffusionHasUserPK listediffusionHasUserPK;
-    @Size(max = 45)
     @Column(name = "notifications")
-    private String notifications;
+    private Boolean notifications = false;
     @JoinColumn(name = "User_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
@@ -64,11 +63,11 @@ public class ListediffusionHasUser implements Serializable {
         this.listediffusionHasUserPK = listediffusionHasUserPK;
     }
 
-    public String getNotifications() {
+    public Boolean getNotifications() {
         return notifications;
     }
 
-    public void setNotifications(String notifications) {
+    public void setNotifications(Boolean notifications) {
         this.notifications = notifications;
     }
 

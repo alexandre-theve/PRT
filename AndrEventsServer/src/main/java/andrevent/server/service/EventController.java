@@ -59,18 +59,18 @@ public class EventController {
 		return new ArrayList<Evenement>();
     }
 	
-	@RequestMapping(value = "/events/subscribe/user/{idUser}/event/{idEvent}", method = RequestMethod.POST)
-    public @ResponseBody User subscribeToEvent(Model model, @PathVariable Integer idUser, @PathVariable Integer idEvent) {
+	@RequestMapping(value = "/events/inscription/user/{idUser}/event/{idEvent}/push/{push}", method = RequestMethod.POST)
+    public @ResponseBody User subscribeToEvent(Model model, @PathVariable Integer idUser, @PathVariable Integer idEvent, @PathVariable Boolean push) {
 		logger.info("subscribing user " + idUser + " to event : " + idEvent);
 		if(idUser != null && idEvent != null) {
-			User user = userJpaController.subscribeToEvent(idUser, idEvent);
+			User user = userJpaController.subscribeToEvent(idUser, idEvent, push);
 			return user;
 		}
 		
 		return new User();
     }
 	
-	@RequestMapping(value = "/events/unsubscribe/user/{idUser}/event/{idEvent}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/events/inscription/user/{idUser}/event/{idEvent}", method = RequestMethod.DELETE)
     public @ResponseBody User unsubscribeToEvent(Model model, @PathVariable Integer idUser, @PathVariable Integer idEvent) {
 		logger.info("unsubscribing user " + idUser + " to event : " + idEvent);
 		if(idUser != null && idEvent != null) {
@@ -81,4 +81,14 @@ public class EventController {
 		return new User();
     }
 	
+	@RequestMapping(value = "/events/inscription/user/{idUser}/event/{idEvent}/push/{push}", method = RequestMethod.PUT)
+    public @ResponseBody Boolean editSubscriptionToEvent(Model model, @PathVariable Integer idUser, @PathVariable Integer idEvent, @PathVariable Boolean push) {
+		logger.info("editing subscription of user " + idUser + " to event : " + idEvent);
+		if(idUser != null && idEvent != null) {
+			Boolean result = userJpaController.editSubscriptionToEvent(idUser, idEvent, push);
+			return result;
+		}
+		
+		return false;
+    }
 }

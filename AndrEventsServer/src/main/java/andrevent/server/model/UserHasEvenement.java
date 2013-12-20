@@ -37,7 +37,7 @@ public class UserHasEvenement implements Serializable {
     @EmbeddedId
     protected UserHasEvenementPK userHasEvenementPK;
     @Column(name = "notifications")
-    private Boolean notifications;
+    private Boolean notifications = false;
     @Size(max = 45)
     @Column(name = "code")
     private String code;

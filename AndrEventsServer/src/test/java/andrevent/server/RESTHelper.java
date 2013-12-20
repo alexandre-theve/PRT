@@ -12,7 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class RESTHelper {
-	public static String url = "http://192.168.70.233:8080";
+	//public static String url = "http://192.168.70.233:8080";
+	public static String url = "http://localhost:8080";
 	
 	public static String DELETE(String URL) throws IOException,
 			ConnectException {
@@ -65,6 +66,11 @@ public class RESTHelper {
 		return "";
 	}
 
+	public static String PUT(String URL) throws IOException,
+			ConnectException {
+		return PUT(URL, "");
+	}
+	
 	public static String PUT(String URL, String param) throws IOException,
 			ConnectException {
 		System.out.println("sending " + param + " to " + URL);
@@ -123,6 +129,11 @@ public class RESTHelper {
 		return "";
 	}
 
+	public static String POST(String URL) throws IOException,
+			ConnectException {
+		return POST(URL, "");
+	}
+	
 	public static String POST(String URL, String param) throws IOException,
 			ConnectException {
 		System.out.println("sending " + param + " to " + URL);

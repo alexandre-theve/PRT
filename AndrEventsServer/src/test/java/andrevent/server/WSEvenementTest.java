@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import andrevent.server.model.Evenement;
 import andrevent.server.model.User;
+import andrevent.server.model.UserHasEvenement;
 import static org.junit.Assert.*;
 
 public class WSEvenementTest {
@@ -43,6 +44,118 @@ public class WSEvenementTest {
 		events = getEventsByTag(1);
 		System.out.println("Events for tag 1 : " + events);
 		assertTrue(events.size() != 0);
+		
+		System.out.println();
+		
+		//subscribe event
+		User user = subscribe(1, 2);
+		System.out.println("subscribing user 1 to event 2 : " + user);
+		assertTrue(user.getUserHasEvenementList().contains(new UserHasEvenement(1,2)));
+		
+		System.out.println();
+		
+		//unsubscribe event
+		user = unsubscribe(1, 2);
+		System.out.println("unsubscribing user 1 to event 2 : " + user);
+		assertTrue(!user.getUserHasEvenementList().contains(new UserHasEvenement(1,2)));
+		
+		System.out.println();
+		
+		//subscribe push notification
+		Boolean result = subscribePush(1, 1);
+		System.out.println("subscribing user 1 to push notification to event 1 : " + result);
+		assertTrue(result);
+		
+		System.out.println();
+		
+		//unsubscribe push notification
+		result = unsubscribePush(1, 1);
+		System.out.println("unsubscribing user 1 to push notification to event 1 : " + result);
+		assertTrue(result);
+	}
+	
+	public User subscribe(Integer idUser, Integer idEvent){
+		String JSON;
+		try {
+			JSON = RESTHelper.POST(RESTHelper.url+"/AndrEventServer/events/inscription/user/"+idUser+"/event/"+idEvent+"/push/true");
+			
+			User user = mapper.readValue(JSON, User.class);
+			
+			return user;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("ConnectException");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("IOException");
+		}	
+		
+		return new User();
+	}
+	
+	public User unsubscribe(Integer idUser, Integer idEvent){
+		String JSON;
+		try {
+			JSON = RESTHelper.DELETE(RESTHelper.url+"/AndrEventServer/events/inscription/user/"+idUser+"/event/"+idEvent);
+			
+			User user = mapper.readValue(JSON, User.class);
+			
+			return user;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("ConnectException");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("IOException");
+		}	
+		
+		return new User();
+	}
+	
+	public Boolean subscribePush(Integer idUser, Integer idEvent){
+		String JSON;
+		try {
+			JSON = RESTHelper.PUT(RESTHelper.url+"/AndrEventServer/events/inscription/user/"+idUser+"/event/"+idEvent+"/push/true");
+			
+			Boolean result = JSON.equals("true");
+			
+			return result;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("ConnectException");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("IOException");
+		}	
+		
+		return false;
+	}
+	
+	public Boolean unsubscribePush(Integer idUser, Integer idEvent){
+		String JSON;
+		try {
+			JSON = RESTHelper.PUT(RESTHelper.url+"/AndrEventServer/events/inscription/user/"+idUser+"/event/"+idEvent+"/push/false");
+			
+			Boolean result = JSON.equals("true");
+			
+			return result;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("ConnectException");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("IOException");
+		}	
+		
+		return false;
 	}
 	
 	public List<Evenement> getEventsByTag(Integer id){
