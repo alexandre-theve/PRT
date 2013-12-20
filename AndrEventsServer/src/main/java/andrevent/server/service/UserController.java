@@ -3,6 +3,7 @@ package andrevent.server.service;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ public class UserController {
 	}*/
 	
 	@RequestMapping(value = "/user/id/{id}", method = RequestMethod.GET)
-    public @ResponseBody User getUser(@PathVariable Integer id) {
+    public @ResponseBody User getUser(Model model, @PathVariable Integer id) {
 		logger.info("getting user by id : " + id);
 		if(id != null)
 			return userJpaController.findUser(id);
@@ -36,7 +37,7 @@ public class UserController {
     }
 	
 	@RequestMapping(value = "/user/login/{login}", method = RequestMethod.GET)
-    public @ResponseBody User getUser(@PathVariable String login) {
+    public @ResponseBody User getUser(Model model, @PathVariable String login) {
 		logger.info("getting user by login : " + login);
 		if(!login.equals(null))
 			return userJpaController.findUserByLogin(login);
@@ -45,11 +46,28 @@ public class UserController {
     }
 	
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
-    public @ResponseBody User addUser(@RequestBody User user) {
+    public @ResponseBody User addUser(Model model, @RequestBody User user) {
 		logger.info("adding user : " + user);
 		if(user != null)
 			userJpaController.create(user);
 		
 		return user;
+    }
+	
+	@RequestMapping(value = "/user", method = RequestMethod.PUT)
+    public @ResponseBody Boolean editUser(Model model, @RequestBody User user) {
+		logger.info("editing user : " + user);
+		if(user != null)
+			userJpaController.edit(user);
+		
+		return true;
+    }
+	
+	@RequestMapping(value = "/user/id/{id}", method = RequestMethod.DELETE)
+    public @ResponseBody Boolean deleteUser(Model model, @PathVariable Integer id) {
+		logger.info("deleting user by id : " + id);
+		userJpaController.destroy(id);
+
+		return true;
     }
 }

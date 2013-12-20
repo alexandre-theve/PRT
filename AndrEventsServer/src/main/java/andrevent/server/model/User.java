@@ -73,13 +73,13 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<ListediffusionHasUser> listediffusionHasUserList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createur")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createur", orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Evenement> evenementList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid", orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Recherches> recherchesList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<UserHasEvenement> userHasEvenementList;
 

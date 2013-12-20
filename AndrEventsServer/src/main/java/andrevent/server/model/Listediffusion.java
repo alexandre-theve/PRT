@@ -58,7 +58,7 @@ public class Listediffusion implements Serializable {
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Evenement> evenementList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "listediffusion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "listediffusion", orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<ListediffusionHasUser> listediffusionHasUserList;
 

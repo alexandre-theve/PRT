@@ -81,9 +81,12 @@ public class EvenementJpaController implements Serializable {
 	}
 
 	public List<Evenement> findEvenementByLocation(Double latitude,
-			Double longitude, int rayon) {
-		return em.createNamedQuery("Evenement.findByLocation", Evenement.class).setParameter("latitude", latitude)
-							.setParameter("longitude", longitude).setParameter("rayon", rayon).getResultList();
+			Double longitude, Double rayon) {
+		return em.createNamedQuery("Evenement.findByLocation2", Evenement.class)
+							.setParameter("latitude", latitude)
+							.setParameter("longitude", longitude)
+							.setParameter("rayon", rayon)
+							.getResultList();
 	}
 
 }

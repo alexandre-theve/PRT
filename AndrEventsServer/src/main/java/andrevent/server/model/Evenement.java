@@ -50,7 +50,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
     @NamedQuery(name = "Evenement.findByLongitude", query = "SELECT e FROM Evenement e WHERE e.longitude = :longitude"),
     @NamedQuery(name = "Evenement.findByDescription", query = "SELECT e FROM Evenement e WHERE e.description = :description"),
     @NamedQuery(name = "Evenement.findByValide", query = "SELECT e FROM Evenement e WHERE e.valide = :valide"),
-    @NamedQuery(name = "Evenement.findByLocation", query = "SELECT e FROM Evenement e WHERE POW(e.latitude - :latitude, 2) + POW(e.longitude - :longitude, 2) <= POW(:rayon, 2)")})
+    @NamedQuery(name = "Evenement.findByLocation", query = "SELECT e FROM Evenement e WHERE POW(e.latitude - :latitude, 2) + POW(e.longitude - :longitude, 2) <= POW(:rayon, 2)"),
+    @NamedQuery(name = "Evenement.findByLocation2", query = "SELECT e FROM Evenement e WHERE 6367 * ACOS(round(COS(RADIANS(90.0-e.latitude)) * COS(RADIANS(90.0-:latitude)) + SIN(RADIANS(90.0-e.latitude)) * SIN(RADIANS(90.0-:latitude)) * COS(RADIANS(e.longitude-:longitude)),15)) <= :rayon"),
+    @NamedQuery(name = "Evenement.findByLocation3", query = "SELECT e FROM Evenement e WHERE 6367 * ACOS(round(COS(RADIANS(90-e.latitude)) * COS(RADIANS(90-50.42)) + SIN(RADIANS(90-e.latitude)) * SIN(RADIANS(90.0-:latitude)) * COS(RADIANS(e.longitude-:longitude)),15)) <= :rayon")})
 @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@EvenementId")
 public class Evenement implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -90,13 +92,13 @@ public class Evenement implements Serializable {
     @ManyToMany(mappedBy = "evenementList")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Listediffusion> listediffusionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evenementid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evenementid", orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Notifications> notificationsList;
     @JoinColumn(name = "createur", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User createur;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evenement")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evenement", orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<UserHasEvenement> userHasEvenementList;
 

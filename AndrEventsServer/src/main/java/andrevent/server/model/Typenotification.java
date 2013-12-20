@@ -49,7 +49,7 @@ public class Typenotification implements Serializable {
     @Size(max = 45)
     @Column(name = "titre")
     private String titre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "type")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "type", orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Notifications> notificationsList;
 

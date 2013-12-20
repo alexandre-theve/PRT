@@ -7,13 +7,14 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import andrevent.server.model.Evenement;
 import andrevent.server.model.User;
 import static org.junit.Assert.*;
 
-public class WSTest {
+public class WSUserTest {
 	ObjectMapper mapper = new ObjectMapper();
 
 	@Test
@@ -23,36 +24,50 @@ public class WSTest {
 		// Getting user 1 by id
 		User userFromWS = getUserById(1);
 		assertEquals(userExpected, userFromWS);
+		System.out.println("Getting user by login " + userFromWS.getLogin());
 		
-		// Getting user 2 by id
-		userFromWS = getUserById(2);
-		userExpected = new User(2);
-		assertEquals(userExpected, userFromWS);
+		System.out.println();
 		
 		// Getting user 1 by login
 		userFromWS = getUserByLogin("admin");
+		System.out.println("Getting user by login " + userFromWS.getLogin());
 		assertEquals("admin", userFromWS.getLogin());
+		
+		System.out.println();
 		
 		// user subscription
 		userExpected = new User();
 		userExpected.setLogin("admin3");
 		userExpected.setPassword("admin");
 		userFromWS = setNewUser(userExpected);
+		System.out.println("creating user " + userFromWS.getId());
 		assertNotNull(userFromWS.getId());
 		
-		//event location
-		List<Evenement> events = getEventsByUSer(1);
-		assertFalse(events.size() != 0);
+		System.out.println();
+		
+		// user editing
+		userFromWS.setLogin("adminEdited");
+		Boolean result = editUser(userFromWS);
+		System.out.println("editing user " + userFromWS.getId() + " : " + result);
+		assertTrue(result);
+		
+		System.out.println();
+		
+		// user deleting
+		assertTrue(deleteUser(userFromWS.getId()));
+		System.out.println("deleting user " + userFromWS.getId() + " : " + result);
 	}
 	
-	public List<Evenement> getEventsByUSer(Integer id){
+	
+	
+	public Boolean deleteUser(Integer id) {
 		String JSON;
 		try {
-			JSON = RESTHelper.GET("http://192.168.70.233:8080/AndrEventServer/event/idUser/"+id);
+			JSON = RESTHelper.DELETE(RESTHelper.url+"/AndrEventServer/user/id/"+id);
 			
-			//List<Evenement> events = mapper.read(JSON, User.class);;
+			Boolean result = JSON.equals("true");
 			
-			//return events;
+			return result;
 		} catch (ConnectException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,14 +78,34 @@ public class WSTest {
 			fail("IOException");
 		}	
 		
-		return new ArrayList<Evenement>();
+		return false;
+	}
+	
+	public Boolean editUser(User user) {
+		String JSON;
+		try {
+			JSON = RESTHelper.PUT(RESTHelper.url+"/AndrEventServer/user/",mapper.writeValueAsString(user));
+			
+			Boolean result = JSON.equals("true");
+			
+			return result;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("ConnectException");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("IOException");
+		}	
+		
+		return false;
 	}
 	
 	public User setNewUser(User user){
 		String JSON;
 		try {
-			System.out.println(mapper.writeValueAsString(user));
-			JSON = RESTHelper.POST("http://192.168.70.233:8080/AndrEventServer/user/",mapper.writeValueAsString(user));
+			JSON = RESTHelper.POST(RESTHelper.url+"/AndrEventServer/user/",mapper.writeValueAsString(user));
 			
 			user = mapper.readValue(JSON, User.class);
 			
@@ -91,7 +126,7 @@ public class WSTest {
 	public User getUserByLogin(String login){
 		String JSON;
 		try {
-			JSON = RESTHelper.GET("http://192.168.70.233:8080/AndrEventServer/user/login/"+login);
+			JSON = RESTHelper.GET(RESTHelper.url+"/AndrEventServer/user/login/"+login);
 			
 			User user = mapper.readValue(JSON, User.class);
 			
@@ -112,7 +147,7 @@ public class WSTest {
 	public User getUserById(Integer id){
 		String JSON;
 		try {
-			JSON = RESTHelper.GET("http://192.168.70.233:8080/AndrEventServer/user/id/"+id);
+			JSON = RESTHelper.GET(RESTHelper.url+"/AndrEventServer/user/id/"+id);
 			
 			User user = mapper.readValue(JSON, User.class);
 			

@@ -36,9 +36,8 @@ public class UserHasEvenement implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UserHasEvenementPK userHasEvenementPK;
-    @Size(max = 45)
     @Column(name = "notifications")
-    private String notifications;
+    private Boolean notifications;
     @Size(max = 45)
     @Column(name = "code")
     private String code;
@@ -68,11 +67,11 @@ public class UserHasEvenement implements Serializable {
         this.userHasEvenementPK = userHasEvenementPK;
     }
 
-    public String getNotifications() {
+    public Boolean getNotifications() {
         return notifications;
     }
 
-    public void setNotifications(String notifications) {
+    public void setNotifications(Boolean notifications) {
         this.notifications = notifications;
     }
 
