@@ -6,10 +6,13 @@ package andrevent.server.model;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -17,8 +20,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  *
@@ -26,22 +33,23 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "typenotification")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Typenotification.findAll", query = "SELECT t FROM Typenotification t"),
     @NamedQuery(name = "Typenotification.findById", query = "SELECT t FROM Typenotification t WHERE t.id = :id"),
     @NamedQuery(name = "Typenotification.findByTitre", query = "SELECT t FROM Typenotification t WHERE t.titre = :titre")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@TypeNotificationId")
 public class Typenotification implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Size(max = 45)
     @Column(name = "titre")
     private String titre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "type")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "type", orphanRemoval=true)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Notifications> notificationsList;
 
     public Typenotification() {
@@ -67,7 +75,7 @@ public class Typenotification implements Serializable {
         this.titre = titre;
     }
 
-    @XmlTransient
+    
     public List<Notifications> getNotificationsList() {
         return notificationsList;
     }
@@ -98,7 +106,7 @@ public class Typenotification implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Typenotification[ id=" + id + " ]";
+        return "andrevent.server.model.Typenotification[ id=" + id + " ]";
     }
     
 }

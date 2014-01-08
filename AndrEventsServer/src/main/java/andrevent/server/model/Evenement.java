@@ -7,6 +7,7 @@ package andrevent.server.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,8 +26,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  *
@@ -34,17 +39,21 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "evenement")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Evenement.findAll", query = "SELECT e FROM Evenement e"),
     @NamedQuery(name = "Evenement.findById", query = "SELECT e FROM Evenement e WHERE e.id = :id"),
     @NamedQuery(name = "Evenement.findByNom", query = "SELECT e FROM Evenement e WHERE e.nom = :nom"),
     @NamedQuery(name = "Evenement.findByDateDebut", query = "SELECT e FROM Evenement e WHERE e.dateDebut = :dateDebut"),
-    @NamedQuery(name = "Evenement.findByDuree", query = "SELECT e FROM Evenement e WHERE e.duree = :duree"),
+    @NamedQuery(name = "Evenement.findByDateFin", query = "SELECT e FROM Evenement e WHERE e.dateFin = :dateFin"),
     @NamedQuery(name = "Evenement.findByLieu", query = "SELECT e FROM Evenement e WHERE e.lieu = :lieu"),
-    @NamedQuery(name = "Evenement.findByCoordonees", query = "SELECT e FROM Evenement e WHERE e.coordonees = :coordonees"),
+    @NamedQuery(name = "Evenement.findByLatitude", query = "SELECT e FROM Evenement e WHERE e.latitude = :latitude"),
+    @NamedQuery(name = "Evenement.findByLongitude", query = "SELECT e FROM Evenement e WHERE e.longitude = :longitude"),
     @NamedQuery(name = "Evenement.findByDescription", query = "SELECT e FROM Evenement e WHERE e.description = :description"),
-    @NamedQuery(name = "Evenement.findByValide", query = "SELECT e FROM Evenement e WHERE e.valide = :valide")})
+    @NamedQuery(name = "Evenement.findByValide", query = "SELECT e FROM Evenement e WHERE e.valide = :valide"),
+    @NamedQuery(name = "Evenement.findByLocation", query = "SELECT e FROM Evenement e WHERE POW(e.latitude - :latitude, 2) + POW(e.longitude - :longitude, 2) <= POW(:rayon, 2)"),
+    @NamedQuery(name = "Evenement.findByLocation2", query = "SELECT e FROM Evenement e WHERE 6367 * ACOS(round(COS(RADIANS(90.0-e.latitude)) * COS(RADIANS(90.0-:latitude)) + SIN(RADIANS(90.0-e.latitude)) * SIN(RADIANS(90.0-:latitude)) * COS(RADIANS(e.longitude-:longitude)),15)) <= :rayon"),
+    @NamedQuery(name = "Evenement.findByLocation3", query = "SELECT e FROM Evenement e WHERE 6367 * ACOS(round(COS(RADIANS(90-e.latitude)) * COS(RADIANS(90-50.42)) + SIN(RADIANS(90-e.latitude)) * SIN(RADIANS(90.0-:latitude)) * COS(RADIANS(e.longitude-:longitude)),15)) <= :rayon")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@EvenementId")
 public class Evenement implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,33 +67,39 @@ public class Evenement implements Serializable {
     @Column(name = "dateDebut")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateDebut;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "duree")
-    private Double duree;
+    @Column(name = "dateFin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateFin;
     @Size(max = 45)
     @Column(name = "lieu")
     private String lieu;
-    @Size(max = 45)
-    @Column(name = "coordonees")
-    private String coordonees;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "latitude")
+    private Double latitude;
+    @Column(name = "longitude")
+    private Double longitude;
     @Size(max = 255)
     @Column(name = "description")
     private String description;
     @Column(name = "valide")
-    private Boolean valide;
+    private Boolean valide = false;
     @JoinTable(name = "evenement_has_tags", joinColumns = {
         @JoinColumn(name = "Evenement_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "Tags_id", referencedColumnName = "id")})
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Tags> tagsList;
     @ManyToMany(mappedBy = "evenementList")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Listediffusion> listediffusionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evenementid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evenementid", orphanRemoval=true)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Notifications> notificationsList;
     @JoinColumn(name = "createur", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User createur;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evenement")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evenement", orphanRemoval=true)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<UserHasEvenement> userHasEvenementList;
 
     public Evenement() {
@@ -118,12 +133,12 @@ public class Evenement implements Serializable {
         this.dateDebut = dateDebut;
     }
 
-    public Double getDuree() {
-        return duree;
+    public Date getDateFin() {
+        return dateFin;
     }
 
-    public void setDuree(Double duree) {
-        this.duree = duree;
+    public void setDateFin(Date dateFin) {
+        this.dateFin = dateFin;
     }
 
     public String getLieu() {
@@ -134,12 +149,20 @@ public class Evenement implements Serializable {
         this.lieu = lieu;
     }
 
-    public String getCoordonees() {
-        return coordonees;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setCoordonees(String coordonees) {
-        this.coordonees = coordonees;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public String getDescription() {
@@ -158,7 +181,6 @@ public class Evenement implements Serializable {
         this.valide = valide;
     }
 
-    @XmlTransient
     public List<Tags> getTagsList() {
         return tagsList;
     }
@@ -167,7 +189,6 @@ public class Evenement implements Serializable {
         this.tagsList = tagsList;
     }
 
-    @XmlTransient
     public List<Listediffusion> getListediffusionList() {
         return listediffusionList;
     }
@@ -176,7 +197,6 @@ public class Evenement implements Serializable {
         this.listediffusionList = listediffusionList;
     }
 
-    @XmlTransient
     public List<Notifications> getNotificationsList() {
         return notificationsList;
     }
@@ -193,7 +213,7 @@ public class Evenement implements Serializable {
         this.createur = createur;
     }
 
-    @XmlTransient
+    
     public List<UserHasEvenement> getUserHasEvenementList() {
         return userHasEvenementList;
     }
@@ -224,7 +244,7 @@ public class Evenement implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Evenement[ id=" + id + " ]";
+        return "andrevent.server.model.Evenement[ id=" + id + " ]";
     }
     
 }

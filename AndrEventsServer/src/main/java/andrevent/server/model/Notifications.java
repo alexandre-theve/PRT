@@ -6,9 +6,12 @@ package andrevent.server.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,7 +22,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  *
@@ -27,18 +32,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "notifications")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Notifications.findAll", query = "SELECT n FROM Notifications n"),
     @NamedQuery(name = "Notifications.findById", query = "SELECT n FROM Notifications n WHERE n.id = :id"),
     @NamedQuery(name = "Notifications.findByDate", query = "SELECT n FROM Notifications n WHERE n.date = :date"),
     @NamedQuery(name = "Notifications.findByTitre", query = "SELECT n FROM Notifications n WHERE n.titre = :titre")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@NotificationsId")
 public class Notifications implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -122,7 +127,7 @@ public class Notifications implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Notifications[ id=" + id + " ]";
+        return "andrevent.server.model.Notifications[ id=" + id + " ]";
     }
     
 }
