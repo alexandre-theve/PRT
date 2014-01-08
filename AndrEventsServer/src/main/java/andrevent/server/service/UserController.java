@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import andrevent.server.jpacontroller.RecherchesJpaController;
 import andrevent.server.jpacontroller.UserJpaController;
+import andrevent.server.model.Recherches;
 import andrevent.server.model.User;
 
 @Controller
@@ -20,6 +22,8 @@ public class UserController {
 	
 	@Autowired (required=true)
 	private UserJpaController userJpaController;
+	@Autowired (required=true)
+	private RecherchesJpaController recherchesJpaController;
 
 	/*@RequestMapping(value = "/{name}", method = RequestMethod.GET)
 	public String getUser(@PathVariable String name, andrevent.server.modelMap andrevent.server.model) {
@@ -69,5 +73,14 @@ public class UserController {
 		userJpaController.destroy(id);
 
 		return true;
+    }
+	
+	@RequestMapping(value = "/user/recherche", method = RequestMethod.POST)
+    public @ResponseBody Recherches addUserSearch(Model model, @RequestBody Recherches recherche) {
+		logger.info("adding user search : " + recherche);
+		if(recherche != null)
+			recherchesJpaController.create(recherche);
+
+		return recherche;
     }
 }

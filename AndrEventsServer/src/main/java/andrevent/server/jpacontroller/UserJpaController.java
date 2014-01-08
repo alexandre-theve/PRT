@@ -46,7 +46,9 @@ public class UserJpaController implements Serializable {
 
 	@Transactional
 	public void edit(User user) {
-		user = em.merge(user);
+		User u = findUser(user.getId());
+		u.copy(user);
+		user = em.merge(u);
 	}
 
 	@Transactional

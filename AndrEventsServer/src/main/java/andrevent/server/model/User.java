@@ -76,7 +76,7 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createur", orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Evenement> evenementList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid", orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Recherches> recherchesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval=true)
@@ -85,6 +85,16 @@ public class User implements Serializable {
 
     public User() {
     }
+    
+	public void copy(User user) {
+		id = user.getId();
+		login = user.getLogin();
+		password = user.getPassword();
+		email = user.getEmail();
+		nom = user.getNom();
+		prenom = user.getPrenom();
+		phone = user.getPhone();
+	}
 
     public User(Integer id) {
         this.id = id;
@@ -205,6 +215,5 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "andrevent.server.model.User[ id=" + id + " ]";
-    }
-    
+    }    
 }
