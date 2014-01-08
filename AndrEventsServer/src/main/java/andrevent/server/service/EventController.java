@@ -30,6 +30,13 @@ public class EventController {
 	@Autowired (required=true)
 	private TagsJpaController tagsJpaController;
 	
+	@RequestMapping(value = "/events", method = RequestMethod.GET)
+    public @ResponseBody List<Evenement> getEvenements(Model model) {
+		logger.info("getting user events : ");
+
+		return evenementsJpaController.findEvenementEntities();
+    }
+	
 	@RequestMapping(value = "/events/idUser/{id}", method = RequestMethod.GET)
     public @ResponseBody List<Evenement> getEvenementsByUser(Model model, @PathVariable Integer id) {
 		logger.info("getting user events by idUser : " + id);
