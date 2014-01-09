@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import andrevent.server.model.Evenement;
+import andrevent.server.model.Tags;
 import andrevent.server.model.User;
 import andrevent.server.model.UserHasEvenement;
 import static org.junit.Assert.*;
@@ -20,15 +21,25 @@ public class WSEvenementTest {
 
 	@Test
 	public void test() {
-		// event location
+		// events
 		List<Evenement> events = getEvents();
 		System.out.println("Events : " + events);
 		assertTrue(events.size() != 0);
 
-		// event location
+		// events by user
 		events = getEventsByUSer(1);
+		System.out.println("Events of user 1 : " + events);
+		assertTrue(events.size() != 0);
+		
+		// events suggestion for user
+		events = getEventsForUSer(1);
 		System.out.println("Events for user 1 : " + events);
 		assertTrue(events.size() != 0);
+		
+		// tags suggestion for user
+		List<Tags> tags = getTagsForUSer(1);
+		System.out.println("Tags for user 1 : " + tags);
+		assertTrue(tags.size() != 0);
 
 		System.out.println();
 
@@ -273,5 +284,53 @@ public class WSEvenementTest {
 		}
 
 		return new ArrayList<Evenement>();
+	}
+	
+	public List<Evenement> getEventsForUSer(Integer id) {
+		String JSON;
+		try {
+			JSON = RESTHelper.GET(RESTHelper.url
+					+ "/AndrEventServer/events/suggestion/idUser/" + id);
+
+			List<Evenement> events = mapper.readValue(JSON,
+					new TypeReference<List<Evenement>>() {
+					});
+
+			return events;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("ConnectException");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("IOException");
+		}
+
+		return new ArrayList<Evenement>();
+	}
+	
+	public List<Tags> getTagsForUSer(Integer id) {
+		String JSON;
+		try {
+			JSON = RESTHelper.GET(RESTHelper.url
+					+ "/AndrEventServer/events/suggestionTags/idUser/" + id);
+
+			List<Tags> tags = mapper.readValue(JSON,
+					new TypeReference<List<Tags>>() {
+					});
+
+			return tags;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("ConnectException");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("IOException");
+		}
+
+		return new ArrayList<Tags>();
 	}
 }
