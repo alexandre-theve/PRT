@@ -6,10 +6,13 @@ package andrevent.server.model;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -20,8 +23,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  *
@@ -29,17 +36,17 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "listediffusion")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Listediffusion.findAll", query = "SELECT l FROM Listediffusion l"),
     @NamedQuery(name = "Listediffusion.findById", query = "SELECT l FROM Listediffusion l WHERE l.id = :id"),
     @NamedQuery(name = "Listediffusion.findByTitre", query = "SELECT l FROM Listediffusion l WHERE l.titre = :titre")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@ListeDiffusionId")
 public class Listediffusion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Size(max = 45)
     @Column(name = "titre")
@@ -48,8 +55,10 @@ public class Listediffusion implements Serializable {
         @JoinColumn(name = "ListeDiffusion_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "Evenement_id", referencedColumnName = "id")})
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Evenement> evenementList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "listediffusion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "listediffusion", orphanRemoval=true)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<ListediffusionHasUser> listediffusionHasUserList;
 
     public Listediffusion() {
@@ -75,7 +84,7 @@ public class Listediffusion implements Serializable {
         this.titre = titre;
     }
 
-    @XmlTransient
+    
     public List<Evenement> getEvenementList() {
         return evenementList;
     }
@@ -84,7 +93,7 @@ public class Listediffusion implements Serializable {
         this.evenementList = evenementList;
     }
 
-    @XmlTransient
+    
     public List<ListediffusionHasUser> getListediffusionHasUserList() {
         return listediffusionHasUserList;
     }
@@ -115,7 +124,7 @@ public class Listediffusion implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Listediffusion[ id=" + id + " ]";
+        return "andrevent.server.model.Listediffusion[ id=" + id + " ]";
     }
     
 }

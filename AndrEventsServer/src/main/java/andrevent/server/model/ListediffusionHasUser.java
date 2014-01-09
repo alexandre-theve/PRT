@@ -5,6 +5,7 @@
 package andrevent.server.model;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -14,7 +15,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  *
@@ -22,19 +25,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "listediffusion_has_user")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ListediffusionHasUser.findAll", query = "SELECT l FROM ListediffusionHasUser l"),
     @NamedQuery(name = "ListediffusionHasUser.findByListeDiffusionid", query = "SELECT l FROM ListediffusionHasUser l WHERE l.listediffusionHasUserPK.listeDiffusionid = :listeDiffusionid"),
     @NamedQuery(name = "ListediffusionHasUser.findByUserid", query = "SELECT l FROM ListediffusionHasUser l WHERE l.listediffusionHasUserPK.userid = :userid"),
     @NamedQuery(name = "ListediffusionHasUser.findByNotifications", query = "SELECT l FROM ListediffusionHasUser l WHERE l.notifications = :notifications")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@ListediffusionHasUserId")
 public class ListediffusionHasUser implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ListediffusionHasUserPK listediffusionHasUserPK;
-    @Size(max = 45)
     @Column(name = "notifications")
-    private String notifications;
+    private Boolean notifications = false;
     @JoinColumn(name = "User_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
@@ -61,11 +63,11 @@ public class ListediffusionHasUser implements Serializable {
         this.listediffusionHasUserPK = listediffusionHasUserPK;
     }
 
-    public String getNotifications() {
+    public Boolean getNotifications() {
         return notifications;
     }
 
-    public void setNotifications(String notifications) {
+    public void setNotifications(Boolean notifications) {
         this.notifications = notifications;
     }
 
@@ -107,7 +109,7 @@ public class ListediffusionHasUser implements Serializable {
 
     @Override
     public String toString() {
-        return "model.ListediffusionHasUser[ listediffusionHasUserPK=" + listediffusionHasUserPK + " ]";
+        return "andrevent.server.model.ListediffusionHasUser[ listediffusionHasUserPK=" + listediffusionHasUserPK + " ]";
     }
     
 }

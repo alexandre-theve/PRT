@@ -6,9 +6,12 @@ package andrevent.server.model;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -19,8 +22,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  *
@@ -28,17 +35,17 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "recherches")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Recherches.findAll", query = "SELECT r FROM Recherches r"),
     @NamedQuery(name = "Recherches.findById", query = "SELECT r FROM Recherches r WHERE r.id = :id"),
     @NamedQuery(name = "Recherches.findByKeyword", query = "SELECT r FROM Recherches r WHERE r.keyword = :keyword")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@RecherchesId")
 public class Recherches implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Size(max = 45)
     @Column(name = "keyword")
@@ -47,6 +54,7 @@ public class Recherches implements Serializable {
         @JoinColumn(name = "Recherches_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "Tags_id", referencedColumnName = "id")})
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Tags> tagsList;
     @JoinColumn(name = "User_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -75,7 +83,7 @@ public class Recherches implements Serializable {
         this.keyword = keyword;
     }
 
-    @XmlTransient
+    
     public List<Tags> getTagsList() {
         return tagsList;
     }
@@ -114,7 +122,7 @@ public class Recherches implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Recherches[ id=" + id + " ]";
+        return "andrevent.server.model.Recherches[ id=" + id + " ]";
     }
     
 }

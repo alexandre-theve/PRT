@@ -5,6 +5,7 @@
 package andrevent.server.model;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -14,7 +15,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  *
@@ -22,19 +25,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "user_has_evenement")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "UserHasEvenement.findAll", query = "SELECT u FROM UserHasEvenement u"),
     @NamedQuery(name = "UserHasEvenement.findByUserid", query = "SELECT u FROM UserHasEvenement u WHERE u.userHasEvenementPK.userid = :userid"),
     @NamedQuery(name = "UserHasEvenement.findByEvenementid", query = "SELECT u FROM UserHasEvenement u WHERE u.userHasEvenementPK.evenementid = :evenementid"),
-    @NamedQuery(name = "UserHasEvenement.findByNotifications", query = "SELECT u FROM UserHasEvenement u WHERE u.notifications = :notifications")})
+    @NamedQuery(name = "UserHasEvenement.findByNotifications", query = "SELECT u FROM UserHasEvenement u WHERE u.notifications = :notifications"),
+    @NamedQuery(name = "UserHasEvenement.findByCode", query = "SELECT u FROM UserHasEvenement u WHERE u.code = :code")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@UserHasEvenementId")
 public class UserHasEvenement implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UserHasEvenementPK userHasEvenementPK;
-    @Size(max = 45)
     @Column(name = "notifications")
-    private String notifications;
+    private Boolean notifications = false;
+    @Size(max = 45)
+    @Column(name = "code")
+    private String code;
     @JoinColumn(name = "Evenement_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Evenement evenement;
@@ -61,12 +67,20 @@ public class UserHasEvenement implements Serializable {
         this.userHasEvenementPK = userHasEvenementPK;
     }
 
-    public String getNotifications() {
+    public Boolean getNotifications() {
         return notifications;
     }
 
-    public void setNotifications(String notifications) {
+    public void setNotifications(Boolean notifications) {
         this.notifications = notifications;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Evenement getEvenement() {
@@ -107,7 +121,7 @@ public class UserHasEvenement implements Serializable {
 
     @Override
     public String toString() {
-        return "model.UserHasEvenement[ userHasEvenementPK=" + userHasEvenementPK + " ]";
+        return "andrevent.server.model.UserHasEvenement[ userHasEvenementPK=" + userHasEvenementPK + " ]";
     }
     
 }
