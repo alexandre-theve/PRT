@@ -38,7 +38,7 @@ CREATE TABLE `evenement` (
   PRIMARY KEY (`id`),
   KEY `fk_Evenement_User1_idx` (`createur`),
   CONSTRAINT `fk_Evenement_User1` FOREIGN KEY (`createur`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `evenement` (
 
 LOCK TABLES `evenement` WRITE;
 /*!40000 ALTER TABLE `evenement` DISABLE KEYS */;
-INSERT INTO `evenement` VALUES (1,'Rencontres IG2Iennes','2013-10-03 08:00:00','2013-10-03 17:00:00','IG2I',50.43515,2.82351,'Rencontres eleves-entreprises',1,1),(2,'Portes Ouvertes','2014-02-01 09:00:00','2014-02-01 17:00:00','IG2I',50.43515,2.82351,'Recontres eleves-lyceens',1,1);
+INSERT INTO `evenement` VALUES (1,'Rencontres IG2Iennes','2013-10-03 08:00:00','2013-10-03 17:00:00','IG2I',50.43515,2.82351,'Rencontres eleves-entreprises',1,1),(2,'Portes Ouvertes','2014-02-01 09:00:00','2014-02-01 17:00:00','IG2I',50.43515,2.82351,'Recontres eleves-lyceens',1,1),(3,'Barbecue','2013-10-03 19:00:00','2013-10-03 23:00:00','IG2I',50.43515,2.82351,'Barbecue JDN',1,1),(4,'Foot','2013-10-03 16:00:00','2013-10-03 18:00:00','IG2I',50.43515,2.82351,'Tournoi de foot L1',1,1);
 /*!40000 ALTER TABLE `evenement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -75,7 +75,7 @@ CREATE TABLE `evenement_has_tags` (
 
 LOCK TABLES `evenement_has_tags` WRITE;
 /*!40000 ALTER TABLE `evenement_has_tags` DISABLE KEYS */;
-INSERT INTO `evenement_has_tags` VALUES (1,1);
+INSERT INTO `evenement_has_tags` VALUES (1,1),(1,2),(1,3),(3,3),(4,3),(1,4),(3,4),(4,4),(2,5),(4,5),(2,6),(3,6);
 /*!40000 ALTER TABLE `evenement_has_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,7 +255,7 @@ CREATE TABLE `tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `titre` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,7 +264,7 @@ CREATE TABLE `tags` (
 
 LOCK TABLES `tags` WRITE;
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
-INSERT INTO `tags` VALUES (1,'Ingenieur');
+INSERT INTO `tags` VALUES (1,'Ingenieur'),(2,'Entreprise'),(3,'Ecole'),(4,'IG2I'),(5,'Sport'),(6,'Barbecue');
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -346,7 +346,7 @@ CREATE TABLE `user_has_evenement` (
 
 LOCK TABLES `user_has_evenement` WRITE;
 /*!40000 ALTER TABLE `user_has_evenement` DISABLE KEYS */;
-INSERT INTO `user_has_evenement` VALUES (1,1,0,'6598d33f-f96d-4a89-9431-6a06fc7e63e8');
+INSERT INTO `user_has_evenement` VALUES (1,1,0,'6598d33f-f96d-4a89-9431-6a06fc7e63e8'),(1,3,0,'6598d33f-f96d-4a89-9431-6a06fc7e63e8');
 /*!40000 ALTER TABLE `user_has_evenement` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -359,4 +359,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-01-08 15:24:55
+-- Dump completed on 2014-01-09 15:05:25

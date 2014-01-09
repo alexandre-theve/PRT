@@ -52,7 +52,14 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
     @NamedQuery(name = "Evenement.findByValide", query = "SELECT e FROM Evenement e WHERE e.valide = :valide"),
     @NamedQuery(name = "Evenement.findByLocation", query = "SELECT e FROM Evenement e WHERE POW(e.latitude - :latitude, 2) + POW(e.longitude - :longitude, 2) <= POW(:rayon, 2)"),
     @NamedQuery(name = "Evenement.findByLocation2", query = "SELECT e FROM Evenement e WHERE 6367 * ACOS(round(COS(RADIANS(90.0-e.latitude)) * COS(RADIANS(90.0-:latitude)) + SIN(RADIANS(90.0-e.latitude)) * SIN(RADIANS(90.0-:latitude)) * COS(RADIANS(e.longitude-:longitude)),15)) <= :rayon"),
-    @NamedQuery(name = "Evenement.findByLocation3", query = "SELECT e FROM Evenement e WHERE 6367 * ACOS(round(COS(RADIANS(90-e.latitude)) * COS(RADIANS(90-50.42)) + SIN(RADIANS(90-e.latitude)) * SIN(RADIANS(90.0-:latitude)) * COS(RADIANS(e.longitude-:longitude)),15)) <= :rayon")})
+    @NamedQuery(name = "Evenement.findByLocation3", query = "SELECT e FROM Evenement e WHERE 6367 * ACOS(round(COS(RADIANS(90-e.latitude)) * COS(RADIANS(90-50.42)) + SIN(RADIANS(90-e.latitude)) * SIN(RADIANS(90.0-:latitude)) * COS(RADIANS(e.longitude-:longitude)),15)) <= :rayon"),
+    @NamedQuery(name = "Evenement.findBestTagsForUser", query = "SELECT t FROM User u, IN (u.userHasEvenementList) uhe, IN (uhe.evenement.tagsList) t " +
+																"WHERE u.id = :user " +
+																"GROUP BY t.id " + 
+																"ORDER BY COUNT(t.id) DESC "),
+	@NamedQuery(name = "Evenement.findBestEventsForUser", query = "SELECT e FROM Tags t, IN (t.evenementList) e " +
+																  "WHERE t IN (:tags) " + 
+																  "GROUP BY e.id")})
 @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@EvenementId")
 public class Evenement implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import andrevent.server.model.Evenement;
+import andrevent.server.model.Tags;
 
 /**
  * 
@@ -87,6 +88,19 @@ public class EvenementJpaController implements Serializable {
 							.setParameter("longitude", longitude)
 							.setParameter("rayon", rayon)
 							.getResultList();
+	}
+
+	public List<Tags> findTagsForUser(Integer id) {
+		return em.createNamedQuery("Evenement.findBestTagsForUser", Tags.class)
+				.setParameter("user", id)
+				.setMaxResults(3)
+				.getResultList();
+	}
+	
+	public List<Evenement> findEvenementsForUser(Integer id) {
+		return em.createNamedQuery("Evenement.findBestEventsForUser", Evenement.class)
+				.setParameter("tags", this.findTagsForUser(id))
+				.getResultList();
 	}
 
 }

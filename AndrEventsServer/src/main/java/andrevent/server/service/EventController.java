@@ -66,6 +66,26 @@ public class EventController {
 		return new ArrayList<Evenement>();
     }
 	
+	@RequestMapping(value = "/events/suggestionTags/idUser/{id}", method = RequestMethod.GET)
+    public @ResponseBody List<Tags> getSuggestionTags(Model model, @PathVariable Integer id) {
+		logger.info("getting suggestion events for user : " + id);
+		if(id != null) {
+			return evenementsJpaController.findTagsForUser(id);
+		}
+		
+		return new ArrayList<Tags>();
+    }
+	
+	@RequestMapping(value = "/events/suggestion/idUser/{id}", method = RequestMethod.GET)
+    public @ResponseBody List<Evenement> getSuggestionEvenements(Model model, @PathVariable Integer id) {
+		logger.info("getting suggestion events for user : " + id);
+		if(id != null) {
+			return evenementsJpaController.findEvenementsForUser(id);
+		}
+		
+		return new ArrayList<Evenement>();
+    }
+	
 	@RequestMapping(value = "/events/inscription/user/{idUser}/event/{idEvent}/push/{push}", method = RequestMethod.POST)
     public @ResponseBody User subscribeToEvent(Model model, @PathVariable Integer idUser, @PathVariable Integer idEvent, @PathVariable Boolean push) {
 		logger.info("subscribing user " + idUser + " to event : " + idEvent);
