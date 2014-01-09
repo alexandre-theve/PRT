@@ -220,7 +220,7 @@ public class LoginActivity extends Activity {
 
 			try {
 				MyApplication myapp = (MyApplication) getApplication();
-				loggingUser = myapp.getUserController().getUser1(mLogin,
+				loggingUser = myapp.getUserController().loginUser(mLogin,
 						mPassword);
 				if (loggingUser.getId() == 0) {
 					// USER_UNKNOWN_ERROR

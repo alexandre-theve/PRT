@@ -1,9 +1,11 @@
 package model;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserHasEvenementPK {
+public class UserHasEvenementPK implements Serializable {
 
 	private Integer userid;
 	private Integer evenementid;

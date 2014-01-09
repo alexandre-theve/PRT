@@ -35,7 +35,7 @@ public class UserController extends GenericController{
 				"admin@admin.Fr", "0600000000");
 	}
 
-	public User getUser1(String login, String password) {
+	public User loginUser(String login, String password) {
 		
 		try {
 			String JSON = RESTHelper.GET(URL+"/user/login/"+login);
