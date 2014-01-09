@@ -1,14 +1,6 @@
 package activities;
 
 import model.User;
-
-import com.ig2i.andrevents.R;
-import com.ig2i.andrevents.R.id;
-import com.ig2i.andrevents.R.layout;
-import com.ig2i.andrevents.R.menu;
-import com.ig2i.andrevents.R.string;
-
-import controller.UserController;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -27,11 +19,13 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ig2i.andrevents.R;
+
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class CreateUserActivity extends Activity {
+public class CreateOrEditUserActivity extends Activity {
 	/**
 	 * A dummy authentication store containing known user names and passwords.
 	 * TODO: remove after connecting to a real authentication system.
@@ -62,17 +56,26 @@ public class CreateUserActivity extends Activity {
 	private View mCreateFormView;
 	private View mCreateStatusView;
 	private TextView mCreateStatusMessageView;
-
+	
+	private Boolean editMode = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		creatingUser = (User)savedInstanceState.getSerializable("user");
+		
+		creatingUser = (User)this.getIntent().getExtras().getSerializable("user");
+		
+		try{
+			//on passe en mode édition
+			editMode = this.getIntent().getExtras().getBoolean("editMode");	
+		}
+		catch (Exception e){
+			// on ne fait rien, on est en mode création.
+		}
 		setContentView(R.layout.activity_create);
 
 		// Set up the login form.
 		mLoginView = (EditText) findViewById(R.id.loginCreate);
 		mLoginView.setText(creatingUser.getLogin());
-
 		
 		mPasswordView = (EditText) findViewById(R.id.passwordCreate);
 		mPasswordView
@@ -81,29 +84,41 @@ public class CreateUserActivity extends Activity {
 					public boolean onEditorAction(TextView textView, int id,
 							KeyEvent keyEvent) {
 						if (id == R.id.login || id == EditorInfo.IME_NULL) {
-							attemptLogin();
+							attemptCreateOrEdit();
 							return true;
 						}
 						return false;
 					}
 				});
 
-		mCreateFormView = findViewById(R.id.login_form);
-		mCreateStatusView = findViewById(R.id.login_status);
-		mCreateStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+		mCreateFormView = findViewById(R.id.create_form);
+		mCreateStatusView = findViewById(R.id.create_status);
+		mCreateStatusMessageView = (TextView) findViewById(R.id.create_status_message);
 
 		mNameView = (EditText) findViewById(R.id.nameCreate);
 		mPrenomView = (EditText) findViewById(R.id.prenomCreate);
 		meMailView = (EditText) findViewById(R.id.emailCreate);
 		mPasswordView = (EditText) findViewById(R.id.passwordCreate);
+		mPhoneView = (EditText) findViewById(R.id.phoneCreate);
+		
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						attemptLogin();
+						attemptCreateOrEdit();
 					}
 				});
+		mNameView.setText(creatingUser.getNom());
+		mPrenomView.setText(creatingUser.getPrenom());
 		mPasswordView.setText(creatingUser.getPassword());
+		meMailView.setText(creatingUser.getEmail());
+		mPhoneView.setText(creatingUser.getPhone());
+		
+		mNameView.setText("UnNom");
+		mPrenomView.setText("UnPrenom");
+		meMailView.setText("UnMail@mail.fr");
+		mPhoneView.setText("0202020202");
+		
 	}
 
 	@Override
@@ -118,7 +133,7 @@ public class CreateUserActivity extends Activity {
 	 * If there are form errors (invalid email, missing fields, etc.), the
 	 * errors are presented and no actual login attempt is made.
 	 */
-	public void attemptLogin() {
+	public void attemptCreateOrEdit() {
 		if (mAuthTask != null) {
 			return;
 		}
@@ -179,9 +194,9 @@ public class CreateUserActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mCreateStatusMessageView.setText(R.string.login_progress_signing_in);
+			mCreateStatusMessageView.setText(R.string.create_creating);
 			showProgress(true);
-			mAuthTask = new UserLoginTask(getApplicationContext());
+			mAuthTask = new UserLoginTask(getApplicationContext(),editMode);
 			mAuthTask.execute((Void) null);
 		}
 	}
@@ -233,10 +248,12 @@ public class CreateUserActivity extends Activity {
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		private Context context;
+		private Boolean editMode;
 		
-		public UserLoginTask(Context cont) {
+		public UserLoginTask(Context cont,Boolean editMode) {
 			// TODO Auto-generated constructor stub
 			this.context = cont;
+			this.editMode = editMode;
 		}
 
 		@Override
@@ -251,7 +268,12 @@ public class CreateUserActivity extends Activity {
 			
 			try {
 				MyApplication myapp = (MyApplication) getApplication();
-				creatingUser = myapp.getUserController().createUser(creatingUser);
+				if (editMode){
+				creatingUser = myapp.getUserController().editUser(creatingUser);
+				}
+				else{
+					creatingUser = myapp.getUserController().createUser(creatingUser);
+				}
 				if (creatingUser.getId() != -1) {
 					return true;
 				}
@@ -268,10 +290,20 @@ public class CreateUserActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
+				Intent myIntent;
 				Bundle params = new Bundle();
 				params.putSerializable("user", creatingUser);
-				Intent myIntent = new Intent(context, MainActivity.class);
-				startActivityForResult(myIntent, 0);
+				if(!editMode){
+				myIntent= new Intent(context, MainActivity.class);
+				myIntent.putExtras(params);
+				startActivity(myIntent);
+				
+				}
+				else{
+					//on affiche un p'tit truc...
+					
+				}
+				
 			} else {
 					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 							context);

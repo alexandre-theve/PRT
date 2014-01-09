@@ -1,18 +1,14 @@
 package controller;
 
-import helpers.DateHelper;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import model.Evenement;
 import model.User;
 
-import org.joda.time.Period;
-
-public class EvenementController {
+public class EvenementController extends GenericController{
+	
 	public ArrayList<Evenement> findEvenementsAround(double lat, double longitude, int rayon){
 		ArrayList<Evenement> toReturn = new ArrayList<Evenement>();
 		Calendar cal =  Calendar.getInstance();

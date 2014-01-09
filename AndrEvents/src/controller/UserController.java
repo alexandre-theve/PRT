@@ -2,21 +2,18 @@ package controller;
 
 import helpers.RESTHelper;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ConnectException;
-import java.net.URL;
-import java.net.URLConnection;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.Evenement;
 import model.User;
 
-public class UserController {
+
+public class UserController extends GenericController{
 
 	private User userConnected;
 	ObjectMapper mapper = new ObjectMapper();
@@ -40,16 +37,13 @@ public class UserController {
 
 	public User getUser1(String login, String password) {
 		
-		/*
-		User newUserConnected = new User(1, "lilion", "password", "Devos",
-				"Clément", "cdevos.0@gmail.com", "0620044858");*/
 		try {
-			String JSON = RESTHelper.GET("http://192.168.70.233:8080/AndrEventServer/user/login/"+login);
+			String JSON = RESTHelper.GET(URL+"/user/login/"+login);
 			return mapper.readValue(JSON, User.class);
 		}
 		catch (JsonParseException e) {
 			e.printStackTrace();
-			return new User(0, login, password, "", "", "", "");
+			return new User(-1, login, password, "", "", "", "");
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 			return getErrorUser();
@@ -77,6 +71,38 @@ public class UserController {
 	}
 
 	public User createUser(User creatingUser) {
+		
+			String JSON;
+			try {
+				String jsonCreate = mapper.writeValueAsString(creatingUser);
+				JSON = RESTHelper.POST_PUT(URL+"/user/","POST",jsonCreate);
+				return mapper.readValue(JSON, User.class);
+			} catch (JsonParseException e) {
+				e.printStackTrace();
+				return creatingUser;
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+				return getErrorUser();
+			}
+			catch(ConnectException Ce){
+				Ce.printStackTrace();
+				return getErrorUser();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+				return getErrorUser();
+			}
+			catch (Exception e){
+				e.printStackTrace();
+				return getErrorUser();
+			}
+			
+		
+		
+		
+	}
+
+	public User editUser(User creatingUser) {
 		// TODO Auto-generated method stub
 		return null;
 	}

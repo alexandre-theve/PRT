@@ -1,14 +1,6 @@
 package activities;
 
 import model.User;
-
-import com.ig2i.andrevents.R;
-import com.ig2i.andrevents.R.id;
-import com.ig2i.andrevents.R.layout;
-import com.ig2i.andrevents.R.menu;
-import com.ig2i.andrevents.R.string;
-
-import controller.UserController;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -28,6 +20,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.ig2i.andrevents.R;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -62,7 +56,8 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		MyApplication andrEvents = ((MyApplication) getApplicationContext());
+		andrEvents.setURL(getString(R.string.base_url));
 		setContentView(R.layout.activity_login);
 
 		// Set up the login form.
@@ -91,10 +86,11 @@ public class LoginActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						getWindow().setSoftInputMode(
-							      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+						getWindow()
+								.setSoftInputMode(
+										WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 						attemptLogin();
-						
+
 					}
 				});
 		mLoginView.setText("admin");
@@ -224,11 +220,8 @@ public class LoginActivity extends Activity {
 
 			try {
 				MyApplication myapp = (MyApplication) getApplication();
-				loggingUser = myapp.getUserController().getUser1(mLogin,mPassword);
-				if (loggingUser.getId() != -1
-						&& loggingUser.getPassword().equals(mPassword)) {
-					return true;
-				}
+				loggingUser = myapp.getUserController().getUser1(mLogin,
+						mPassword);
 				if (loggingUser.getId() == 0) {
 					// USER_UNKNOWN_ERROR
 					error = 2;
@@ -238,6 +231,10 @@ public class LoginActivity extends Activity {
 					// REST_COMMUNCATION_ERROR
 					error = 0;
 					return false;
+				}
+				if (loggingUser.getId() != -1
+						&& loggingUser.getPassword().equals(mPassword)) {
+					return true;
 				}
 				if (!loggingUser.getPassword().equals(mPasswordView.getText())) {
 					// "WRONG_PASSWORD"
@@ -267,34 +264,36 @@ public class LoginActivity extends Activity {
 				case 0:
 					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 							context);
-					alertDialogBuilder.setTitle("Veuillez rééssayer.")
-					.setMessage("Erreur de communication avec le serveur")
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        // TODO Auto-generated method stub
-                    }
-					})
-					.setCancelable(false)
-					.create()
-					.show();
-				
+					alertDialogBuilder
+							.setTitle("Veuillez rééssayer.")
+							.setMessage(
+									"Erreur de communication avec le serveur")
+							.setPositiveButton("OK",
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(
+												DialogInterface arg0, int arg1) {
+											// TODO Auto-generated method stub
+										}
+									}).setCancelable(false).create().show();
+
 					break;
 				case 1:
 					mPasswordView
-					.setError(getString(R.string.error_incorrect_password));
-			mPasswordView.requestFocus();
+							.setError(getString(R.string.error_incorrect_password));
+					mPasswordView.requestFocus();
 					break;
 				case 2:
-					loggingUser = new User(-1,mLogin,mPassword,"","","","");
+					loggingUser = new User(null, mLogin, mPassword, "", "", "",
+							"");
 					Bundle params = new Bundle();
 					params.putSerializable("user", loggingUser);
-					Intent myIntent = new Intent(context, CreateUserActivity.class);
+					Intent myIntent = new Intent(context,
+							CreateOrEditUserActivity.class);
 					myIntent.putExtras(params);
 					startActivityForResult(myIntent, 0);
 				}
-				
-				
+
 			}
 		}
 

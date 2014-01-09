@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
-import com.google.zxing.qrcode.encoder.QRCode;
 import com.ig2i.andrevents.R;
 
 import controller.EvenementController;

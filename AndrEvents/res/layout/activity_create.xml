@@ -32,13 +32,20 @@
     <!-- Login form -->
 
     <ScrollView
-        android:id="@+id/login_form"
+        android:id="@+id/create_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
         <LinearLayout
             style="@style/LoginFormContainer"
             android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_user_welcome"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
                 android:id="@+id/loginCreate"
@@ -54,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_password"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true" />
 

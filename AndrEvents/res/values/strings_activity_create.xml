@@ -1,14 +1,15 @@
 <resources>
 
     <string name="title_activity_Create">Créer un compte</string>
+    <string name="create_user_welcome">Remplissez ce formulaire pour créer votre compte et vous authentifier !</string>
 
     <!-- Strings related to login -->
     <string name="prompt_login">Login</string>
     <string name="prompt_password">Password</string>
-    <string name="prompt_name">Password</string>
-    <string name="prompt_prenom">Password</string>
-    <string name="prompt_email">Password</string>
-    <string name="prompt_phone">Password</string>
+    <string name="prompt_name">Nom</string>
+    <string name="prompt_prenom">Prénom</string>
+    <string name="prompt_email">eMail</string>
+    <string name="prompt_phone">Téléphone</string>
     <string name="action_sign_in_register"><b>Créer</b>et se connecter</string>
     <string name="action_sign_in_short">Créer</string>
     <string name="action_forgot_password">Recover lost password</string>

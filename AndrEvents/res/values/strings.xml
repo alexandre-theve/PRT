@@ -33,5 +33,5 @@
     <string name="errorInscription">Votre inscription n\'a pu être validée, veuillez réssayer.</string>
     <string name="noEventMessage">Vous n\'êtes inscrit à aucun évènement !</string>
     <string name="atAnEventExplanationMessage">Vous êtes à cet évènement? Scannez votre ticket ou beamez avec l\'organisateur pour valider votre ticket!</string>
-  
+  	<string name="base_url">http://192.168.1.17:8080/AndrEventServer/</string>
 </resources>

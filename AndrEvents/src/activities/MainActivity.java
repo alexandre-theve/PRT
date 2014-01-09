@@ -59,7 +59,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		MyApplication andrEvents = ((MyApplication) getApplicationContext());
-		
 		this.userControler = andrEvents.getUserController();
 		this.evenementControler = andrEvents.getEvenementController();
 		userControler.setUserConnected((User)getIntent().getExtras().getSerializable("user"));
