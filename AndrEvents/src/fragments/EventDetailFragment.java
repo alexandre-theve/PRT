@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.internal.el;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -155,10 +156,12 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 					AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
 					alert.setTitle(getActivity().getResources().getString(R.string.error));
 					alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
+					participateIcone.setImageResource(R.drawable.participerbutton);
 					return;
+				} else {
+					Toast.makeText(getActivity(), "desinscription impossible !", Toast.LENGTH_SHORT).show();
 				}
 				dialog.dismiss();
-				participateIcone.setImageResource(R.drawable.participerbutton);
 			} else {
 				ProgressDialog dialog = ProgressDialog.show(getActivity(), "Patientez...", 
 	                    "Inscription en cours", true);
@@ -169,10 +172,12 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 					AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
 					alert.setTitle(getActivity().getResources().getString(R.string.error));
 					alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
+					participateIcone.setImageResource(R.drawable.participatingbutton);
 					return;
+				} else {
+					Toast.makeText(getActivity(), "Inscription impossible !", Toast.LENGTH_SHORT).show();
 				}
 				dialog.dismiss();
-				participateIcone.setImageResource(R.drawable.participatingbutton);
 			}
 		}
 
