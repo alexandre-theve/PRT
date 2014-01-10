@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.location.Location;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,6 +53,8 @@ public class EvenementController extends GenericController{
 		userConnected.getEvenementList().add(evenement);
 		return true;
 	}
+
+	
 	
 	
 }

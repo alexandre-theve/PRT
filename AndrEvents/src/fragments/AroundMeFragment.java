@@ -54,8 +54,8 @@ public class AroundMeFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		GPShelper = new GPSHelper(getActivity());
-		loc = GPShelper.getLocation();
+		
+		loc = userControler.getUserCurrentPostition();
 		try {
 			view = inflater.inflate(R.layout.fragment_aroundme, container,
 					false);

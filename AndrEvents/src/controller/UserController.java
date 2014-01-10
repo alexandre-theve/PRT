@@ -1,13 +1,18 @@
 package controller;
 
+import helpers.GPSHelper;
 import helpers.RESTHelper;
 
 import java.io.IOException;
 import java.net.ConnectException;
 
+import android.content.Context;
+import android.location.Location;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.maps.model.LatLng;
 
 import model.Evenement;
 import model.User;
@@ -17,7 +22,12 @@ public class UserController extends GenericController{
 
 	private User userConnected;
 	ObjectMapper mapper = new ObjectMapper();
+	private Context context;
+	private GPSHelper gps;
 	
+	public UserController(Context context){
+		this.context = context;
+	}
 	public User getUserConnected() {
 		return userConnected;
 	}
@@ -105,6 +115,13 @@ public class UserController extends GenericController{
 	public User editUser(User creatingUser) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Location getUserCurrentPostition() {
+		if(gps == null){
+			gps = new GPSHelper(context);
+		}
+		return  gps.getLocation();
 	}
 
 }

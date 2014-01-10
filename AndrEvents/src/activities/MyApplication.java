@@ -12,7 +12,7 @@ public class MyApplication extends Application {
 	private String URL;
 	public MyApplication(){
 		super();
-		this.userController = new UserController();
+		this.userController = new UserController(this.getApplicationContext());
 		this.evenementController = new EvenementController();
 		
 	}
