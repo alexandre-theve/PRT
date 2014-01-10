@@ -51,7 +51,6 @@ public class MainActivity extends Activity {
 	private String[] mSectionsTitles;
 	
 	private UserController userControler;
-	private EvenementController evenementControler;
 	
 
 	@Override
@@ -59,7 +58,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		MyApplication andrEvents = ((MyApplication) getApplicationContext());
 		this.userControler = andrEvents.getUserController();
-		this.evenementControler = andrEvents.getEvenementController();
 		userControler.setUserConnected((User)getIntent().getExtras().getSerializable("user"));
 
 

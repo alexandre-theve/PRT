@@ -5,6 +5,8 @@ import helpers.RESTHelper;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.location.Location;
@@ -16,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import model.Evenement;
 import model.User;
+import model.UserHasEvenement;
 
 
 public class UserController extends GenericController{
@@ -32,6 +35,17 @@ public class UserController extends GenericController{
 		return userConnected;
 	}
 
+	public List<Evenement> getEvenementsOfUSer(User user) {
+		ArrayList<Evenement> evenements = new ArrayList<Evenement>();
+		for(UserHasEvenement userHasEvenement : user.getUserHasEvenementList())
+			evenements.add(userHasEvenement.getEvenement());
+		return evenements;
+	}
+	
+	public List<Evenement> getEvenementsCreatedByUser(User user) {
+		return user.getEvenementList();
+	}
+	
 	private User getErrorUser(){
 		return new User(-1,"inconnu","inconnu", "inconnu", "inconnu","inconnu","inconnu");
 		
@@ -77,7 +91,8 @@ public class UserController extends GenericController{
 	}
 
 	public boolean isSubscribedTo(User user, Evenement evenement) {
-		return user.getEvenementList().contains(evenement);
+		System.out.println("isSubscribedTo " + user.getUserHasEvenementList() + " - " + evenement);
+		return user.getUserHasEvenementList().contains(new UserHasEvenement(user.getId(), evenement.getId()));
 	}
 
 	public User createUser(User creatingUser) {
@@ -85,7 +100,7 @@ public class UserController extends GenericController{
 			String JSON;
 			try {
 				String jsonCreate = mapper.writeValueAsString(creatingUser);
-				JSON = RESTHelper.POST_PUT(URL+"/user/","POST",jsonCreate);
+				JSON = RESTHelper.POST(URL+"/user/",jsonCreate);
 				return mapper.readValue(JSON, User.class);
 			} catch (JsonParseException e) {
 				e.printStackTrace();

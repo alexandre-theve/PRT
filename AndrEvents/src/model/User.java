@@ -18,10 +18,10 @@ public class User implements Serializable {
 	private String prenom;
 	private String email;
 	private String phone;
-	private ArrayList<Evenement> evenementList;
-	private List<ListediffusionHasUser> listediffusionHasUserList;
-	private List<Recherches> recherchesList;
-	private List<UserHasEvenement> userHasEvenementList;
+	private List<Evenement> evenementList = new ArrayList<Evenement>();
+	private List<ListediffusionHasUser> listediffusionHasUserList = new ArrayList<ListediffusionHasUser>();
+	private List<Recherches> recherchesList = new ArrayList<Recherches>();
+	private List<UserHasEvenement> userHasEvenementList = new ArrayList<UserHasEvenement>();
 
 	public User() {
 		super();
@@ -40,94 +40,134 @@ public class User implements Serializable {
 		this.evenementList = new ArrayList<Evenement>();
 	}
 
-	public Integer getId() {
-		return id;
+	public void copy(User user) {
+		id = user.getId();
+		login = user.getLogin();
+		password = user.getPassword();
+		email = user.getEmail();
+		nom = user.getNom();
+		prenom = user.getPrenom();
+		phone = user.getPhone();
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public User(Integer id) {
+        this.id = id;
+    }
 
-	public String getLogin() {
-		return login;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getLogin() {
+        return login;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-	public String getNom() {
-		return nom;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getPrenom() {
-		return prenom;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getNom() {
+        return nom;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getPrenom() {
+        return prenom;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
 
-	public ArrayList<Evenement> getEvenementList() {
-		return evenementList;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setEvenementList(ArrayList<Evenement> evenementList) {
-		this.evenementList = evenementList;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public List<ListediffusionHasUser> getListediffusionHasUserList() {
-		return listediffusionHasUserList;
-	}
+    
+    public List<ListediffusionHasUser> getListediffusionHasUserList() {
+        return listediffusionHasUserList;
+    }
 
-	public void setListediffusionHasUserList(
-			List<ListediffusionHasUser> listediffusionHasUserList) {
-		this.listediffusionHasUserList = listediffusionHasUserList;
-	}
+    public void setListediffusionHasUserList(List<ListediffusionHasUser> listediffusionHasUserList) {
+        this.listediffusionHasUserList = listediffusionHasUserList;
+    }
 
-	public List<Recherches> getRecherchesList() {
-		return recherchesList;
-	}
+    
+    public List<Evenement> getEvenementList() {
+        return evenementList;
+    }
 
-	public void setRecherchesList(List<Recherches> recherchesList) {
-		this.recherchesList = recherchesList;
-	}
+    public void setEvenementList(List<Evenement> evenementList) {
+        this.evenementList = evenementList;
+    }
 
-	public List<UserHasEvenement> getUserHasEvenementList() {
-		return userHasEvenementList;
-	}
+    
+    public List<Recherches> getRecherchesList() {
+        return recherchesList;
+    }
 
-	public void setUserHasEvenementList(List<UserHasEvenement> userHasEvenementList) {
-		this.userHasEvenementList = userHasEvenementList;
-	}
+    public void setRecherchesList(List<Recherches> recherchesList) {
+        this.recherchesList = recherchesList;
+    }
 
+    
+    public List<UserHasEvenement> getUserHasEvenementList() {
+        return userHasEvenementList;
+    }
 
+    public void setUserHasEvenementList(List<UserHasEvenement> userHasEvenementList) {
+        this.userHasEvenementList = userHasEvenementList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof User)) {
+            return false;
+        }
+        User other = (User) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "andrevent.server.model.User[ id=" + id + " ]";
+    }    
 }

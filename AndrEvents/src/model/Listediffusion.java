@@ -1,27 +1,26 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@NotificationsId")
-public class Notifications implements Serializable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@ListeDiffusionId")
+public class Listediffusion implements Serializable {
 
 	private Integer id;
-	private Date date;
 	private String titre;
-	private Evenement evenementid;
-	private Typenotification type;
+	private List<Evenement> evenementList;
+	private List<ListediffusionHasUser> listediffusionHasUserList;
 
-	public Notifications() {
+	public Listediffusion() {
 
 	}
 
-	public Notifications(Integer id) {
+	public Listediffusion(Integer id) {
         this.id = id;
     }
 
@@ -33,14 +32,6 @@ public class Notifications implements Serializable {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public String getTitre() {
         return titre;
     }
@@ -49,20 +40,22 @@ public class Notifications implements Serializable {
         this.titre = titre;
     }
 
-    public Evenement getEvenementid() {
-        return evenementid;
+    
+    public List<Evenement> getEvenementList() {
+        return evenementList;
     }
 
-    public void setEvenementid(Evenement evenementid) {
-        this.evenementid = evenementid;
+    public void setEvenementList(List<Evenement> evenementList) {
+        this.evenementList = evenementList;
     }
 
-    public Typenotification getType() {
-        return type;
+    
+    public List<ListediffusionHasUser> getListediffusionHasUserList() {
+        return listediffusionHasUserList;
     }
 
-    public void setType(Typenotification type) {
-        this.type = type;
+    public void setListediffusionHasUserList(List<ListediffusionHasUser> listediffusionHasUserList) {
+        this.listediffusionHasUserList = listediffusionHasUserList;
     }
 
     @Override
@@ -75,10 +68,10 @@ public class Notifications implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Notifications)) {
+        if (!(object instanceof Listediffusion)) {
             return false;
         }
-        Notifications other = (Notifications) object;
+        Listediffusion other = (Listediffusion) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -87,6 +80,7 @@ public class Notifications implements Serializable {
 
     @Override
     public String toString() {
-        return "andrevent.server.model.Notifications[ id=" + id + " ]";
+        return "andrevent.server.model.Listediffusion[ id=" + id + " ]";
     }
+
 }

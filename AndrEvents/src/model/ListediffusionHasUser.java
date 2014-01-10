@@ -13,43 +13,74 @@ public class ListediffusionHasUser implements Serializable{
 	private ListediffusionHasUserPK listediffusionHasUserPK;
 	private Boolean notifications;
 	private User user;
-	private ListeDiffusion listediffusion;
+	private Listediffusion listediffusion;
 
 	public ListediffusionHasUser() {
 
 	}
 
-	public ListediffusionHasUserPK getListediffusionHasUserPK() {
-		return listediffusionHasUserPK;
-	}
+	public ListediffusionHasUser(ListediffusionHasUserPK listediffusionHasUserPK) {
+        this.listediffusionHasUserPK = listediffusionHasUserPK;
+    }
 
-	public void setListediffusionHasUserPK(
-			ListediffusionHasUserPK listediffusionHasUserPK) {
-		this.listediffusionHasUserPK = listediffusionHasUserPK;
-	}
+    public ListediffusionHasUser(int listeDiffusionid, int userid) {
+        this.listediffusionHasUserPK = new ListediffusionHasUserPK(listeDiffusionid, userid);
+    }
 
-	public Boolean getNotifications() {
-		return notifications;
-	}
+    public ListediffusionHasUserPK getListediffusionHasUserPK() {
+        return listediffusionHasUserPK;
+    }
 
-	public void setNotifications(Boolean notifications) {
-		this.notifications = notifications;
-	}
+    public void setListediffusionHasUserPK(ListediffusionHasUserPK listediffusionHasUserPK) {
+        this.listediffusionHasUserPK = listediffusionHasUserPK;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public Boolean getNotifications() {
+        return notifications;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setNotifications(Boolean notifications) {
+        this.notifications = notifications;
+    }
 
-	public ListeDiffusion getListediffusion() {
-		return listediffusion;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setListediffusion(ListeDiffusion listediffusion) {
-		this.listediffusion = listediffusion;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
+    public Listediffusion getListediffusion() {
+        return listediffusion;
+    }
+
+    public void setListediffusion(Listediffusion listediffusion) {
+        this.listediffusion = listediffusion;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (listediffusionHasUserPK != null ? listediffusionHasUserPK.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ListediffusionHasUser)) {
+            return false;
+        }
+        ListediffusionHasUser other = (ListediffusionHasUser) object;
+        if ((this.listediffusionHasUserPK == null && other.listediffusionHasUserPK != null) || (this.listediffusionHasUserPK != null && !this.listediffusionHasUserPK.equals(other.listediffusionHasUserPK))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "andrevent.server.model.ListediffusionHasUser[ listediffusionHasUserPK=" + listediffusionHasUserPK + " ]";
+    }
 }

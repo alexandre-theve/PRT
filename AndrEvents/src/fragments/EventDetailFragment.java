@@ -2,6 +2,7 @@ package fragments;
 
 import helpers.EvenementHelper;
 import model.Evenement;
+import model.User;
 import activities.MyApplication;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.internal.el;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -144,19 +146,39 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 			return;	
 		}
 		if (arg0.getId() == R.id.imageViewParticipate){
-			if (userControler.isSubscribedTo(userControler.getUserConnected(), evenement))return;
-			
-			ProgressDialog dialog = ProgressDialog.show(getActivity(), "Patientez...", 
-                    "Inscription en cours", true);
-			if(!evenementControler.subscribe(evenement,userControler.getUserConnected())){
+			if (userControler.isSubscribedTo(userControler.getUserConnected(), evenement)) {
+				ProgressDialog dialog = ProgressDialog.show(getActivity(), "Patientez...", 
+	                    "Desinscription en cours", true);
+				User u = evenementControler.unsubscribe(userControler.getUserConnected().getId(), evenement.getId());
+				if(u.getId() != null && !userControler.isSubscribedTo(u, evenement)){
+					userControler.getUserConnected().setUserHasEvenementList(u.getUserHasEvenementList());
+					dialog.dismiss();
+					AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+					alert.setTitle(getActivity().getResources().getString(R.string.error));
+					alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
+					participateIcone.setImageResource(R.drawable.participerbutton);
+					return;
+				} else {
+					Toast.makeText(getActivity(), "desinscription impossible !", Toast.LENGTH_SHORT).show();
+				}
 				dialog.dismiss();
-				AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
-				alert.setTitle(getActivity().getResources().getString(R.string.error));
-				alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
-				return;
+			} else {
+				ProgressDialog dialog = ProgressDialog.show(getActivity(), "Patientez...", 
+	                    "Inscription en cours", true);
+				User u = evenementControler.subscribe(userControler.getUserConnected().getId(), evenement.getId());
+				if(u.getId() != null && userControler.isSubscribedTo(u, evenement)){
+					userControler.getUserConnected().setUserHasEvenementList(u.getUserHasEvenementList());
+					dialog.dismiss();
+					AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+					alert.setTitle(getActivity().getResources().getString(R.string.error));
+					alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
+					participateIcone.setImageResource(R.drawable.participatingbutton);
+					return;
+				} else {
+					Toast.makeText(getActivity(), "Inscription impossible !", Toast.LENGTH_SHORT).show();
+				}
+				dialog.dismiss();
 			}
-			dialog.dismiss();
-			participateIcone.setImageResource(R.drawable.participatingbutton);
 		}
 
 	}

@@ -64,13 +64,13 @@ public class MyEventsFragment extends ListFragment implements
 
 	private void fillListView(ListView liste) {
 		setListShown(true);
-		if (userControler.getUserConnected().getEvenementList().size() == 0) {
+		if (userControler.getEvenementsOfUSer(userControler.getUserConnected()).size() == 0) {
 			setEmptyText(getActivity().getResources().getText(
 					R.string.noEventMessage));
 			return;
 		}
-		liste.setAdapter(new EvenementAdapter(getActivity(), userControler
-				.getUserConnected().getEvenementList()));
+		liste.setAdapter(new EvenementAdapter(getActivity(), userControler.getEvenementsOfUSer(userControler
+				.getUserConnected())));
 
 	}
 
