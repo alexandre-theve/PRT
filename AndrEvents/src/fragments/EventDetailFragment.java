@@ -2,6 +2,7 @@ package fragments;
 
 import helpers.EvenementHelper;
 import model.Evenement;
+import model.User;
 import activities.MyApplication;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -148,7 +149,9 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 			
 			ProgressDialog dialog = ProgressDialog.show(getActivity(), "Patientez...", 
                     "Inscription en cours", true);
-			if(!evenementControler.subscribe(evenement,userControler.getUserConnected())){
+			User u = evenementControler.subscribe(userControler.getUserConnected().getId(), evenement.getId());
+			if(u.getEvenementList().contains(evenement)){
+				userControler.getUserConnected().setEvenementList(u.getEvenementList());
 				dialog.dismiss();
 				AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
 				alert.setTitle(getActivity().getResources().getString(R.string.error));

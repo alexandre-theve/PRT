@@ -21,44 +21,72 @@ public class Notifications implements Serializable {
 
 	}
 
-	public Integer getId() {
-		return id;
-	}
+	public Notifications(Integer id) {
+        this.id = id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Date getDate() {
-		return date;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public String getTitre() {
-		return titre;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public void setTitre(String titre) {
-		this.titre = titre;
-	}
+    public String getTitre() {
+        return titre;
+    }
 
-	public Evenement getEvenementid() {
-		return evenementid;
-	}
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
 
-	public void setEvenementid(Evenement evenementid) {
-		this.evenementid = evenementid;
-	}
+    public Evenement getEvenementid() {
+        return evenementid;
+    }
 
-	public Typenotification getType() {
-		return type;
-	}
+    public void setEvenementid(Evenement evenementid) {
+        this.evenementid = evenementid;
+    }
 
-	public void setType(Typenotification type) {
-		this.type = type;
-	}
+    public Typenotification getType() {
+        return type;
+    }
 
+    public void setType(Typenotification type) {
+        this.type = type;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Notifications)) {
+            return false;
+        }
+        Notifications other = (Notifications) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "andrevent.server.model.Notifications[ id=" + id + " ]";
+    }
 }

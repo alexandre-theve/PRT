@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.Evenement;
 import model.User;
+import model.UserHasEvenement;
 
 
 public class UserController extends GenericController{
@@ -67,7 +68,7 @@ public class UserController extends GenericController{
 	}
 
 	public boolean isSubscribedTo(User user, Evenement evenement) {
-		return user.getEvenementList().contains(evenement);
+		return user.getUserHasEvenementList().contains(new UserHasEvenement(user.getId(), evenement.getId()));
 	}
 
 	public User createUser(User creatingUser) {
@@ -75,7 +76,7 @@ public class UserController extends GenericController{
 			String JSON;
 			try {
 				String jsonCreate = mapper.writeValueAsString(creatingUser);
-				JSON = RESTHelper.POST_PUT(URL+"/user/","POST",jsonCreate);
+				JSON = RESTHelper.POST(URL+"/user/",jsonCreate);
 				return mapper.readValue(JSON, User.class);
 			} catch (JsonParseException e) {
 				e.printStackTrace();
