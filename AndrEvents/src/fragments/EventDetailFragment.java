@@ -145,21 +145,35 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 			return;	
 		}
 		if (arg0.getId() == R.id.imageViewParticipate){
-			if (userControler.isSubscribedTo(userControler.getUserConnected(), evenement))return;
-			
-			ProgressDialog dialog = ProgressDialog.show(getActivity(), "Patientez...", 
-                    "Inscription en cours", true);
-			User u = evenementControler.subscribe(userControler.getUserConnected().getId(), evenement.getId());
-			if(u.getEvenementList().contains(evenement)){
-				userControler.getUserConnected().setEvenementList(u.getEvenementList());
+			if (userControler.isSubscribedTo(userControler.getUserConnected(), evenement)) {
+				ProgressDialog dialog = ProgressDialog.show(getActivity(), "Patientez...", 
+	                    "Desinscription en cours", true);
+				User u = evenementControler.unsubscribe(userControler.getUserConnected().getId(), evenement.getId());
+				if(u.getId() != null && !userControler.isSubscribedTo(u, evenement)){
+					userControler.getUserConnected().setUserHasEvenementList(u.getUserHasEvenementList());
+					dialog.dismiss();
+					AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+					alert.setTitle(getActivity().getResources().getString(R.string.error));
+					alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
+					return;
+				}
 				dialog.dismiss();
-				AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
-				alert.setTitle(getActivity().getResources().getString(R.string.error));
-				alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
-				return;
+				participateIcone.setImageResource(R.drawable.participerbutton);
+			} else {
+				ProgressDialog dialog = ProgressDialog.show(getActivity(), "Patientez...", 
+	                    "Inscription en cours", true);
+				User u = evenementControler.subscribe(userControler.getUserConnected().getId(), evenement.getId());
+				if(u.getId() != null && userControler.isSubscribedTo(u, evenement)){
+					userControler.getUserConnected().setUserHasEvenementList(u.getUserHasEvenementList());
+					dialog.dismiss();
+					AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+					alert.setTitle(getActivity().getResources().getString(R.string.error));
+					alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
+					return;
+				}
+				dialog.dismiss();
+				participateIcone.setImageResource(R.drawable.participatingbutton);
 			}
-			dialog.dismiss();
-			participateIcone.setImageResource(R.drawable.participatingbutton);
 		}
 
 	}

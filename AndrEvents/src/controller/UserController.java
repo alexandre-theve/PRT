@@ -4,6 +4,8 @@ import helpers.RESTHelper;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -23,6 +25,17 @@ public class UserController extends GenericController{
 		return userConnected;
 	}
 
+	public List<Evenement> getEvenementsOfUSer(User user) {
+		ArrayList<Evenement> evenements = new ArrayList<Evenement>();
+		for(UserHasEvenement userHasEvenement : user.getUserHasEvenementList())
+			evenements.add(userHasEvenement.getEvenement());
+		return evenements;
+	}
+	
+	public List<Evenement> getEvenementsCreatedByUser(User user) {
+		return user.getEvenementList();
+	}
+	
 	private User getErrorUser(){
 		return new User(-1,"inconnu","inconnu", "inconnu", "inconnu","inconnu","inconnu");
 		
@@ -68,6 +81,7 @@ public class UserController extends GenericController{
 	}
 
 	public boolean isSubscribedTo(User user, Evenement evenement) {
+		System.out.println("isSubscribedTo " + user.getUserHasEvenementList() + " - " + evenement);
 		return user.getUserHasEvenementList().contains(new UserHasEvenement(user.getId(), evenement.getId()));
 	}
 

@@ -1,7 +1,10 @@
 package fragments;
 
+import java.util.ArrayList;
+
 import model.Evenement;
 import model.User;
+import model.UserHasEvenement;
 import activities.MyApplication;
 import adapters.EvenementAdapter;
 import android.app.FragmentManager;
@@ -61,13 +64,12 @@ public class AtAnEventListFragment extends ListFragment implements
 
 	private void fillListView(ListView liste) {
 		setListShown(true);
-		if (userControler.getUserConnected().getEvenementList().size() == 0) {
+		if (userControler.getUserConnected().getUserHasEvenementList().size() == 0) {
 			setEmptyText(getActivity().getResources().getText(
 					R.string.noEventMessage));
 			return;
 		}
-		liste.setAdapter(new EvenementAdapter(getActivity(), userControler
-				.getUserConnected().getEvenementList()));
+		liste.setAdapter(new EvenementAdapter(getActivity(), userControler.getEvenementsOfUSer(userControler.getUserConnected())));
 
 	}
 

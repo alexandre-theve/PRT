@@ -18,10 +18,10 @@ public class User implements Serializable {
 	private String prenom;
 	private String email;
 	private String phone;
-	private List<Evenement> evenementList;
-	private List<ListediffusionHasUser> listediffusionHasUserList;
-	private List<Recherches> recherchesList;
-	private List<UserHasEvenement> userHasEvenementList;
+	private List<Evenement> evenementList = new ArrayList<Evenement>();
+	private List<ListediffusionHasUser> listediffusionHasUserList = new ArrayList<ListediffusionHasUser>();
+	private List<Recherches> recherchesList = new ArrayList<Recherches>();
+	private List<UserHasEvenement> userHasEvenementList = new ArrayList<UserHasEvenement>();
 
 	public User() {
 		super();
