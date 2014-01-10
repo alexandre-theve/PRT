@@ -1,9 +1,11 @@
 package model;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ListediffusionHasUserPK {
+public class ListediffusionHasUserPK implements Serializable{
 
 	private Integer listeDiffusionid;
 	private Integer userid;

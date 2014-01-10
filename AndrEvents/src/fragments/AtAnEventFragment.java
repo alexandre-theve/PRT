@@ -39,7 +39,7 @@ public class AtAnEventFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.ataneventfragment, container,
+		View rootView = inflater.inflate(R.layout.at_an_event_fragment, container,
 				false);
 
 		int i = getArguments().getInt(FRAGMENT_NUMBER);
@@ -61,6 +61,9 @@ public class AtAnEventFragment extends Fragment {
 		this.evenementControler = ((MyApplication) getActivity()
 				.getApplicationContext()).getEvenementController();
 
+		((TextView) getActivity().findViewById(
+				R.id.AtAnEventTitleTextView))
+				.setText(evenement.getNom());
 		((TextView) getActivity().findViewById(
 				R.id.AtAnEventExplanationTextView))
 				.setText(R.string.atAnEventExplanationMessage);

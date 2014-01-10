@@ -1,12 +1,14 @@
 package model;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@UserHasEvenementId")
-public class UserHasEvenement {
+public class UserHasEvenement implements Serializable{
 
 	private UserHasEvenementPK userHasEvenementPK;
 	private Boolean notifications;
@@ -16,6 +18,14 @@ public class UserHasEvenement {
 
 	public UserHasEvenement() {
 
+	}
+
+	public UserHasEvenementPK getUserHasEvenementPK() {
+		return userHasEvenementPK;
+	}
+
+	public void setUserHasEvenementPK(UserHasEvenementPK userHasEvenementPK) {
+		this.userHasEvenementPK = userHasEvenementPK;
 	}
 
 	public Boolean getNotifications() {
@@ -50,12 +60,5 @@ public class UserHasEvenement {
 		this.user = user;
 	}
 
-	public UserHasEvenementPK getUserHasEvenementPK() {
-		return userHasEvenementPK;
-	}
-
-	public void setUserHasEvenementPK(UserHasEvenementPK userHasEvenementPK) {
-		this.userHasEvenementPK = userHasEvenementPK;
-	}
-
+	
 }

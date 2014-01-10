@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ig2i.andrevents.R;
 
@@ -53,6 +54,8 @@ public class MyEventsFragment extends ListFragment implements
 				.getApplicationContext()).getUserController();
 		this.evenementControler = ((MyApplication) getActivity()
 				.getApplicationContext()).getEvenementController();
+		TextView welcomeTextview = (TextView)getActivity().findViewById(R.id.my_events_welcometext);
+		welcomeTextview.setText(getActivity().getString(R.string.welcome_text) + userControler.getFullname(userControler.getUserConnected()));
 		ListView liste = (ListView) getActivity().findViewById(R.id.list);
 		liste.setOnItemClickListener(this);
 		fillListView(liste);

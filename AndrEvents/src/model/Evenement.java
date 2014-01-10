@@ -47,6 +47,10 @@ public class Evenement implements Serializable {
 		this.createur = creator;
 	}
 
+	public LatLng getPosition(){
+		return new LatLng(latitude, longitude);
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -123,12 +127,41 @@ public class Evenement implements Serializable {
 		return createur;
 	}
 
-	public void setCreateur(User creator) {
-		this.createur = creator;
+	public void setCreateur(User createur) {
+		this.createur = createur;
 	}
 
-	public LatLng getPosition() {
-		return new LatLng(latitude, longitude);
+	public List<Tags> getTagsList() {
+		return tagsList;
 	}
+
+	public void setTagsList(List<Tags> tagsList) {
+		this.tagsList = tagsList;
+	}
+
+	public List<ListeDiffusion> getListediffusionList() {
+		return listediffusionList;
+	}
+
+	public void setListediffusionList(List<ListeDiffusion> listediffusionList) {
+		this.listediffusionList = listediffusionList;
+	}
+
+	public List<Notifications> getNotificationsList() {
+		return notificationsList;
+	}
+
+	public void setNotificationsList(List<Notifications> notificationsList) {
+		this.notificationsList = notificationsList;
+	}
+
+	public List<UserHasEvenement> getUserHasEvenementList() {
+		return userHasEvenementList;
+	}
+
+	public void setUserHasEvenementList(List<UserHasEvenement> userHasEvenementList) {
+		this.userHasEvenementList = userHasEvenementList;
+	}
+
 
 }

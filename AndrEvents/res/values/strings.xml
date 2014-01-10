@@ -18,7 +18,6 @@
     <string name="app_name">AndrEvents</string>
     <string-array name="titles_array">
         <item>Accueil</item>
-        <item>Mes évènements</item>
         <item>Près de moi</item>
         <item>Je suis à un évènement</item>
         <item>Recherche</item>
@@ -29,7 +28,6 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
-    <string name="welcome_text">Bienvenue , </string>
     <string name="error">Erreur</string>
     <string name="errorInscription">Votre inscription n\'a pu être validée, veuillez réssayer.</string>
     <string name="noEventMessage">Vous n\'êtes inscrit à aucun évènement !</string>

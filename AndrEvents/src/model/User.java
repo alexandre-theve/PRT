@@ -88,20 +88,20 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public ArrayList<Evenement> getEvenementList() {
-		return evenementList;
-	}
-
-	public void setEvenementList(ArrayList<Evenement> evenements) {
-		this.evenementList = evenements;
-	}
-
 	public String getPhone() {
 		return phone;
 	}
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public ArrayList<Evenement> getEvenementList() {
+		return evenementList;
+	}
+
+	public void setEvenementList(ArrayList<Evenement> evenementList) {
+		this.evenementList = evenementList;
 	}
 
 	public List<ListediffusionHasUser> getListediffusionHasUserList() {
@@ -125,9 +125,9 @@ public class User implements Serializable {
 		return userHasEvenementList;
 	}
 
-	public void setUserHasEvenementList(
-			List<UserHasEvenement> userHasEvenementList) {
+	public void setUserHasEvenementList(List<UserHasEvenement> userHasEvenementList) {
 		this.userHasEvenementList = userHasEvenementList;
 	}
+
 
 }
