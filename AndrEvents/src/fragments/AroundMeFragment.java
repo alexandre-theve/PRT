@@ -88,7 +88,7 @@ public class AroundMeFragment extends Fragment implements
 			googleMap.setMyLocationEnabled(true);
 			googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 			googleMap.setOnInfoWindowClickListener(this);
-			GetPOI pois = new GetPOI(this);
+			GetPOIWorker pois = new GetPOIWorker(this);
 			pois.execute(loc);
 		}
 	}
@@ -101,7 +101,7 @@ public class AroundMeFragment extends Fragment implements
 		
 		CameraPosition cameraPosition = new CameraPosition.Builder()
 				.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
-				.zoom(13).build();
+				.zoom(12).build();
 		googleMap.animateCamera(CameraUpdateFactory
 				.newCameraPosition(cameraPosition));
 
@@ -130,11 +130,11 @@ public class AroundMeFragment extends Fragment implements
 		}
 	}
 
-	private class GetPOI extends
+	private class GetPOIWorker extends
 			AsyncTask<Location, Integer, ArrayList<Evenement>> {
 		private AroundMeFragment frag;
 
-		public GetPOI(AroundMeFragment frag) {
+		public GetPOIWorker(AroundMeFragment frag) {
 			// TODO Auto-generated constructor stub
 			this.frag = frag;
 		}
@@ -142,7 +142,7 @@ public class AroundMeFragment extends Fragment implements
 		@Override
 		protected ArrayList<Evenement> doInBackground(Location... params) {
 			return evenementControler.findEvenementsAround(
-					params[0].getLatitude(), params[0].getLongitude(), 30);
+					params[0].getLatitude(), params[0].getLongitude(), 100);
 		}
 
 		@Override

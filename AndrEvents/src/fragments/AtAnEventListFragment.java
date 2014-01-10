@@ -37,7 +37,7 @@ public class AtAnEventListFragment extends ListFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.my_events_fragment,
+		View rootView = inflater.inflate(R.layout.at_an_event_list_fragment,
 				container, false);
 		int i = getArguments().getInt(FRAGMENT_NUMBER);
 		String title = getResources().getStringArray(R.array.titles_array)[i];

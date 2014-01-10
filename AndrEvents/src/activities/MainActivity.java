@@ -39,7 +39,6 @@ import controller.EvenementController;
 import controller.UserController;
 import fragments.AroundMeFragment;
 import fragments.AtAnEventListFragment;
-import fragments.HomeFragment;
 import fragments.MyEventsFragment;
 
 public class MainActivity extends Activity {
@@ -167,21 +166,16 @@ public class MainActivity extends Activity {
 		switch (position) {
 		// accueil
 		case 0:
-			fragment = new HomeFragment();
-			args.getInt(((HomeFragment) fragment).FRAGMENT_NUMBER, position);
-			fragment.setArguments(args);
-			break;
-		case 1:
 			fragment = new MyEventsFragment();
 			args.getInt(((MyEventsFragment) fragment).FRAGMENT_NUMBER, position);
 			fragment.setArguments(args);
 			break;
-		case 2:
+		case 1:
 			fragment = new AroundMeFragment();
 			args.getInt(((AroundMeFragment) fragment).FRAGMENT_NUMBER, position);
 			fragment.setArguments(args);
 			break;
-		case 3:
+		case 2:
 			fragment = new AtAnEventListFragment();
 			args.getInt(((AtAnEventListFragment) fragment).FRAGMENT_NUMBER, position);
 			fragment.setArguments(args);

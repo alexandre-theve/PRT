@@ -5,26 +5,19 @@
     android:layout_height="fill_parent">
     
     <include layout="@android:layout/list_content" />
-    <TextView android:id="@+id/my_events_welcometext"
+    <TextView android:id="@+id/at_an_event_welcometext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="TextView"
+        android:text="@string/at_an_event_fragment_welcometext"
         android:textSize="18sp"/>
     
-	<TextView android:id="@+id/my_events_subtext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/my_events_welcometext"
-        
-        android:text="@string/my_events_subtext"/>
-    <ListView
+	<ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/my_events_subtext"
+        android:layout_below="@id/at_an_event_welcometext"
         android:layout_centerHorizontal="true"
     >
     </ListView>
