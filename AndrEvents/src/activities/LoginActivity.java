@@ -9,17 +9,21 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ig2i.andrevents.R;
 
@@ -56,8 +60,6 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		MyApplication andrEvents = ((MyApplication) getApplicationContext());
-		andrEvents.setURL(getString(R.string.base_url));
 		setContentView(R.layout.activity_login);
 
 		// Set up the login form.
@@ -98,12 +100,39 @@ public class LoginActivity extends Activity {
 	}
 
 	@Override
+	protected void onResume() {
+		MyApplication andrEvents = ((MyApplication) getApplicationContext());
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		andrEvents.setURL(preferences.getString("urlData", ""));
+		super.onResume();
+	}
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_preferences:
+			Intent intent = new Intent(this, PreferencesActivity.class);
+			
+			startActivity(intent);
+			break;
+		case R.id.action_forgot_password:
+			// Ouverture de l'activité compte
+			Toast t = Toast
+					.makeText(this, "non implémenté", Toast.LENGTH_SHORT);
+			t.show();
+			break;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+	
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
 	 * If there are form errors (invalid email, missing fields, etc.), the

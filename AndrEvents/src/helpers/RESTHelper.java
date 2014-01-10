@@ -13,9 +13,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import android.util.Log;
+
 public class RESTHelper {
 	public static String GET(String URL) throws IOException,ConnectException {
-
+		Log.i("AndrEvent","getting " + URL);
+		
 		InputStream in = null;
 		try {
 			final URL url = new URL(URL);

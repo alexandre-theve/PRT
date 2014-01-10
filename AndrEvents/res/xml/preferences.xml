@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <EditTextPreference
+        android:defaultValue="http://192.168.70.233/android_absences/data.php"
+        android:key="urlData"
+        android:summary="Adresse du ws"
+        android:title="URL du serveur" />
+</PreferenceScreen>
