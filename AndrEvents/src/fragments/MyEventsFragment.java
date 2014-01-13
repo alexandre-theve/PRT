@@ -1,5 +1,7 @@
 package fragments;
 
+import views.PullToRefreshListView;
+import views.PullToRefreshListView.OnRefreshListener;
 import model.Evenement;
 import model.User;
 import activities.MyApplication;
@@ -31,6 +33,7 @@ public class MyEventsFragment extends ListFragment implements
 	private EvenementController evenementControler;
 	private User connectedUser;
 
+	private PullToRefreshListView liste;
 	public MyEventsFragment() {
 		// Empty constructor required for fragment subclasses
 	}
@@ -50,14 +53,38 @@ public class MyEventsFragment extends ListFragment implements
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
+		liste = (PullToRefreshListView) getActivity().findViewById(R.id.list);
+		
 		this.userControler = ((MyApplication) getActivity()
 				.getApplicationContext()).getUserController();
 		this.evenementControler = ((MyApplication) getActivity()
 				.getApplicationContext()).getEvenementController();
 		TextView welcomeTextview = (TextView)getActivity().findViewById(R.id.my_events_welcometext);
 		welcomeTextview.setText(getActivity().getString(R.string.welcome_text) + userControler.getFullname(userControler.getUserConnected()));
-		ListView liste = (ListView) getActivity().findViewById(R.id.list);
+		liste.setLockScrollWhileRefreshing(true);
 		liste.setOnItemClickListener(this);
+		liste.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				
+				// Make sure you call listView.onRefreshComplete()
+				// when the loading is done. This can be done from here or any
+				// other place, like on a broadcast receive from your loading
+				// service or the onPostExecute of your AsyncTask.
+
+				// For the sake of this sample, the code will pause here to
+				// force a delay when invoking the refresh
+				liste.postDelayed(new Runnable() {
+
+					
+					@Override
+					public void run() {
+						liste.onRefreshComplete();
+					}
+				}, 2000);
+			}
+		});
 		fillListView(liste);
 
 	}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
      <string name="welcome_text">Bienvenue ,  </string>
-     <string name="my_events_subtext">Voici la liste de vos évènements : </string>
+     <string name="my_events_subtext">Voici la liste des évènements qui peuvent vous intéresser : </string>
      <string name="at_an_event_fragment_welcometext">Vous êtes arrivé? Sélectionnez l\'évènement auquel vous êtes pour valider votre ticket.</string>
    
 </resources>

@@ -20,13 +20,13 @@
         android:layout_below="@id/my_events_welcometext"
         
         android:text="@string/my_events_subtext"/>
-    <ListView
+    <views.PullToRefreshListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/my_events_subtext"
         android:layout_centerHorizontal="true"
     >
-    </ListView>
+    </views.PullToRefreshListView>
 
 </RelativeLayout>
