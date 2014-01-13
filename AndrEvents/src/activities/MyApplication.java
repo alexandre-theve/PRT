@@ -2,6 +2,7 @@ package activities;
 
 import android.R;
 import android.app.Application;
+import android.content.Context;
 import controller.EvenementController;
 import controller.UserController;
 
@@ -10,11 +11,18 @@ public class MyApplication extends Application {
 	private UserController userController;
 	private EvenementController evenementController;
 	private String URL;
+	private Context context;
+	
 	public MyApplication(){
 		super();
-		this.userController = new UserController(this.getApplicationContext());
+		this.userController = new UserController();
 		this.evenementController = new EvenementController();
 		
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
+		this.userController.setContext(context);
 	}
 
 	public void setURL(String URL){

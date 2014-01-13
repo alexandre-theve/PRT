@@ -55,8 +55,7 @@ public class AroundMeFragment extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		loc = userControler.getUserCurrentPostition();
-		try {
+	try {
 			view = inflater.inflate(R.layout.fragment_aroundme, container,
 					false);
 		} catch (Exception e) {
@@ -72,7 +71,8 @@ public class AroundMeFragment extends Fragment implements
 		super.onActivityCreated(savedInstanceState);
 		this.userControler = ((MyApplication) getActivity().getApplicationContext()).getUserController();
 		this.evenementControler = ((MyApplication) getActivity().getApplicationContext()).getEvenementController();
-	
+		loc = userControler.getUserCurrentPostition();
+		
 
 		if (googleMap == null) {
 			MapFragment frag = ((MapFragment) getFragmentManager()

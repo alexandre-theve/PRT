@@ -28,9 +28,13 @@ public class UserController extends GenericController{
 	private Context context;
 	private GPSHelper gps;
 	
-	public UserController(Context context){
+	public UserController(){
+	}
+	
+	public void setContext(Context context) {
 		this.context = context;
 	}
+
 	public User getUserConnected() {
 		return userConnected;
 	}
@@ -62,7 +66,7 @@ public class UserController extends GenericController{
 	public User loginUser(String login, String password) {
 		
 		try {
-			String JSON = RESTHelper.GET(URL+"/user/login/"+login);
+			String JSON = RESTHelper.GET(URL+"/AndrEventServer/user/login/"+login);
 			return mapper.readValue(JSON, User.class);
 		}
 		catch (JsonParseException e) {
@@ -100,7 +104,7 @@ public class UserController extends GenericController{
 			String JSON;
 			try {
 				String jsonCreate = mapper.writeValueAsString(creatingUser);
-				JSON = RESTHelper.POST(URL+"/user/",jsonCreate);
+				JSON = RESTHelper.POST(URL+"/AndrEventServer/user/",jsonCreate);
 				return mapper.readValue(JSON, User.class);
 			} catch (JsonParseException e) {
 				e.printStackTrace();
