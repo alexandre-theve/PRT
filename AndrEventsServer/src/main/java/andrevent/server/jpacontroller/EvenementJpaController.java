@@ -5,6 +5,7 @@
 package andrevent.server.jpacontroller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -100,6 +101,12 @@ public class EvenementJpaController implements Serializable {
 	public List<Evenement> findEvenementsForUser(Integer id) {
 		return em.createNamedQuery("Evenement.findBestEventsForUser", Evenement.class)
 				.setParameter("tags", this.findTagsForUser(id))
+				.getResultList();
+	}
+
+	public List<Evenement> findByTags(List<Tags> list) {
+		return em.createNamedQuery("Evenement.findByTags", Evenement.class)
+				.setParameter("tags", list)
 				.getResultList();
 	}
 

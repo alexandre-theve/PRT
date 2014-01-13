@@ -60,6 +60,17 @@ public class WSEvenementTest {
 		events = getEventsByTag(1);
 		System.out.println("Events for tag 1 : " + events);
 		assertTrue(events.size() != 0);
+		
+		System.out.println();
+		
+		// event by tags
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		ids.add(1);
+		ids.add(5);
+		ids.add(6);
+		events = getEventsByTags(ids);
+		System.out.println("Events for tags 1, 5, 6 : " + events);
+		assertTrue(events.size() != 0);
 
 		System.out.println();
 
@@ -217,6 +228,30 @@ public class WSEvenementTest {
 		try {
 			JSON = RESTHelper.GET(RESTHelper.url
 					+ "/AndrEventServer/events/tag/" + id);
+
+			List<Evenement> events = mapper.readValue(JSON,
+					new TypeReference<List<Evenement>>() {
+					});
+
+			return events;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("ConnectException");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("IOException");
+		}
+
+		return new ArrayList<Evenement>();
+	}
+	
+	public List<Evenement> getEventsByTags(ArrayList<Integer> ids) {
+		String JSON;
+		try {
+			JSON = RESTHelper.POST(RESTHelper.url
+					+ "/AndrEventServer/events/tags", mapper.writeValueAsString(ids));
 
 			List<Evenement> events = mapper.readValue(JSON,
 					new TypeReference<List<Evenement>>() {

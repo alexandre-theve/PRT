@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -61,6 +62,16 @@ public class EventController {
 		if(id != null) {
 			Tags tag = tagsJpaController.findTags(id);
 			return tag.getEvenementList();
+		}
+		
+		return new ArrayList<Evenement>();
+    }
+	
+	@RequestMapping(value = "/events/tags", method = RequestMethod.POST)
+    public @ResponseBody List<Evenement> getEvenementsByTags(Model model, @RequestBody ArrayList<Integer> tags) {
+		logger.info("getting events by tags : " + tags);
+		if(tags != null) {
+			return evenementsJpaController.findByTags(tagsJpaController.findTags(tags));
 		}
 		
 		return new ArrayList<Evenement>();

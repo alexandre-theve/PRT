@@ -50,6 +50,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
     @NamedQuery(name = "Evenement.findByLongitude", query = "SELECT e FROM Evenement e WHERE e.longitude = :longitude"),
     @NamedQuery(name = "Evenement.findByDescription", query = "SELECT e FROM Evenement e WHERE e.description = :description"),
     @NamedQuery(name = "Evenement.findByValide", query = "SELECT e FROM Evenement e WHERE e.valide = :valide"),
+    @NamedQuery(name = "Evenement.findByTags", query = "SELECT DISTINCT e FROM Evenement e, IN (e.tagsList) t WHERE t IN (:tags)"),
     @NamedQuery(name = "Evenement.findByLocation", query = "SELECT e FROM Evenement e WHERE e.valide = true AND POW(e.latitude - :latitude, 2) + POW(e.longitude - :longitude, 2) <= POW(:rayon, 2) ORDER BY e.dateDebut"),
     @NamedQuery(name = "Evenement.findByLocation2", query = "SELECT e FROM Evenement e WHERE e.valide = true AND 6367 * ACOS(round(COS(RADIANS(90.0-e.latitude)) * COS(RADIANS(90.0-:latitude)) + SIN(RADIANS(90.0-e.latitude)) * SIN(RADIANS(90.0-:latitude)) * COS(RADIANS(e.longitude-:longitude)),15)) <= :rayon ORDER BY e.dateDebut"),
     @NamedQuery(name = "Evenement.findByLocation3", query = "SELECT e FROM Evenement e WHERE e.valide = true AND 6367 * ACOS(round(COS(RADIANS(90-e.latitude)) * COS(RADIANS(90-50.42)) + SIN(RADIANS(90-e.latitude)) * SIN(RADIANS(90.0-:latitude)) * COS(RADIANS(e.longitude-:longitude)),15)) <= :rayon ORDER BY e.dateDebut"),

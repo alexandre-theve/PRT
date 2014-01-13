@@ -191,9 +191,10 @@ public class RESTHelper {
 
 		return "";
 	}
-
+	
 	public static String GET(String URL) throws IOException, ConnectException {
-		System.out.println("sending " + URL);
+		System.out.println("sending to " + URL);
+		OutputStream out;
 		InputStream in = null;
 		try {
 			final URL url = new URL(URL);
@@ -203,9 +204,8 @@ public class RESTHelper {
 			urlConnection
 					.setRequestProperty("Content-Type", "application/json");
 
-			urlConnection.setDoOutput(true);
 			urlConnection.connect();
-
+			
 			int HttpResult = urlConnection.getResponseCode();
 
 			if (HttpResult == HttpURLConnection.HTTP_OK) {

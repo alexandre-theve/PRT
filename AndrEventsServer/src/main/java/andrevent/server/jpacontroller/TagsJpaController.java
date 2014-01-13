@@ -5,6 +5,7 @@
 package andrevent.server.jpacontroller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -78,6 +79,13 @@ public class TagsJpaController implements Serializable {
 		cq.select(em.getCriteriaBuilder().count(rt));
 		Query q = em.createQuery(cq);
 		return ((Long) q.getSingleResult()).intValue();
+	}
+
+	public List<Tags> findTags(ArrayList<Integer> tagIds) {
+		List<Tags> tags = new ArrayList<Tags>();
+		for(Integer id : tagIds)
+			tags.add(this.findTags(id));
+		return tags;
 	}
 
 }
