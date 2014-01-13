@@ -114,6 +114,8 @@ public class UserJpaController implements Serializable {
 		if (user != null && evenement != null) {
 			UserHasEvenement userHasEvenement = new UserHasEvenement(idUser, idEvent);
 			if(!user.getUserHasEvenementList().contains(userHasEvenement)) {
+				userHasEvenement.setUser(user);
+				userHasEvenement.setEvenement(evenement);
 				userHasEvenement.setNotifications(push);
 				userHasEvenement.setCode(UUID.randomUUID().toString());
 				user.getUserHasEvenementList().add(userHasEvenement);

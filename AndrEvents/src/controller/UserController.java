@@ -96,7 +96,10 @@ public class UserController extends GenericController{
 
 	public boolean isSubscribedTo(User user, Evenement evenement) {
 		System.out.println("isSubscribedTo " + user.getUserHasEvenementList() + " - " + evenement);
-		return user.getUserHasEvenementList().contains(new UserHasEvenement(user.getId(), evenement.getId()));
+		for(UserHasEvenement userHasEvenement : user.getUserHasEvenementList())
+			if(userHasEvenement.getUserHasEvenementPK().getEvenementid() == evenement.getId() && userHasEvenement.getUserHasEvenementPK().getUserid() == user.getId())
+				return true;
+		return false;
 	}
 
 	public User createUser(User creatingUser) {

@@ -25,7 +25,6 @@ public class RESTHelper {
 			urlConnection
 					.setRequestProperty("Content-Type", "application/json");
 
-			urlConnection.setDoOutput(true);
 			urlConnection.connect();
 
 			int HttpResult = urlConnection.getResponseCode();

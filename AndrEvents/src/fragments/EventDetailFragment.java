@@ -3,12 +3,15 @@ package fragments;
 import helpers.EvenementHelper;
 import model.Evenement;
 import model.User;
+import activities.MainActivity;
 import activities.MyApplication;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,39 +150,86 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 		}
 		if (arg0.getId() == R.id.imageViewParticipate){
 			if (userControler.isSubscribedTo(userControler.getUserConnected(), evenement)) {
-				ProgressDialog dialog = ProgressDialog.show(getActivity(), "Patientez...", 
-	                    "Desinscription en cours", true);
-				User u = evenementControler.unsubscribe(userControler.getUserConnected().getId(), evenement.getId());
-				if(u.getId() != null && !userControler.isSubscribedTo(u, evenement)){
-					userControler.getUserConnected().setUserHasEvenementList(u.getUserHasEvenementList());
-					dialog.dismiss();
-					AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
-					alert.setTitle(getActivity().getResources().getString(R.string.error));
-					alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
-					participateIcone.setImageResource(R.drawable.participerbutton);
-					return;
-				} else {
-					Toast.makeText(getActivity(), "desinscription impossible !", Toast.LENGTH_SHORT).show();
-				}
-				dialog.dismiss();
+				UserUnsubscribeTask userUnsubscribeTask = new UserUnsubscribeTask(getActivity());
+				userUnsubscribeTask.execute();
 			} else {
-				ProgressDialog dialog = ProgressDialog.show(getActivity(), "Patientez...", 
-	                    "Inscription en cours", true);
-				User u = evenementControler.subscribe(userControler.getUserConnected().getId(), evenement.getId());
-				if(u.getId() != null && userControler.isSubscribedTo(u, evenement)){
-					userControler.getUserConnected().setUserHasEvenementList(u.getUserHasEvenementList());
-					dialog.dismiss();
-					AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
-					alert.setTitle(getActivity().getResources().getString(R.string.error));
-					alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
-					participateIcone.setImageResource(R.drawable.participatingbutton);
-					return;
-				} else {
-					Toast.makeText(getActivity(), "Inscription impossible !", Toast.LENGTH_SHORT).show();
-				}
-				dialog.dismiss();
+				UserSubscribeTask userSubscribeTask = new UserSubscribeTask(getActivity());
+				userSubscribeTask.execute();
 			}
 		}
+	}
+	
+	public class UserSubscribeTask extends AsyncTask<Void, Void, User> {
+		private Context context;
+		private ProgressDialog dialog;
+		
+		public UserSubscribeTask(Context cont) {
+			// TODO Auto-generated constructor stub
+			this.context = cont;
+		}
+		
+		@Override
+		public void onPreExecute() {
+			dialog = ProgressDialog.show(getActivity(), "Patientez...", 
+                    "Inscription en cours", true);
+		}
 
+		@Override
+		protected User doInBackground(Void... params) {
+			return evenementControler.subscribe(userControler.getUserConnected().getId(), evenement.getId());
+		}
+
+		@Override
+		protected void onPostExecute(final User user) {
+			if(user.getId() != null && userControler.isSubscribedTo(user, evenement)){
+				userControler.getUserConnected().setUserHasEvenementList(user.getUserHasEvenementList());
+				dialog.dismiss();
+				AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+				alert.setTitle(getActivity().getResources().getString(R.string.error));
+				alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
+				participateIcone.setImageResource(R.drawable.participatingbutton);
+				return;
+			} else {
+				Toast.makeText(getActivity(), "Inscription impossible !", Toast.LENGTH_SHORT).show();
+			}
+			dialog.dismiss();
+		}
+	}
+	
+	public class UserUnsubscribeTask extends AsyncTask<Void, Void, User> {
+		private Context context;
+		private ProgressDialog dialog;
+		
+		public UserUnsubscribeTask(Context cont) {
+			// TODO Auto-generated constructor stub
+			this.context = cont;
+		}
+		
+		@Override
+		public void onPreExecute() {
+			dialog = ProgressDialog.show(getActivity(), "Patientez...", 
+                    "Desinscription en cours", true);
+		}
+
+		@Override
+		protected User doInBackground(Void... params) {
+			return evenementControler.unsubscribe(userControler.getUserConnected().getId(), evenement.getId());
+		}
+
+		@Override
+		protected void onPostExecute(final User user) {
+			if(user.getId() != null && !userControler.isSubscribedTo(user, evenement)){
+				userControler.getUserConnected().setUserHasEvenementList(user.getUserHasEvenementList());
+				dialog.dismiss();
+				AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+				alert.setTitle(getActivity().getResources().getString(R.string.error));
+				alert.setMessage(getActivity().getResources().getString(R.string.errorInscription));
+				participateIcone.setImageResource(R.drawable.participerbutton);
+				return;
+			} else {
+				Toast.makeText(getActivity(), "desinscription impossible !", Toast.LENGTH_SHORT).show();
+			}
+			dialog.dismiss();
+		}
 	}
 }
