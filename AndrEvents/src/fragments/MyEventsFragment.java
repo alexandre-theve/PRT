@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -102,10 +103,11 @@ public class MyEventsFragment extends ListFragment implements
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View parent, int position,
+	public void onItemClick(AdapterView<?> arg0, View holder, int position,
 			long id) {
 		if (arg0.getId() == R.id.list) {
-			Evenement evenement = (Evenement)arg0.getItemAtPosition(position);
+			HeaderViewListAdapter evtadpt= (HeaderViewListAdapter)arg0.getAdapter();
+			Evenement evenement = (Evenement)(evtadpt.getWrappedAdapter().getItem(position));
 
 			EventDetailFragment fragment = new EventDetailFragment();
 			Bundle bundle = new Bundle();
