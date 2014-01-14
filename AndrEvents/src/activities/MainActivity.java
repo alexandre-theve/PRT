@@ -20,6 +20,7 @@ import model.User;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -56,17 +57,16 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] mSectionsTitles;
-	
+
 	private UserController userControler;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		MyApplication andrEvents = ((MyApplication) getApplicationContext());
 		this.userControler = andrEvents.getUserController();
-		userControler.setUserConnected((User)getIntent().getExtras().getSerializable("user"));
-
+		userControler.setUserConnected((User) getIntent().getExtras()
+				.getSerializable("user"));
 
 		setContentView(R.layout.activity_main);
 		mTitle = mDrawerTitle = getTitle();
@@ -82,10 +82,6 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, mSectionsTitles));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-		// enable ActionBar app icon to behave as action to toggle nav drawer
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
 
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
@@ -109,8 +105,11 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 		if (savedInstanceState == null) {
-			selectItem(0);
+			selectItem(0, true);
 		}
 
 	}
@@ -119,7 +118,8 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
-		SearchView searchView  = (SearchView)menu.findItem(R.id.action_eventSearch).getActionView();
+		SearchView searchView = (SearchView) menu.findItem(
+				R.id.action_eventSearch).getActionView();
 		searchView.setOnQueryTextListener(this);
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -139,14 +139,18 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		// TODO Auto-generated method stub
 		super.onNewIntent(intent);
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
 		switch (item.getItemId()) {
-			case R.id.action_preferences:
-				Intent intent = new Intent(this, PreferencesActivity.class);
-				
-				startActivity(intent);
-				break;
+		case R.id.action_preferences:
+			Intent intent = new Intent(this, PreferencesActivity.class);
+
+			startActivity(intent);
+			break;
 		}
 		return true;
 	}
@@ -160,11 +164,20 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			selectItem(position);
 		}
 	}
+
 	private void selectItem(int position) {
-		selectItem(position,"");
-	
+		selectItem(position, false, "");
 	}
-	private void selectItem(int position,String query) {
+	
+	private void selectItem(int position, Boolean start) {
+		selectItem(position, start, "");
+	}
+
+	private void selectItem(int position, String query) {
+		selectItem(position, false, query);
+	}
+	
+	private void selectItem(int position, Boolean start, String query) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
 		Bundle args = new Bundle();
@@ -182,7 +195,8 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			break;
 		case 2:
 			fragment = new AtAnEventListFragment();
-			args.getInt(((AtAnEventListFragment) fragment).FRAGMENT_NUMBER, position);
+			args.getInt(((AtAnEventListFragment) fragment).FRAGMENT_NUMBER,
+					position);
 			fragment.setArguments(args);
 			break;
 		case 3:
@@ -197,10 +211,13 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			mDrawerLayout.closeDrawer(mDrawerList);
 			return;
 		}
-		
+
 		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment).addToBackStack("home").commit();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.content_frame, fragment);
+		if(!start)
+			fragmentTransaction.addToBackStack("home");
+		fragmentTransaction.commit();
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
