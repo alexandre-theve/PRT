@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <EditTextPreference
         android:defaultValue="http://192.168.70.233:8080/"
         android:key="urlData"
         android:summary="Adresse du ws"
         android:title="URL du serveur" />
+
+    <ListPreference
+        android:defaultValue="100"
+        android:dialogTitle="Distance de recherche"
+        android:entries="@array/distance"
+        android:entryValues="@array/distance_values"
+        android:key="distance"
+        android:summary="Definir la distance de recherche d'evenement (km)"
+        android:title="Distance de recherche" />
+
 </PreferenceScreen>

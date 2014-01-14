@@ -24,33 +24,6 @@ public class EvenementController extends GenericController{
 	
 	ObjectMapper mapper = new ObjectMapper();
 	
-	public ArrayList<Evenement> findEvenementsAround(double lat, double longitude, int rayon){
-		try {
-			String JSON = RESTHelper.GET(URL+"/AndrEventServer/events/location/latitude/"+lat+"/longitude/"+longitude+"/rayon/"+rayon);
-			return (ArrayList<Evenement>)(mapper.readValue(JSON, mapper.getTypeFactory().constructCollectionType(List.class, Evenement.class)));
-		}
-		catch (JsonParseException e) {
-			e.printStackTrace();
-			return new ArrayList<Evenement>();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-			return new ArrayList<Evenement>();
-		}
-		catch(ConnectException Ce){
-			Ce.printStackTrace();
-			return new ArrayList<Evenement>();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-			return new ArrayList<Evenement>();
-		}
-		catch (Exception e){
-			e.printStackTrace();
-			return new ArrayList<Evenement>();
-		}
-		
-	}
-	
 	public User subscribe(Integer idUser, Integer idEvent) {
 		String JSON;
 		try {

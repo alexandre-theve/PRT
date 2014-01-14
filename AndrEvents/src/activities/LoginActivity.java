@@ -123,12 +123,6 @@ public class LoginActivity extends Activity {
 			
 			startActivity(intent);
 			break;
-		case R.id.action_forgot_password:
-			// Ouverture de l'activité compte
-			Toast t = Toast
-					.makeText(this, "non implémenté", Toast.LENGTH_SHORT);
-			t.show();
-			break;
 		}
 
 		return super.onOptionsItemSelected(item);
