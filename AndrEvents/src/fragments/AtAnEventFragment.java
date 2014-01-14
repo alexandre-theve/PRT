@@ -7,6 +7,7 @@ import activities.MyApplication;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +43,11 @@ public class AtAnEventFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.at_an_event_fragment, container,
 				false);
 
-		int i = getArguments().getInt(FRAGMENT_NUMBER);
+		/*int i = getArguments().getInt(FRAGMENT_NUMBER);
+		
 		String title = getResources().getStringArray(R.array.titles_array)[i];
-
-		getActivity().setTitle(title);
+		Log.i("com.ig2i.andrevent", "onCreateView " + i + " - " + title);
+		getActivity().setTitle(title);*/
 
 		return rootView;
 	}

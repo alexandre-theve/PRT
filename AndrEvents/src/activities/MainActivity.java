@@ -20,11 +20,13 @@ import model.User;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -127,23 +129,13 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// The action bar home/up action should open or close the drawer.
-		// ActionBarDrawerToggle will take care of this.
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
+		switch (item.getItemId()) {
+			case R.id.action_preferences:
+				Intent intent = new Intent(this, PreferencesActivity.class);
+				
+				startActivity(intent);
+				break;
 		}
-		// Handle action buttons
-		/*
-		 * switch(item.getItemId()) { case R.id.action_websearch: // create
-		 * intent to perform web search for this planet Intent intent = new
-		 * Intent(Intent.ACTION_WEB_SEARCH);
-		 * intent.putExtra(SearchManager.QUERY, getActionBar().getTitle()); //
-		 * catch event that there's no activity to handle intent if
-		 * (intent.resolveActivity(getPackageManager()) != null) {
-		 * startActivity(intent); } else { Toast.makeText(this,
-		 * R.string.app_not_available, Toast.LENGTH_LONG).show(); } return true;
-		 * default: return super.onOptionsItemSelected(item); }
-		 */
 		return true;
 	}
 
@@ -158,6 +150,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void selectItem(int position) {
+		Log.i("com.ig2i.andrevent", "selectItem " + position);
 		// update the main content by replacing fragments
 		Fragment fragment = null;
 		Bundle args = new Bundle();
@@ -178,7 +171,13 @@ public class MainActivity extends Activity {
 			args.getInt(((AtAnEventListFragment) fragment).FRAGMENT_NUMBER, position);
 			fragment.setArguments(args);
 			break;
-
+		case 3:
+			return;
+		case 4:
+			Intent intent = new Intent(this, PreferencesActivity.class);
+			startActivity(intent);
+			mDrawerLayout.closeDrawer(mDrawerList);
+			return;
 		}
 		
 		FragmentManager fragmentManager = getFragmentManager();
@@ -193,6 +192,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void setTitle(CharSequence title) {
+		Log.i("com.ig2i.andrevent", "setTitle " + title);
 		mTitle = title;
 		getActionBar().setTitle(mTitle);
 	}

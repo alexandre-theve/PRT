@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="TextView"
         android:textSize="18sp"/>
     
 	<TextView android:id="@+id/my_events_subtext"
@@ -20,13 +19,15 @@
         android:layout_below="@id/my_events_welcometext"
         
         android:text="@string/my_events_subtext"/>
+
     <views.PullToRefreshListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_below="@id/my_events_subtext"
-        android:layout_centerHorizontal="true"
-    >
+        android:layout_centerHorizontal="true" >
+
     </views.PullToRefreshListView>
 
 </RelativeLayout>

@@ -172,10 +172,9 @@ public class PullToRefreshListView extends ListView{
      * the refresh was not triggered by 'pull to refresh', for example on start.
      */
     public void setRefreshing(){
-        state = State.REFRESHING;
-        scrollTo(0, 0);
-        setUiRefreshing();
+    	scrollTo(0, 0);
         setHeaderPadding(0);
+    	setState(State.REFRESHING);
     }
 
     /**
