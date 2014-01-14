@@ -20,11 +20,15 @@ import model.User;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,6 +36,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 import com.ig2i.andrevents.R;
 
@@ -40,8 +46,9 @@ import controller.UserController;
 import fragments.AroundMeFragment;
 import fragments.AtAnEventListFragment;
 import fragments.HomeFragment;
+import fragments.SearchFragment;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnQueryTextListener {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -112,6 +119,8 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
+		SearchView searchView  = (SearchView)menu.findItem(R.id.action_eventSearch).getActionView();
+		searchView.setOnQueryTextListener(this);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -121,10 +130,15 @@ public class MainActivity extends Activity {
 		// If the nav drawer is open, hide action items related to the content
 		// view
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_eventSearch).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+		// TODO Auto-generated method stub
+		super.onNewIntent(intent);
+	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// The action bar home/up action should open or close the drawer.
@@ -132,18 +146,6 @@ public class MainActivity extends Activity {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		// Handle action buttons
-		/*
-		 * switch(item.getItemId()) { case R.id.action_websearch: // create
-		 * intent to perform web search for this planet Intent intent = new
-		 * Intent(Intent.ACTION_WEB_SEARCH);
-		 * intent.putExtra(SearchManager.QUERY, getActionBar().getTitle()); //
-		 * catch event that there's no activity to handle intent if
-		 * (intent.resolveActivity(getPackageManager()) != null) {
-		 * startActivity(intent); } else { Toast.makeText(this,
-		 * R.string.app_not_available, Toast.LENGTH_LONG).show(); } return true;
-		 * default: return super.onOptionsItemSelected(item); }
-		 */
 		return true;
 	}
 
@@ -156,8 +158,11 @@ public class MainActivity extends Activity {
 			selectItem(position);
 		}
 	}
-
 	private void selectItem(int position) {
+		selectItem(position,"");
+	
+	}
+	private void selectItem(int position,String query) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
 		Bundle args = new Bundle();
@@ -176,6 +181,12 @@ public class MainActivity extends Activity {
 		case 2:
 			fragment = new AtAnEventListFragment();
 			args.getInt(((AtAnEventListFragment) fragment).FRAGMENT_NUMBER, position);
+			fragment.setArguments(args);
+			break;
+		case 3:
+			fragment = new SearchFragment();
+			args.getInt(((SearchFragment) fragment).FRAGMENT_NUMBER, position);
+			args.putString("searchQuery", query);
 			fragment.setArguments(args);
 			break;
 
@@ -214,6 +225,19 @@ public class MainActivity extends Activity {
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	public boolean onQueryTextChange(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// TODO Auto-generated method stub
+		Log.i("com.ig2i.andrevents", query);
+		return false;
 	}
 
 }

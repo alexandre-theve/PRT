@@ -15,9 +15,10 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_websearch"
+    <item android:id="@+id/action_eventSearch"
           android:icon="@drawable/action_search"
-          android:title="@string/action_websearch"
+          android:title="@string/action_eventSearch"
+          android:actionViewClass="android.widget.SearchView"
           android:showAsAction="ifRoom|withText" />
     
     <item
