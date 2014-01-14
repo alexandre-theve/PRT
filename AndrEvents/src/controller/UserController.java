@@ -8,17 +8,15 @@ import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Evenement;
+import model.User;
+import model.UserHasEvenement;
 import android.content.Context;
 import android.location.Location;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.gms.maps.model.LatLng;
-
-import model.Evenement;
-import model.User;
-import model.UserHasEvenement;
 
 
 public class UserController extends GenericController{

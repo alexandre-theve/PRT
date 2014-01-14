@@ -1,10 +1,7 @@
 package fragments;
 
-import java.util.ArrayList;
-
 import model.Evenement;
 import model.User;
-import model.UserHasEvenement;
 import activities.MyApplication;
 import adapters.EvenementAdapter;
 import android.app.FragmentManager;

@@ -1,6 +1,5 @@
 package activities;
 
-import android.R;
 import android.app.Application;
 import android.content.Context;
 import controller.EvenementController;

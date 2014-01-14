@@ -4,21 +4,21 @@ import helpers.RESTHelper;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import android.location.Location;
+import org.joda.time.DateTime;
+import org.joda.time.JodaTimePermission;
+import org.joda.time.Period;
+
+import model.Evenement;
+import model.Tags;
+import model.User;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import model.Evenement;
-import model.Tags;
-import model.User;
 
 public class EvenementController extends GenericController{
 	
@@ -240,6 +240,32 @@ public class EvenementController extends GenericController{
 		}
 
 		return new ArrayList<Tags>();
+	}
+
+	public List<Evenement> getEventFromQuery(List<Evenement> evenements,String arg0) {
+		if(evenements == null) return new ArrayList<Evenement>();
+		if(arg0.equals("")) return new ArrayList<Evenement>();
+		String criteria = arg0.toLowerCase().trim();
+		ArrayList<Evenement> toReturn = new ArrayList<Evenement>();
+		for (Evenement evenement : evenements) {
+			//recherche full text 
+			if(evenement.getNom().toLowerCase().trim().contains(criteria)
+					|| evenement.getDescription().toLowerCase().trim().contains(criteria)
+					|| evenement.getLieu().toLowerCase().trim().contains(criteria)
+					|| evenement.getCreateur().toString().toLowerCase().trim().contains(criteria)
+					){
+				toReturn.add(evenement);
+				continue;
+			}
+			DateTime dateDebut = new DateTime(evenement.getDateDebut().getTime());
+			Period period = new Period(dateDebut.plusDays(1),DateTime.now().plusDays(1));
+			if(criteria.equals("demain") && period.getDays() ==0){
+				toReturn.add(evenement);
+				continue;
+			}
+		}
+		
+		return toReturn;
 	}
 
 	
