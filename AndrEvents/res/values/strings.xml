@@ -20,7 +20,6 @@
         <item>Accueil</item>
         <item>Près de moi</item>
         <item>Je suis à un évènement</item>
-        <item>Recherche</item>
         <item>Paramètres</item>
     </string-array>
     <string name="action_preferences">Preferences</string>

@@ -271,7 +271,7 @@ public class EvenementController extends GenericController{
 
 	public List<Evenement> getEventFromQuery(List<Evenement> evenements,String arg0) {
 		if(evenements == null) return new ArrayList<Evenement>();
-		if(arg0.equals("")) return new ArrayList<Evenement>();
+		if(arg0.equals("")) return evenements;
 		String criteria = arg0.toLowerCase().trim();
 		ArrayList<Evenement> toReturn = new ArrayList<Evenement>();
 		for (Evenement evenement : evenements) {

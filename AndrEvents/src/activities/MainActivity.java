@@ -36,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
 
 import com.ig2i.andrevents.R;
@@ -54,17 +55,18 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] mSectionsTitles;
-	
+
 	private UserController userControler;
 	private Fragment displayedFragment;
+	private SearchView searchView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		MyApplication andrEvents = ((MyApplication) getApplicationContext());
 		this.userControler = andrEvents.getUserController();
-		userControler.setUserConnected((User)getIntent().getExtras().getSerializable("user"));
-
+		userControler.setUserConnected((User) getIntent().getExtras()
+				.getSerializable("user"));
 
 		setContentView(R.layout.activity_main);
 		mTitle = mDrawerTitle = getTitle();
@@ -84,7 +86,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-		
+
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
@@ -117,15 +119,35 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
-		SearchView searchView  = (SearchView)menu.findItem(R.id.action_eventSearch).getActionView();
+		searchView = (SearchView) menu.findItem(R.id.action_eventSearch)
+				.getActionView();
 		searchView.setOnQueryTextListener(this);
 		searchView.setOnSearchClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				selectItem(3);			
+				displaySearch();
+			}
+		});
+		searchView.setOnCloseListener(new OnCloseListener() {
+			
+			@Override
+			public boolean onClose() {
+				selectItem(0);
+				return true;
 			}
 		});
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	protected void displaySearch() {
+		Bundle args = new Bundle();
+		displayedFragment = new SearchFragment();
+		displayedFragment.setArguments(args);
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+				.replace(R.id.content_frame, displayedFragment)
+				.addToBackStack("home").commit();
+		
 	}
 
 	/* Called whenever we call invalidateOptionsMenu() */
@@ -143,15 +165,15 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		// TODO Auto-generated method stub
 		super.onNewIntent(intent);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.action_preferences:
-				Intent intent = new Intent(this, PreferencesActivity.class);
-				
-				startActivity(intent);
-				break;
+		case R.id.action_preferences:
+			Intent intent = new Intent(this, PreferencesActivity.class);
+
+			startActivity(intent);
+			break;
 		}
 		return true;
 	}
@@ -165,6 +187,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			selectItem(position);
 		}
 	}
+
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
 		displayedFragment = null;
@@ -173,23 +196,31 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		// accueil
 		case 0:
 			displayedFragment = new HomeFragment();
-			args.getInt(((HomeFragment) displayedFragment).FRAGMENT_NUMBER, position);
+			args.getInt(((HomeFragment) displayedFragment).FRAGMENT_NUMBER,
+					position);
 			displayedFragment.setArguments(args);
 			break;
 		case 1:
 			displayedFragment = new AroundMeFragment();
-			args.getInt(((AroundMeFragment) displayedFragment).FRAGMENT_NUMBER, position);
+			args.getInt(((AroundMeFragment) displayedFragment).FRAGMENT_NUMBER,
+					position);
 			displayedFragment.setArguments(args);
 			break;
 		case 2:
 			displayedFragment = new AtAnEventListFragment();
-			args.getInt(((AtAnEventListFragment) displayedFragment).FRAGMENT_NUMBER, position);
+			args.getInt(
+					((AtAnEventListFragment) displayedFragment).FRAGMENT_NUMBER,
+					position);
 			displayedFragment.setArguments(args);
 			break;
 		case 3:
 			displayedFragment = new SearchFragment();
-			args.getInt(((SearchFragment) displayedFragment).FRAGMENT_NUMBER, position);
+			args.getInt(((SearchFragment) displayedFragment).FRAGMENT_NUMBER,
+					position);
 			displayedFragment.setArguments(args);
+			searchView.setIconified(false);
+			searchView.requestFocusFromTouch();
+			
 			break;
 		case 4:
 			Intent intent = new Intent(this, PreferencesActivity.class);
@@ -197,10 +228,11 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			mDrawerLayout.closeDrawer(mDrawerList);
 			return;
 		}
-		
+
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, displayedFragment).addToBackStack("home").commit();
+				.replace(R.id.content_frame, displayedFragment)
+				.addToBackStack("home").commit();
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
@@ -236,15 +268,20 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 	@Override
 	public boolean onQueryTextChange(String arg0) {
-		((SearchFragment)displayedFragment).updateQuery(arg0);
-		
+		if (displayedFragment instanceof SearchFragment)  {
+			((SearchFragment) displayedFragment).updateQuery(arg0);
+		}
+		else{
+			displaySearch();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
-		// TODO Auto-generated method stub
-		Log.i("com.ig2i.andrevents", query);
+		if (displayedFragment instanceof SearchFragment)  {
+			((SearchFragment) displayedFragment).updateQuery(query);
+		}
 		return false;
 	}
 
