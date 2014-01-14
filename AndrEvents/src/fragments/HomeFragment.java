@@ -1,14 +1,21 @@
 package fragments;
 
+import java.util.List;
+
 import views.PullToRefreshListView;
 import views.PullToRefreshListView.OnRefreshListener;
 import model.Evenement;
 import model.User;
 import activities.MyApplication;
 import adapters.EvenementAdapter;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ListFragment;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ig2i.andrevents.R;
 
@@ -44,9 +52,9 @@ public class HomeFragment extends ListFragment implements
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.my_events_fragment,
 				container, false);
-		int i = getArguments().getInt(FRAGMENT_NUMBER);
+		/*int i = getArguments().getInt(FRAGMENT_NUMBER);
 		String title = getResources().getStringArray(R.array.titles_array)[i];
-		getActivity().setTitle(title);
+		getActivity().setTitle(title);*/
 		return rootView;
 	}
 
@@ -62,45 +70,56 @@ public class HomeFragment extends ListFragment implements
 		this.evenementControler = ((MyApplication) getActivity()
 				.getApplicationContext()).getEvenementController();
 		TextView welcomeTextview = (TextView)getActivity().findViewById(R.id.my_events_welcometext);
-		welcomeTextview.setText(getActivity().getString(R.string.welcome_text) + userControler.getFullname(userControler.getUserConnected()));
+		welcomeTextview.setText(getActivity().getString(R.string.welcome_text) + " " + userControler.getFullname(userControler.getUserConnected()));
 		liste.setLockScrollWhileRefreshing(true);
 		liste.setOnItemClickListener(this);
 		liste.setOnRefreshListener(new OnRefreshListener() {
 			
 			@Override
 			public void onRefresh() {
-				
-				// Make sure you call listView.onRefreshComplete()
-				// when the loading is done. This can be done from here or any
-				// other place, like on a broadcast receive from your loading
-				// service or the onPostExecute of your AsyncTask.
-
-				// For the sake of this sample, the code will pause here to
-				// force a delay when invoking the refresh
-				liste.postDelayed(new Runnable() {
-
-					
-					@Override
-					public void run() {
-						liste.onRefreshComplete();
-					}
-				}, 2000);
+				Log.i("com.ig2i.andrevent", "onrefresh");
+				EventSuggestionTask eventSuggestionTask = new EventSuggestionTask(getActivity(), liste);
+				eventSuggestionTask.execute();
 			}
 		});
-		fillListView(liste);
-
-	}
-
-	private void fillListView(ListView liste) {
+		
 		setListShown(true);
-		if (userControler.getEvenementsOfUSer(userControler.getUserConnected()).size() == 0) {
-			setEmptyText(getActivity().getResources().getText(
-					R.string.noEventMessage));
-			return;
-		}
-		liste.setAdapter(new EvenementAdapter(getActivity(), userControler.getEvenementsOfUSer(userControler
-				.getUserConnected())));
 
+		liste.setRefreshing();
+	}
+	
+	public class EventSuggestionTask extends AsyncTask<Void, Void, List<Evenement>> {
+		private Context context;
+		private ProgressDialog dialog;
+		private ListView listView;
+		
+		public EventSuggestionTask(Context cont, ListView listView) {
+			// TODO Auto-generated constructor stub
+			this.context = cont;
+			this.listView = listView;
+		}
+		
+		@Override
+		public void onPreExecute() {
+			/*dialog = ProgressDialog.show(getActivity(), "Patientez...", 
+                    "Chargement de la liste d'evenements", true);*/
+		}
+
+		@Override
+		protected List<Evenement> doInBackground(Void... params) {
+			return evenementControler.getEventsForUSer(userControler.getUserConnected().getId());
+		}
+
+		@Override
+		protected void onPostExecute(final List<Evenement> evenements) {
+			if (evenements.size() == 0) {
+				setEmptyText(getActivity().getResources().getText(R.string.noEventMessage));
+				return;
+			}
+			liste.setAdapter(new EvenementAdapter(getActivity(), evenements));
+			
+			liste.onRefreshComplete();
+		}
 	}
 
 	@Override

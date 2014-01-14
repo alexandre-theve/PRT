@@ -141,10 +141,12 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// The action bar home/up action should open or close the drawer.
-		// ActionBarDrawerToggle will take care of this.
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
+		switch (item.getItemId()) {
+			case R.id.action_preferences:
+				Intent intent = new Intent(this, PreferencesActivity.class);
+				
+				startActivity(intent);
+				break;
 		}
 		return true;
 	}
@@ -189,7 +191,11 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			args.putString("searchQuery", query);
 			fragment.setArguments(args);
 			break;
-
+		case 4:
+			Intent intent = new Intent(this, PreferencesActivity.class);
+			startActivity(intent);
+			mDrawerLayout.closeDrawer(mDrawerList);
+			return;
 		}
 		
 		FragmentManager fragmentManager = getFragmentManager();
@@ -204,6 +210,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 	@Override
 	public void setTitle(CharSequence title) {
+		Log.i("com.ig2i.andrevent", "setTitle " + title);
 		mTitle = title;
 		getActionBar().setTitle(mTitle);
 	}
