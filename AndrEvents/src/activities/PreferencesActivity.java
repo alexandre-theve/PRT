@@ -1,9 +1,9 @@
 package activities;
 
-import com.ig2i.andrevents.R;
-
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+
+import com.ig2i.andrevents.R;
 
 public class PreferencesActivity extends PreferenceActivity {
 	@Override

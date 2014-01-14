@@ -3,7 +3,6 @@ package fragments;
 import helpers.EvenementHelper;
 import model.Evenement;
 import model.User;
-import activities.MainActivity;
 import activities.MyApplication;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -21,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.internal.el;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;

@@ -2,13 +2,12 @@ package fragments;
 
 import java.util.List;
 
-import views.PullToRefreshListView;
-import views.PullToRefreshListView.OnRefreshListener;
 import model.Evenement;
 import model.User;
+import views.PullToRefreshListView;
+import views.PullToRefreshListView.OnRefreshListener;
 import activities.MyApplication;
 import adapters.EvenementAdapter;
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
@@ -24,7 +23,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ig2i.andrevents.R;
 

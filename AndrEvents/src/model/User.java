@@ -168,6 +168,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "andrevent.server.model.User[ id=" + id + " ]";
+        return prenom+ " " + nom;
     }    
 }
