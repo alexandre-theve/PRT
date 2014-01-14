@@ -4,19 +4,26 @@ import helpers.GPSHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import model.Evenement;
 import activities.MyApplication;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.internal.di;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
@@ -71,6 +78,13 @@ public class AroundMeFragment extends Fragment implements
 		super.onActivityCreated(savedInstanceState);
 		this.userControler = ((MyApplication) getActivity().getApplicationContext()).getUserController();
 		this.evenementControler = ((MyApplication) getActivity().getApplicationContext()).getEvenementController();
+	}
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
 		loc = userControler.getUserCurrentPostition();
 		
 
@@ -78,7 +92,6 @@ public class AroundMeFragment extends Fragment implements
 			MapFragment frag = ((MapFragment) getFragmentManager()
 					.findFragmentById(R.id.map));
 			googleMap = frag.getMap();
-
 			// check if map is created successfully or not
 			if (googleMap == null) {
 				Toast.makeText(getActivity().getApplicationContext(),
@@ -88,23 +101,10 @@ public class AroundMeFragment extends Fragment implements
 			googleMap.setMyLocationEnabled(true);
 			googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 			googleMap.setOnInfoWindowClickListener(this);
-			GetPOIWorker pois = new GetPOIWorker(this);
-			pois.execute(loc);
 		}
-	}
 
-	@Override
-	public void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		
-		
-		CameraPosition cameraPosition = new CameraPosition.Builder()
-				.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
-				.zoom(12).build();
-		googleMap.animateCamera(CameraUpdateFactory
-				.newCameraPosition(cameraPosition));
-
+		GetPOIWorker pois = new GetPOIWorker(this);
+		pois.execute(loc);
 	}
 
 	@Override
@@ -114,8 +114,9 @@ public class AroundMeFragment extends Fragment implements
 
 	}
 
-	public void setPOI(ArrayList<Evenement> evenements) {
+	public void setPOI(List<Evenement> evenements) {
 		markerToEvenement = new HashMap<MarkerOptions, Evenement>();
+		googleMap.clear();
 		for (Evenement evenement : evenements) {
 			MarkerOptions marker = new MarkerOptions()
 					.position(evenement.getPosition())
@@ -126,13 +127,13 @@ public class AroundMeFragment extends Fragment implements
 
 			markerToEvenement.put(marker, evenement);
 			googleMap.addMarker(marker);
-
 		}
 	}
 
 	private class GetPOIWorker extends
-			AsyncTask<Location, Integer, ArrayList<Evenement>> {
+			AsyncTask<Location, Integer, List<Evenement>> {
 		private AroundMeFragment frag;
+		private double distance;
 
 		public GetPOIWorker(AroundMeFragment frag) {
 			// TODO Auto-generated constructor stub
@@ -140,18 +141,41 @@ public class AroundMeFragment extends Fragment implements
 		}
  
 		@Override
-		protected ArrayList<Evenement> doInBackground(Location... params) {
-			return evenementControler.findEvenementsAround(
-					params[0].getLatitude(), params[0].getLongitude(), 100);
+		protected List<Evenement> doInBackground(Location... params) {
+			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			distance = Double.valueOf(sharedPreferences.getString("distance", "100"));
+			return evenementControler.getEventsByLocation(params[0].getLatitude(), params[0].getLongitude(), distance);
 		}
 
 		@Override
-		protected void onPostExecute(ArrayList<Evenement> result) {
+		protected void onPostExecute(List<Evenement> result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			frag.setPOI(result);
+			
+			CameraPosition cameraPosition = new CameraPosition.Builder()
+				.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
+				.zoom(calculateZoomLevel(distance)).build();
+			googleMap.animateCamera(CameraUpdateFactory
+					.newCameraPosition(cameraPosition));
 		}
-
+		
+		private int calculateZoomLevel(double distance) {
+			DisplayMetrics metrics = new DisplayMetrics();
+			getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+			
+		    double equatorLength = 40075004/2; // in meters
+		    double widthInPixels = metrics.widthPixels;
+		    double metersPerPixel = equatorLength / 256;
+		    int zoomLevel = 0;
+		    while ((metersPerPixel * widthInPixels) > distance * 1000) {
+		        metersPerPixel /= 2;
+		        zoomLevel++;
+		    }
+		    zoomLevel-=2;
+		    Log.i("ADNAN", "zoom level = "+zoomLevel);
+		    return zoomLevel;
+		}
 	}
 
 	@Override

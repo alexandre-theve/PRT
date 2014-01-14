@@ -20,6 +20,9 @@ import model.User;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -82,7 +85,6 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, mSectionsTitles));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
@@ -109,8 +111,11 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 		if (savedInstanceState == null) {
-			selectItem(0);
+			selectItem(0, true);
 		}
 
 	}
@@ -121,6 +126,8 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		inflater.inflate(R.menu.main, menu);
 		searchView = (SearchView) menu.findItem(R.id.action_eventSearch)
 				.getActionView();
+		SearchView searchView = (SearchView) menu.findItem(
+				R.id.action_eventSearch).getActionView();
 		searchView.setOnQueryTextListener(this);
 		searchView.setOnSearchClickListener(new OnClickListener() {
 			@Override
@@ -168,6 +175,9 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
 		switch (item.getItemId()) {
 		case R.id.action_preferences:
 			Intent intent = new Intent(this, PreferencesActivity.class);
@@ -189,6 +199,18 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	}
 
 	private void selectItem(int position) {
+		selectItem(position, false, "");
+	}
+	
+	private void selectItem(int position, Boolean start) {
+		selectItem(position, start, "");
+	}
+
+	private void selectItem(int position, String query) {
+		selectItem(position, false, query);
+	}
+	
+	private void selectItem(int position, Boolean start, String query) {
 		// update the main content by replacing fragments
 		displayedFragment = null;
 		Bundle args = new Bundle();
@@ -233,6 +255,11 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, displayedFragment)
 				.addToBackStack("home").commit();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.content_frame, displayedFragment);
+		if(!start)
+			fragmentTransaction.addToBackStack("home");
+		fragmentTransaction.commit();
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
