@@ -39,7 +39,7 @@ import controller.EvenementController;
 import controller.UserController;
 import fragments.AroundMeFragment;
 import fragments.AtAnEventListFragment;
-import fragments.MyEventsFragment;
+import fragments.HomeFragment;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
@@ -164,8 +164,8 @@ public class MainActivity extends Activity {
 		switch (position) {
 		// accueil
 		case 0:
-			fragment = new MyEventsFragment();
-			args.getInt(((MyEventsFragment) fragment).FRAGMENT_NUMBER, position);
+			fragment = new HomeFragment();
+			args.getInt(((HomeFragment) fragment).FRAGMENT_NUMBER, position);
 			fragment.setArguments(args);
 			break;
 		case 1:

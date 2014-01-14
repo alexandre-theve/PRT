@@ -26,7 +26,7 @@ import controller.UserController;
 /**
  * Fragment that appears in the "content_frame", shows a planet
  */
-public class MyEventsFragment extends ListFragment implements
+public class HomeFragment extends ListFragment implements
 		OnItemClickListener {
 	public static final String FRAGMENT_NUMBER = "fragment_number";
 
@@ -35,7 +35,7 @@ public class MyEventsFragment extends ListFragment implements
 	private User connectedUser;
 
 	private PullToRefreshListView liste;
-	public MyEventsFragment() {
+	public HomeFragment() {
 		// Empty constructor required for fragment subclasses
 	}
 
