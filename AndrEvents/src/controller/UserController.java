@@ -143,5 +143,15 @@ public class UserController extends GenericController{
 		}
 		return  gps.getLocation();
 	}
+	
+	public UserHasEvenement getInscription(User user,Evenement evt){
+		for (UserHasEvenement inscription : user.getUserHasEvenementList()) {
+			if(inscription.getEvenement().equals(evt)){
+				return inscription;
+			}
+		}
+		return new UserHasEvenement();
+	}
+	
 
 }
