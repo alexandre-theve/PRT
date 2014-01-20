@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Evenement;
+import activities.MainActivity;
 import activities.MyApplication;
 import adapters.EvenementAdapter;
 import android.app.FragmentManager;
@@ -67,13 +68,15 @@ public class SearchFragment extends ListFragment implements OnItemClickListener{
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		updateQuery(query);
+		((MainActivity) getActivity()).setDisplayedFragment(this);		
+		updateQuery(getActivity(), query);
 	}
-	public void updateQuery(String arg0) {
+	
+	public void updateQuery(Context context, String arg0) {
 		this.query =arg0;
 		if (evenements != null &&  liste != null){
 		List<Evenement> toDisplay = evenementControler.getEventFromQuery(evenements,query);
-		liste.setAdapter(new EvenementAdapter(getActivity(), toDisplay));
+		liste.setAdapter(new EvenementAdapter(context, toDisplay));
 		}
 	}
 
@@ -128,8 +131,7 @@ public class SearchFragment extends ListFragment implements OnItemClickListener{
 				setEmptyText(getActivity().getResources().getText(R.string.noEventFoundForSearchMessage));
 				return;
 			}
-			updateQuery(query);
-			
+			updateQuery(getActivity(), query);
 		}
 	}
 	

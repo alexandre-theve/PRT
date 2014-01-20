@@ -6,6 +6,7 @@ import helpers.QRCodeHelper;
 import model.Evenement;
 import model.User;
 import model.UserHasEvenement;
+import activities.MainActivity;
 import activities.MyApplication;
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -101,6 +102,12 @@ public class AtAnEventFragment extends Fragment implements
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		((MainActivity) getActivity()).setDisplayedFragment(this);	
 	}
 
 	@Override

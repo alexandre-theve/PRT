@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import model.Evenement;
+import activities.MainActivity;
 import activities.MyApplication;
 import android.app.Activity;
 import android.app.Fragment;
@@ -84,6 +85,8 @@ public class AroundMeFragment extends Fragment implements
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		
+		((MainActivity) getActivity()).setDisplayedFragment(this);	
 		
 		loc = userControler.getUserCurrentPostition();
 		

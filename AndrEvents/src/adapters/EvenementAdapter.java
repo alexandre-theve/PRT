@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.internal.co;
 import com.ig2i.andrevents.R;
 
 public class EvenementAdapter extends BaseAdapter {
@@ -20,6 +21,7 @@ public class EvenementAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 
 	public EvenementAdapter(Context context, List<Evenement> evenements) {
+		System.out.println("EvenementAdapter " + context);
 		inflater = LayoutInflater.from(context);
 		this.evenements = evenements;
 	}

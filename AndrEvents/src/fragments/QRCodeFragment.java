@@ -72,6 +72,12 @@ public class QRCodeFragment extends Fragment implements OnClickListener {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		((MainActivity) getActivity()).setDisplayedFragment(this);	
+	}
+	
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 0) {
 			if (resultCode == Activity.RESULT_OK) {

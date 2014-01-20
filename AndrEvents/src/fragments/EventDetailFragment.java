@@ -3,6 +3,7 @@ package fragments;
 import helpers.EvenementHelper;
 import model.Evenement;
 import model.User;
+import activities.MainActivity;
 import activities.MyApplication;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -117,6 +118,12 @@ public class EventDetailFragment extends Fragment implements OnMapClickListener,
 			participateIcone.setImageResource(R.drawable.participatingbutton);			
 		}
 
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		((MainActivity) getActivity()).setDisplayedFragment(this);	
 	}
 
 	@Override
