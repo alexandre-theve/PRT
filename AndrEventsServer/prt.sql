@@ -47,7 +47,7 @@ CREATE TABLE `evenement` (
 
 LOCK TABLES `evenement` WRITE;
 /*!40000 ALTER TABLE `evenement` DISABLE KEYS */;
-INSERT INTO `evenement` VALUES (1,'Rencontres IG2Iennes','2013-10-03 08:00:00','2013-10-03 17:00:00','IG2I',50.43515,2.82351,'Rencontres eleves-entreprises',1,1),(2,'Portes Ouvertes','2014-02-01 09:00:00','2014-02-01 17:00:00','IG2I',50.43515,2.82351,'Recontres eleves-lyceens',1,1),(3,'Barbecue','2013-10-03 19:00:00','2013-10-03 23:00:00','IG2I',50.43515,2.82351,'Barbecue JDN',1,1),(4,'Foot','2013-10-03 16:00:00','2013-10-03 18:00:00','IG2I',50.43515,2.82351,'Tournoi de foot L1',1,1);
+INSERT INTO `evenement` VALUES (1,'Rencontres IG2Iennes','2013-10-03 08:00:00','2013-10-03 17:00:00','IG2I',50.43515,2.82351,'Rencontres eleves-entreprises',1,1),(2,'Portes Ouvertes','2014-02-01 09:00:00','2014-02-01 17:00:00','IG2I',50.43515,2.82351,'Recontres eleves-lyceens',1,1),(3,'Barbecue','2013-10-03 19:00:00','2013-10-03 23:00:00','IG2I',50.43515,2.82351,'Barbecue JDN',1,1),(4,'T5B','2013-10-03 16:00:00','2013-10-03 18:00:00','IG2I',50.605992,3.1371767000000546,'Tournoi des 5 ballons',1,1);
 /*!40000 ALTER TABLE `evenement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,7 +204,7 @@ CREATE TABLE `recherches` (
   PRIMARY KEY (`id`),
   KEY `fk_Recherches_User1_idx` (`User_id`),
   CONSTRAINT `fk_Recherches_User1` FOREIGN KEY (`User_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,7 +213,7 @@ CREATE TABLE `recherches` (
 
 LOCK TABLES `recherches` WRITE;
 /*!40000 ALTER TABLE `recherches` DISABLE KEYS */;
-INSERT INTO `recherches` VALUES (2,'test recherche',1);
+INSERT INTO `recherches` VALUES (2,'test recherche',1),(3,'test recherche',1),(4,'test recherche',1);
 /*!40000 ALTER TABLE `recherches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -306,8 +306,9 @@ CREATE TABLE `user` (
   `nom` varchar(45) DEFAULT NULL,
   `prenom` varchar(45) DEFAULT NULL,
   `phone` varchar(45) DEFAULT NULL,
+  `push_id` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -316,7 +317,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','admin','admin@test.fr','Devos','Clement','0123456789'),(2,'admin2','admin2','admin2@test.fr','Theve','Alexandre','0123456789'),(42,'admin3','admin',NULL,NULL,NULL,NULL),(43,'admin3','admin',NULL,NULL,NULL,NULL);
+INSERT INTO `user` VALUES (1,'admin','admin','admin@test.fr','Devos','Clement','0123456789',NULL),(2,'admin2','admin2','admin2@test.fr','Theve','Alexandre','0123456789',NULL),(42,'admin3','admin',NULL,NULL,NULL,NULL,NULL),(43,'admin3','admin',NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -346,7 +347,7 @@ CREATE TABLE `user_has_evenement` (
 
 LOCK TABLES `user_has_evenement` WRITE;
 /*!40000 ALTER TABLE `user_has_evenement` DISABLE KEYS */;
-INSERT INTO `user_has_evenement` VALUES (1,1,0,'6598d33f-f96d-4a89-9431-6a06fc7e63e8'),(1,3,0,'6598d33f-f96d-4a89-9431-6a06fc7e63e8');
+INSERT INTO `user_has_evenement` VALUES (1,1,0,'e60f1af9-8d4a-402b-a7cd-d682ee64a8bb'),(1,3,0,'6598d33f-f96d-4a89-9431-6a06fc7e63e8');
 /*!40000 ALTER TABLE `user_has_evenement` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -359,4 +360,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-01-09 15:05:25
+-- Dump completed on 2014-01-20 17:13:46
