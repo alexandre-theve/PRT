@@ -110,7 +110,7 @@ public class AtAnEventFragment extends Fragment implements
 
 	@Override
 	public NdefMessage createNdefMessage(NfcEvent event) {
-		return new NdefMessage( new NdefRecord[]{createMimeRecord("application/com.ig2i.andrevents.LoginActivity", this.inscription.getCode().getBytes())});
+		return new NdefMessage( new NdefRecord[]{createMimeRecord("application/com.ig2i.andrevents", this.inscription.getCode().getBytes())});
 		}
 
 	/**

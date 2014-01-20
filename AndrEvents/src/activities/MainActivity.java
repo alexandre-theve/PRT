@@ -155,14 +155,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-			processNFCIntent(getIntent());
-        }
-	}
+	
 	protected void displaySearch() {
 		Bundle args = new Bundle();
 		SearchFragment searchFragment = new SearchFragment();
@@ -184,31 +177,6 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		return super.onPrepareOptionsMenu(menu);
 	}
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		// TODO Auto-generated method stub
-		setIntent(intent);
-		if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)){
-			processNFCIntent(intent);
-		}
-		super.onNewIntent(intent);
-	}
-	
-	private void processNFCIntent(Intent intent) {
-		// TODO Auto-generated method stub
-			Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-			NdefMessage msg =(NdefMessage)rawMsgs[0];
-			String code =(new String(msg.getRecords()[0].getPayload()));
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
-			alert.setTitle("NFC !").setMessage(code).setPositiveButton("Ok", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					return;
-				}
-			});
-			alert.create().show();
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -269,20 +237,20 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			fragment.setArguments(args);
 			break;
 		case 3:
-			displayedFragment = new ScanFragment();
-			args.getInt(((ScanFragment) displayedFragment).FRAGMENT_NUMBER,
+			fragment = new ScanFragment();
+			args.getInt(((ScanFragment) fragment).FRAGMENT_NUMBER,
 					position);
-			displayedFragment.setArguments(args);
+			fragment.setArguments(args);
 			break;
 		}
 
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, displayedFragment)
+				.replace(R.id.content_frame, fragment)
 				.addToBackStack("home").commit();
 		FragmentTransaction fragmentTransaction = fragmentManager
 				.beginTransaction();
-		fragmentTransaction.replace(R.id.content_frame, displayedFragment);
+		fragmentTransaction.replace(R.id.content_frame, fragment);
 		if (!start)
 			fragmentTransaction.addToBackStack("home");
 		fragmentTransaction.commit();
