@@ -7,17 +7,14 @@ import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DateTime;
-import org.joda.time.JodaTimePermission;
-import org.joda.time.Period;
-
 import model.Evenement;
 import model.Tags;
 import model.User;
 
-import com.fasterxml.jackson.core.JsonParseException;
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EvenementController extends GenericController{

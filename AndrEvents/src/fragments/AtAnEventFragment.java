@@ -1,15 +1,14 @@
 package fragments;
 
+import helpers.QRCodeHelper;
+
 import java.nio.charset.Charset;
 
-import helpers.QRCodeHelper;
 import model.Evenement;
-import model.User;
 import model.UserHasEvenement;
 import activities.MyApplication;
 import android.app.Fragment;
 import android.graphics.Bitmap;
-import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -22,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.internal.ee;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.ig2i.andrevents.R;

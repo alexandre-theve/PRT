@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -29,7 +28,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ig2i.andrevents.R;
 
@@ -111,9 +109,6 @@ public class LoginActivity extends Activity {
 		MyApplication andrEvents = ((MyApplication) getApplicationContext());
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		andrEvents.setURL(preferences.getString("urlData", ""));
-		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-            processIntent(getIntent());
-        }
 		super.onResume();
 	}
 	
@@ -123,31 +118,7 @@ public class LoginActivity extends Activity {
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
 	}
-	
-	@Override
-	protected void onNewIntent(Intent intent) {
-		// TODO Auto-generated method stub
-		setIntent(intent);
-	}
-	
-	private void processIntent(Intent intent) {
-		// TODO Auto-generated method stub
-		super.onNewIntent(intent);
-		if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)){
-			Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-			NdefMessage msg =(NdefMessage)rawMsgs[0];
-			String code =(new String(msg.getRecords()[0].getPayload()));
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
-			alert.setTitle("NFC !").setMessage(code).setPositiveButton("Ok", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					return;
-				}
-			});
-			alert.create().show();
-		}
-	}
+		
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
