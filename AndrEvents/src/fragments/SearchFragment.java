@@ -14,8 +14,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
@@ -69,8 +71,10 @@ public class SearchFragment extends ListFragment implements OnItemClickListener{
 	}
 	public void updateQuery(String arg0) {
 		this.query =arg0;
+		if (evenements != null &&  liste != null){
 		List<Evenement> toDisplay = evenementControler.getEventFromQuery(evenements,query);
 		liste.setAdapter(new EvenementAdapter(getActivity(), toDisplay));
+		}
 	}
 
 	@Override
@@ -87,6 +91,12 @@ public class SearchFragment extends ListFragment implements OnItemClickListener{
 					.replace(R.id.content_frame, fragment)
 					.addToBackStack("MyEvents").commit();
 		}
+		InputMethodManager inputManager = 
+		        (InputMethodManager) getActivity().getApplicationContext().
+		            getSystemService(Context.INPUT_METHOD_SERVICE); 
+		inputManager.hideSoftInputFromWindow(
+		        this.getActivity().getCurrentFocus().getWindowToken(),
+		        InputMethodManager.HIDE_NOT_ALWAYS); 
 	}
 
 	public class EventSearchTask extends AsyncTask<Void, Void, List<Evenement>> {
@@ -115,9 +125,10 @@ public class SearchFragment extends ListFragment implements OnItemClickListener{
 		protected void onPostExecute(final List<Evenement> results) {
 			evenements = results;
 			if (evenements.size() == 0) {
-				setEmptyText(getActivity().getResources().getText(R.string.noEventMessage));
+				setEmptyText(getActivity().getResources().getText(R.string.noEventFoundForSearchMessage));
 				return;
 			}
+			updateQuery(query);
 			
 		}
 	}

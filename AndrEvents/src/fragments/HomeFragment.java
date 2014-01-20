@@ -128,7 +128,6 @@ public class HomeFragment extends ListFragment implements OnItemClickListener {
 				return;
 			}
 			liste.setAdapter(new EvenementAdapter(getActivity(), evenements));
-
 			liste.onRefreshComplete();
 		}
 	}
