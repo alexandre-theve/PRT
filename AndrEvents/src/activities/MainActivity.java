@@ -245,7 +245,11 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 					position);
 			displayedFragment.setArguments(args);
 			break;
-
+		case 3:
+		   displayedFragment = new QRCodeFragment();
+		        args.getInt(((QRCodeFragment) displayedFragment).FRAGMENT_NUMBER, position);
+		        displayedFragment.setArguments(args);
+		break;
 		}
 
 		FragmentManager fragmentManager = getFragmentManager();

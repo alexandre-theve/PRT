@@ -10,7 +10,7 @@
     <string name="prompt_prenom">Prénom</string>
     <string name="prompt_email">eMail</string>
     <string name="prompt_phone">Téléphone</string>
-    <string name="action_sign_in_register"><b>Créer</b>et se connecter</string>
+    <string name="action_sign_in_register"><b>Créer</b> ou se connecter</string>
     <string name="action_sign_in_short">Créer</string>
     <string name="action_forgot_password">Recover lost password</string>
     <string name="create_creating">Création et login en cours&#8230;</string>
