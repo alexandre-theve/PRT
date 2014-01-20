@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -170,7 +171,12 @@ public class LoginActivity extends Activity {
 		if (mAuthTask != null) {
 			return;
 		}
-
+		InputMethodManager inputManager = 
+		        (InputMethodManager) getApplicationContext().
+		            getSystemService(Context.INPUT_METHOD_SERVICE); 
+		inputManager.hideSoftInputFromWindow(
+		        this.getCurrentFocus().getWindowToken(),
+		        InputMethodManager.HIDE_NOT_ALWAYS); 
 		// Reset errors.
 		mLoginView.setError(null);
 		mPasswordView.setError(null);

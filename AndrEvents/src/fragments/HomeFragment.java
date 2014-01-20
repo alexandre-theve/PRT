@@ -115,7 +115,6 @@ public class HomeFragment extends ListFragment implements
 				return;
 			}
 			liste.setAdapter(new EvenementAdapter(getActivity(), evenements));
-			
 			liste.onRefreshComplete();
 		}
 	}
