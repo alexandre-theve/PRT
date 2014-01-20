@@ -98,9 +98,10 @@ public class EvenementJpaController implements Serializable {
 				.getResultList();
 	}
 	
-	public List<Evenement> findEvenementsForUser(Integer id) {
+	public List<Evenement> findEvenementsForUser(Integer id, List<Evenement> evenements) {
 		return em.createNamedQuery("Evenement.findBestEventsForUser", Evenement.class)
 				.setParameter("tags", this.findTagsForUser(id))
+				.setParameter("evenements", evenements)
 				.getResultList();
 	}
 

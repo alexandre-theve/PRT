@@ -16,13 +16,14 @@
 
 <resources>
 
-    <string name="app_name">AndrEvents</string>
+    <string name="andrevent_app_name">AndrEvents</string>
 
     <string-array name="titles_array">
         <item>Accueil</item>
         <item>Près de moi</item>
         <item>Je suis à un évènement</item>
-        
+        <item>Scanner un ticket</item>
+       
     </string-array>
     <string-array name="distance">
         <item>2 km</item>

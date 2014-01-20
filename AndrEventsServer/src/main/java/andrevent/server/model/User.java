@@ -70,6 +70,9 @@ public class User implements Serializable {
     @Size(max = 45)
     @Column(name = "phone")
     private String phone;
+    @Size(max = 100)
+    @Column(name = "push_id")
+    private String push_id;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<ListediffusionHasUser> listediffusionHasUserList;
@@ -155,9 +158,16 @@ public class User implements Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
     
-    public List<ListediffusionHasUser> getListediffusionHasUserList() {
+    public String getPush_id() {
+		return push_id;
+	}
+
+	public void setPush_id(String push_id) {
+		this.push_id = push_id;
+	}
+
+	public List<ListediffusionHasUser> getListediffusionHasUserList() {
         return listediffusionHasUserList;
     }
 

@@ -42,6 +42,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -51,6 +53,7 @@ import controller.UserController;
 import fragments.AroundMeFragment;
 import fragments.AtAnEventListFragment;
 import fragments.HomeFragment;
+import fragments.QRCodeFragment;
 import fragments.SearchFragment;
 
 public class MainActivity extends Activity implements OnQueryTextListener {
@@ -242,7 +245,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 					position);
 			displayedFragment.setArguments(args);
 			break;
-		
+
 		}
 
 		FragmentManager fragmentManager = getFragmentManager();
@@ -268,6 +271,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		getActionBar().setTitle(mTitle);
 	}
 
+	
 	/**
 	 * When using the ActionBarDrawerToggle, you must call it during
 	 * onPostCreate() and onConfigurationChanged()...

@@ -33,7 +33,7 @@ public class WSEvenementTest {
 		
 		// events suggestion for user
 		events = getEventsForUSer(1);
-		System.out.println("Events for user 1 : " + events);
+		System.out.println("Events suggestion for user 1 : " + events);
 		assertTrue(events.size() != 0);
 		
 		// tags suggestion for user

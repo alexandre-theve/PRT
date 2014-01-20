@@ -59,7 +59,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 																"GROUP BY t.id " + 
 																"ORDER BY COUNT(t.id) DESC "),
 	@NamedQuery(name = "Evenement.findBestEventsForUser", query = "SELECT e FROM Tags t, IN (t.evenementList) e " +
-																  "WHERE t IN (:tags) AND e.valide = true " + 
+																  "WHERE t IN (:tags) AND " +
+																  "e NOT IN(:evenements) AND e.valide = true " + 
 																  "GROUP BY e.id " + 
 																  "ORDER BY e.dateDebut")})
 @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@EvenementId")
