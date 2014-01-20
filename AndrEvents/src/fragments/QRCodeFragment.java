@@ -114,7 +114,7 @@ public class QRCodeFragment extends Fragment implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(final UserHasEvenement userHasEvenement) {
-			Toast.makeText(context, userHasEvenement.getCode(),Toast.LENGTH_LONG).show();
+			Toast.makeText(context, userHasEvenement.getCode() + " : " + userHasEvenement.getUser().getNom() + " - " + userHasEvenement.getEvenement().getNom(),Toast.LENGTH_LONG).show();
 		}
 	}
 }
