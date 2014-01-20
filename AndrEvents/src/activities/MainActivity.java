@@ -39,6 +39,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -48,6 +50,7 @@ import controller.UserController;
 import fragments.AroundMeFragment;
 import fragments.AtAnEventListFragment;
 import fragments.HomeFragment;
+import fragments.QRCodeFragment;
 import fragments.SearchFragment;
 
 public class MainActivity extends Activity implements OnQueryTextListener {
@@ -240,17 +243,15 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			displayedFragment.setArguments(args);
 			break;
 		case 3:
-			displayedFragment = new SearchFragment();
-			args.getInt(((SearchFragment) displayedFragment).FRAGMENT_NUMBER,
+			displayedFragment = new QRCodeFragment();
+			args.getInt(
+					((QRCodeFragment) displayedFragment).FRAGMENT_NUMBER,
 					position);
 			displayedFragment.setArguments(args);
-			searchView.setIconified(false);
-			searchView.requestFocusFromTouch();
-			
 			break;
 		case 4:
-			Intent intent = new Intent(this, PreferencesActivity.class);
-			startActivity(intent);
+			Intent intent2 = new Intent(this, PreferencesActivity.class);
+			startActivity(intent2);
 			mDrawerLayout.closeDrawer(mDrawerList);
 			return;
 		}
@@ -278,6 +279,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		getActionBar().setTitle(mTitle);
 	}
 
+	
 	/**
 	 * When using the ActionBarDrawerToggle, you must call it during
 	 * onPostCreate() and onConfigurationChanged()...
