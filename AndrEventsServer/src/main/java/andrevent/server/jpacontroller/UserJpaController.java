@@ -96,7 +96,7 @@ public class UserJpaController implements Serializable {
 		}
 
 	}
-
+	
 	public int getUserCount() {
 		CriteriaQuery<Long> cq = em.getCriteriaBuilder()
 				.createQuery(Long.class);

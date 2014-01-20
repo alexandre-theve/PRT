@@ -144,6 +144,25 @@ public class UserController extends GenericController{
 		return  gps.getLocation();
 	}
 	
+	public UserHasEvenement getUserHasEvenementByCode(String code){
+		String JSON;
+		try {
+			JSON = RESTHelper.GET(URL+"/AndrEventServer/user/code/"+code);
+			
+			UserHasEvenement user = mapper.readValue(JSON, UserHasEvenement.class);
+			
+			return user;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
+		return new UserHasEvenement();
+	}
+	
 	public UserHasEvenement getInscription(User user,Evenement evt){
 		for (UserHasEvenement inscription : user.getUserHasEvenementList()) {
 			if(inscription.getEvenement().equals(evt)){

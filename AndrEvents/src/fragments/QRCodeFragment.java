@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.Evenement;
 import model.User;
+import model.UserHasEvenement;
 import views.PullToRefreshListView;
 import views.PullToRefreshListView.OnRefreshListener;
 import activities.MainActivity;
@@ -43,6 +44,8 @@ import controller.UserController;
 public class QRCodeFragment extends Fragment implements OnClickListener {
 	public static final String FRAGMENT_NUMBER = "fragment_number";
 
+	private UserController userControler;
+	
 	public QRCodeFragment() {
 		// Empty constructor required for fragment subclasses
 	}
@@ -50,9 +53,9 @@ public class QRCodeFragment extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.qrcode_fragment,
-				container, false);
-		
+		View rootView = inflater.inflate(R.layout.qrcode_fragment, container,
+				false);
+
 		Button button = (Button) rootView.findViewById(R.id.scan_button);
 		button.setOnClickListener(this);
 
@@ -62,25 +65,50 @@ public class QRCodeFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub
+		this.userControler = ((MyApplication) getActivity()
+				.getApplicationContext()).getUserController();
+		
 		super.onStart();
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 0) {
-            if (resultCode == Activity.RESULT_OK) {
-            	Toast.makeText(getActivity(), data.getStringExtra("SCAN_RESULT") + " - " + data.getStringExtra("SCAN_RESULT_FORMAT"), Toast.LENGTH_LONG).show();;
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(getActivity(), "Scan cancelled.", Toast.LENGTH_SHORT).show();
-            }
-        }
+			if (resultCode == Activity.RESULT_OK) {
+				UserHasEvenementAsyncTask userHasEvenementAsyncTask = new UserHasEvenementAsyncTask(getActivity(), data.getStringExtra("SCAN_RESULT"));
+				userHasEvenementAsyncTask.execute();
+			} else if (resultCode == Activity.RESULT_CANCELED) {
+				Toast.makeText(getActivity(), "Scan cancelled.",
+						Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 	@Override
 	public void onClick(View arg0) {
-		//Intent intent = new Intent(getActivity(), CaptureActivity.class);
 		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
 		intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-		startActivityForResult(intent, 0);		
+		startActivityForResult(intent, 0);
+	}
+
+	public class UserHasEvenementAsyncTask extends AsyncTask<Void, Void, UserHasEvenement> {
+		private Context context;
+		private String code;
+		
+		public UserHasEvenementAsyncTask(Context cont, String code) {
+			// TODO Auto-generated constructor stub
+			this.context = cont;
+			this.code = code;
+		}
+
+		@Override
+		protected UserHasEvenement doInBackground(Void... params) {
+			return userControler.getUserHasEvenementByCode(code);
+		}
+
+		@Override
+		protected void onPostExecute(final UserHasEvenement userHasEvenement) {
+			Toast.makeText(context, userHasEvenement.getCode(),Toast.LENGTH_LONG).show();
+		}
 	}
 }

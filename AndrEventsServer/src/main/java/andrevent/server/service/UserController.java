@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import andrevent.server.jpacontroller.RecherchesJpaController;
+import andrevent.server.jpacontroller.UserHasEvenementJpaController;
 import andrevent.server.jpacontroller.UserJpaController;
 import andrevent.server.model.Recherches;
 import andrevent.server.model.User;
+import andrevent.server.model.UserHasEvenement;
 
 @Controller
 public class UserController {
@@ -25,6 +27,8 @@ public class UserController {
 	private UserJpaController userJpaController;
 	@Autowired (required=true)
 	private RecherchesJpaController recherchesJpaController;
+	@Autowired (required=true)
+	private UserHasEvenementJpaController userHasEvenementJpaController;
 
 	@RequestMapping(value = "/user/id/{id}", method = RequestMethod.GET)
     public @ResponseBody User getUser(Model model, @PathVariable Integer id) {
@@ -77,5 +81,16 @@ public class UserController {
 			recherchesJpaController.create(recherche);
 
 		return recherche;
+    }
+	
+	@RequestMapping(value = "/user/code/{code}", method = RequestMethod.GET)
+    public @ResponseBody UserHasEvenement getUserByCode(Model model, @PathVariable String code) {
+		logger.info("validating code " + code);
+		if(code != null) {
+			UserHasEvenement user = userHasEvenementJpaController.findUserHasEvenementByCode(code);
+			return user;
+		}
+		
+		return new UserHasEvenement();
     }
 }

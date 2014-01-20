@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import andrevent.server.model.Evenement;
 import andrevent.server.model.Recherches;
 import andrevent.server.model.User;
+import andrevent.server.model.UserHasEvenement;
 import static org.junit.Assert.*;
 
 public class WSUserTest {
@@ -26,6 +27,13 @@ public class WSUserTest {
 		User userFromWS = getUserById(1);
 		assertEquals(userExpected, userFromWS);
 		System.out.println("Getting user by id 1");
+		
+		System.out.println();
+		
+		// Getting userhasevenement 1 by code
+		UserHasEvenement userHasEvenement = getUserHasEvenementByCode("e60f1af9-8d4a-402b-a7cd-d682ee64a8bb");
+		assertEquals(userExpected, userHasEvenement.getUser());
+		System.out.println("Getting userHasEvenement by code e60f1af9-8d4a-402b-a7cd-d682ee64a8bb : " + userHasEvenement.getUser() + " - " + userHasEvenement.getEvenement());
 		
 		System.out.println();
 		
@@ -150,6 +158,27 @@ public class WSUserTest {
 		}	
 		
 		return new User();
+	}
+	
+	public UserHasEvenement getUserHasEvenementByCode(String code){
+		String JSON;
+		try {
+			JSON = RESTHelper.GET(RESTHelper.url+"/AndrEventServer/user/code/"+code);
+			
+			UserHasEvenement user = mapper.readValue(JSON, UserHasEvenement.class);
+			
+			return user;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("ConnectException");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("IOException");
+		}	
+		
+		return new UserHasEvenement();
 	}
 	
 	public User getUserByLogin(String login){

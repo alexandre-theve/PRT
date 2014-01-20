@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import andrevent.server.model.User;
 import andrevent.server.model.UserHasEvenement;
 import andrevent.server.model.UserHasEvenementPK;
 
@@ -68,6 +69,18 @@ public class UserHasEvenementJpaController implements Serializable {
 			q.setFirstResult(firstResult);
 		}
 		return q.getResultList();
+	}
+	
+
+	public UserHasEvenement findUserHasEvenementByCode(String code) {
+		try {
+			return (UserHasEvenement) em.createNamedQuery("UserHasEvenement.findByCode")
+					.setParameter("code", code).setMaxResults(1)
+					.getSingleResult();
+		} catch (Exception e) {
+			return new UserHasEvenement();
+		}
+
 	}
 
 	public UserHasEvenement findUserHasEvenement(UserHasEvenementPK id) {
