@@ -7,6 +7,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +22,7 @@ import andrevent.server.jpacontroller.UserJpaController;
 import andrevent.server.model.Evenement;
 import andrevent.server.model.Tags;
 import andrevent.server.model.User;
+import andrevent.server.model.UserHasEvenement;
 
 @Controller
 public class EventController {
@@ -30,6 +34,42 @@ public class EventController {
 	private EvenementJpaController evenementsJpaController;
 	@Autowired (required=true)
 	private TagsJpaController tagsJpaController;
+	
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String getUser(ModelMap model) {
+		model.addAttribute("evenements", evenementsJpaController.findEvenementEntities());
+		model.addAttribute("name", "Admin");
+				
+		return "/index";
+	}
+	
+	@RequestMapping(value = "/events/push/{idEvent}", method = RequestMethod.GET)
+	public String pushEventNotification(@PathVariable Integer idEvent, ModelMap model) {
+		logger.info("pushing event " + idEvent);
+		model.addAttribute("name", "Admin");
+		
+		model.addAttribute("message", "Push notfication envoyée !");
+		
+		return "redirect:/index";
+	}
+	
+	@RequestMapping(value = "/events/edit/{idEvent}", method = RequestMethod.GET)
+	public String getEditEvent(@PathVariable Integer idEvent, ModelMap model) {
+		logger.info("editing event " + idEvent);
+		System.out.println("editing event " + idEvent);
+		model.addAttribute("event", evenementsJpaController.findEvenement(idEvent));
+		
+		return "/edit";
+	}
+	
+	@RequestMapping(value = "/events/edit", method = RequestMethod.POST)
+	public String editEvent(@ModelAttribute("Evenement") Evenement evenement, ModelMap model) {
+		logger.info("editing event " + evenement);
+		System.out.println("editing event " + evenement);
+		//model.addAttribute("event", evenementsJpaController.findEvenement(idEvent));
+		
+		return "redirect:/index";
+	}
 	
 	@RequestMapping(value = "/events", method = RequestMethod.GET)
     public @ResponseBody List<Evenement> getEvenements(Model model) {
@@ -91,7 +131,11 @@ public class EventController {
     public @ResponseBody List<Evenement> getSuggestionEvenements(Model model, @PathVariable Integer id) {
 		logger.info("getting suggestion events for user : " + id);
 		if(id != null) {
-			return evenementsJpaController.findEvenementsForUser(id);
+			User user = userJpaController.findUser(id);
+			List<Evenement> evenements = new ArrayList<Evenement>();
+			for(UserHasEvenement e : user.getUserHasEvenementList())
+				evenements.add(e.getEvenement());
+			return evenementsJpaController.findEvenementsForUser(id, evenements);
 		}
 		
 		return new ArrayList<Evenement>();

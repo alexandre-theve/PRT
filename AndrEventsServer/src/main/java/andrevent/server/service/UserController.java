@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +26,6 @@ public class UserController {
 	@Autowired (required=true)
 	private RecherchesJpaController recherchesJpaController;
 
-	/*@RequestMapping(value = "/{name}", method = RequestMethod.GET)
-	public String getUser(@PathVariable String name, andrevent.server.modelMap andrevent.server.model) {
-		model.addAttribute("name", "User" + name);
-		return "liste";
-	}*/
-	
 	@RequestMapping(value = "/user/id/{id}", method = RequestMethod.GET)
     public @ResponseBody User getUser(Model model, @PathVariable Integer id) {
 		logger.info("getting user by id : " + id);

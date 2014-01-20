@@ -16,12 +16,14 @@
     <bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
-			<value>/pages/</value>
+			<value>/WEB-INF/pages/</value>
 		</property>
 		<property name="suffix">
 			<value>.jsp</value>
 		</property>
 	</bean>
+	
+    <mvc:resources mapping="/resources/**" location="/resources/" />
     
 	<!-- Placholders to import inherited variables -->
 	<bean id="project-properties"
