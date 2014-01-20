@@ -165,11 +165,11 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	}
 	protected void displaySearch() {
 		Bundle args = new Bundle();
-		displayedFragment = new SearchFragment();
-		displayedFragment.setArguments(args);
+		SearchFragment searchFragment = new SearchFragment();
+		searchFragment.setArguments(args);
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, displayedFragment)
+				.replace(R.id.content_frame, searchFragment)
 				.addToBackStack("home").commit();
 
 	}
@@ -249,28 +249,24 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 	private void selectItem(int position, Boolean start, String query) {
 		// update the main content by replacing fragments
-		displayedFragment = null;
 		Bundle args = new Bundle();
+		Fragment fragment = null;
 		switch (position) {
 		// accueil
 		case 0:
-			displayedFragment = new HomeFragment();
-			args.getInt(((HomeFragment) displayedFragment).FRAGMENT_NUMBER,
-					position);
-			displayedFragment.setArguments(args);
+			fragment = new HomeFragment();
+			args.getInt(((HomeFragment) fragment).FRAGMENT_NUMBER, position);
+			fragment.setArguments(args);
 			break;
 		case 1:
-			displayedFragment = new AroundMeFragment();
-			args.getInt(((AroundMeFragment) displayedFragment).FRAGMENT_NUMBER,
-					position);
-			displayedFragment.setArguments(args);
+			fragment = new AroundMeFragment();
+			args.getInt(((AroundMeFragment) fragment).FRAGMENT_NUMBER, position);
+			fragment.setArguments(args);
 			break;
 		case 2:
-			displayedFragment = new AtAnEventListFragment();
-			args.getInt(
-					((AtAnEventListFragment) displayedFragment).FRAGMENT_NUMBER,
-					position);
-			displayedFragment.setArguments(args);
+			fragment = new AtAnEventListFragment();
+			args.getInt(((AtAnEventListFragment) fragment).FRAGMENT_NUMBER, position);
+			fragment.setArguments(args);
 			break;
 		case 3:
 			displayedFragment = new ScanFragment();
@@ -331,9 +327,9 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 		if (!(displayedFragment instanceof SearchFragment)) {
 			displaySearch();
-		}
-		if (displayedFragment != null) {
-			((SearchFragment) displayedFragment).updateQuery(arg0);
+		} else if(displayedFragment != null){
+			System.out.println("onQueryTextChange " + arg0 + " - " + displayedFragment);
+			((SearchFragment) displayedFragment).updateQuery(this, arg0);
 		}
 		return true;
 	}
@@ -344,10 +340,16 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			displaySearch();
 
 		}
-		if (displayedFragment != null) {
-			((SearchFragment) displayedFragment).updateQuery(query);
-		}
+		if(displayedFragment != null){
+			((SearchFragment) displayedFragment).updateQuery(this, query);
+			}
 		return true;
 	}
-
+	
+	public Fragment getDisplayedFragment() {
+		return displayedFragment;
+	}
+	public void setDisplayedFragment(Fragment displayedFragment) {
+		this.displayedFragment = displayedFragment;
+	}
 }

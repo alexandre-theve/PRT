@@ -1,6 +1,7 @@
 package fragments;
 
 import model.UserHasEvenement;
+import activities.MainActivity;
 import activities.MyApplication;
 import android.app.Activity;
 import android.app.Fragment;
@@ -52,6 +53,12 @@ public class ScanFragment extends Fragment implements OnClickListener {
 		super.onStart();
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		((MainActivity) getActivity()).setDisplayedFragment(this);	
+	}
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 0) {

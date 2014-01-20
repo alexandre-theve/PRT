@@ -2,6 +2,7 @@ package fragments;
 
 import model.Evenement;
 import model.User;
+import activities.MainActivity;
 import activities.MyApplication;
 import adapters.EvenementAdapter;
 import android.app.FragmentManager;
@@ -28,7 +29,6 @@ public class AtAnEventListFragment extends ListFragment implements
 
 	private UserController userControler;
 	private EvenementController evenementControler;
-	private User connectedUser;
 
 	public AtAnEventListFragment() {
 		// Empty constructor required for fragment subclasses
@@ -59,6 +59,12 @@ public class AtAnEventListFragment extends ListFragment implements
 
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		((MainActivity) getActivity()).setDisplayedFragment(this);	
+	}
+	
 	private void fillListView(ListView liste) {
 		setListShown(true);
 		if (userControler.getUserConnected().getUserHasEvenementList().size() == 0) {

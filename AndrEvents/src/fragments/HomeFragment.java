@@ -6,6 +6,7 @@ import model.Evenement;
 import model.User;
 import views.PullToRefreshListView;
 import views.PullToRefreshListView.OnRefreshListener;
+import activities.MainActivity;
 import activities.MyApplication;
 import adapters.EvenementAdapter;
 import android.app.FragmentManager;
@@ -50,11 +51,6 @@ public class HomeFragment extends ListFragment implements OnItemClickListener {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.my_events_fragment,
 				container, false);
-		/*
-		 * int i = getArguments().getInt(FRAGMENT_NUMBER); String title =
-		 * getResources().getStringArray(R.array.titles_array)[i];
-		 * getActivity().setTitle(title);
-		 */
 		return rootView;
 	}
 
@@ -89,6 +85,12 @@ public class HomeFragment extends ListFragment implements OnItemClickListener {
 		setListShown(true);
 
 		liste.setRefreshing();
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		((MainActivity) getActivity()).setDisplayedFragment(this);	
 	}
 
 	public class EventSuggestionTask extends
