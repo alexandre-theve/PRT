@@ -62,6 +62,8 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	private UserController userControler;
 	private Fragment displayedFragment;
 	private SearchView searchView;
+	
+	public boolean searchClicked = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +134,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		searchView.setOnSearchClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				searchClicked= true;
 				displaySearch();
 			}
 		});
@@ -212,6 +215,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	
 	private void selectItem(int position, Boolean start, String query) {
 		// update the main content by replacing fragments
+		searchClicked = false;
 		displayedFragment = null;
 		Bundle args = new Bundle();
 		switch (position) {
@@ -295,6 +299,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 	@Override
 	public boolean onQueryTextChange(String arg0) {
+		if (!searchClicked) return false;
 		if (displayedFragment instanceof SearchFragment)  {
 			((SearchFragment) displayedFragment).updateQuery(arg0);
 		}
