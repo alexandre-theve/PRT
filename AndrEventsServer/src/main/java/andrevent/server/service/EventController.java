@@ -1,5 +1,7 @@
 package andrevent.server.service;
 
+import java.io.IOException;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import andrevent.server.helper.PushHelper;
 import andrevent.server.jpacontroller.EvenementJpaController;
 import andrevent.server.jpacontroller.TagsJpaController;
 import andrevent.server.jpacontroller.UserJpaController;
@@ -48,6 +51,23 @@ public class EventController {
 	public String pushEventNotification(@PathVariable Integer idEvent, ModelMap model) {
 		logger.info("pushing event " + idEvent);
 		model.addAttribute("name", "Admin");
+		
+		Evenement evenement = evenementsJpaController.findEvenement(idEvent);
+		for (UserHasEvenement userHasEvenement : evenement.getUserHasEvenementList()) {
+			if(userHasEvenement.getNotifications() && userHasEvenement.getUser().getPush_id() != null && !userHasEvenement.getUser().getPush_id().equals("")) {
+				try {
+					String response = PushHelper.launchPush(userHasEvenement.getUser());
+					
+					logger.info("response :  " + response);
+				} catch (ConnectException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		
 		model.addAttribute("message", "Push notfication envoyée !");
 		
