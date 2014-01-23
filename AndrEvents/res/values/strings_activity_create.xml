@@ -2,6 +2,7 @@
 
     <string name="title_activity_Create">Créer un compte</string>
     <string name="create_user_welcome">Remplissez ce formulaire pour créer votre compte et vous authentifier !</string>
+    <string name="edit_user_welcome">Vous pouvez modifier vos informations ci-dessous!</string>
 
     <!-- Strings related to login -->
     <string name="prompt_login">Login</string>
@@ -10,10 +11,13 @@
     <string name="prompt_prenom">Prénom</string>
     <string name="prompt_email">eMail</string>
     <string name="prompt_phone">Téléphone</string>
+    <string name="promptSubscribePush">Inscription aux push notifications?</string>
     <string name="action_sign_in_register"><b>Créer</b> ou se connecter</string>
+    <string name="action_editUser"><b>Valider ces infos!</b></string>
     <string name="action_sign_in_short">Créer</string>
     <string name="action_forgot_password">Recover lost password</string>
     <string name="create_creating">Création et login en cours&#8230;</string>
+    <string name="create_editing">Modification de votre profil en cours&#8230;</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>

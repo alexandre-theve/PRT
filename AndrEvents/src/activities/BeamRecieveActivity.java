@@ -1,28 +1,22 @@
 package activities;
 
 import model.UserHasEvenement;
-
-import com.ig2i.andrevents.R;
-import com.ig2i.andrevents.R.layout;
-import com.ig2i.andrevents.R.menu;
-
-import controller.UserController;
-import fragments.ScanFragment.UserHasEvenementAsyncTask;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
 import android.view.Menu;
 import android.widget.Toast;
+
+import com.ig2i.andrevents.R;
+
+import controller.UserController;
 
 public class BeamRecieveActivity extends Activity {
 

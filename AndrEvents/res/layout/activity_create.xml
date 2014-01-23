@@ -41,7 +41,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/create_user_welcome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/create_user_welcome"
@@ -102,6 +102,12 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:singleLine="true" />
+
+             <CheckBox
+                 android:id="@+id/subscribePushCreate"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="@string/promptSubscribePush" />
 
             <Button
                 android:id="@+id/sign_in_button"

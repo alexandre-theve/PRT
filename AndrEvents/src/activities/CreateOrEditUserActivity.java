@@ -1,5 +1,6 @@
 package activities;
 
+import helpers.GCMHelper;
 import model.User;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -16,8 +17,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ig2i.andrevents.R;
 
@@ -35,6 +39,8 @@ public class CreateOrEditUserActivity extends Activity {
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
 	private User creatingUser;
+	private GCMHelper gcmHelper;
+	
 	private UserLoginTask mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
@@ -44,6 +50,7 @@ public class CreateOrEditUserActivity extends Activity {
 	private String mName;
 	private String mPrenom;
 	private String mPhone;
+	private String mSubscribePush;
 	
 
 	// UI references.
@@ -53,16 +60,20 @@ public class CreateOrEditUserActivity extends Activity {
 	private EditText meMailView;
 	private EditText mPhoneView;
 	private EditText mPasswordView;
+	private CheckBox mSubscribePushView;
 	private View mCreateFormView;
 	private View mCreateStatusView;
 	private TextView mCreateStatusMessageView;
-	
+	private TextView mWelcomeMessage;
+	private Button mSignInButton;
+
 	private Boolean editMode = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		creatingUser = (User)this.getIntent().getExtras().getSerializable("user");
+		gcmHelper = new GCMHelper(this);
 		
 		try{
 			//on passe en mode édition
@@ -72,7 +83,8 @@ public class CreateOrEditUserActivity extends Activity {
 			// on ne fait rien, on est en mode création.
 		}
 		setContentView(R.layout.activity_create);
-
+		
+		
 		// Set up the login form.
 		mLoginView = (EditText) findViewById(R.id.loginCreate);
 		mLoginView.setText(creatingUser.getLogin());
@@ -100,7 +112,16 @@ public class CreateOrEditUserActivity extends Activity {
 		meMailView = (EditText) findViewById(R.id.emailCreate);
 		mPasswordView = (EditText) findViewById(R.id.passwordCreate);
 		mPhoneView = (EditText) findViewById(R.id.phoneCreate);
+		mSubscribePushView = (CheckBox) findViewById(R.id.subscribePushCreate);
 		
+		mWelcomeMessage = (TextView)findViewById(R.id.create_user_welcome);
+		mSignInButton = (Button)findViewById(R.id.sign_in_button);
+		
+		if(editMode){
+			mWelcomeMessage.setText(R.string.edit_user_welcome);
+			mSignInButton.setText(R.string.action_editUser);
+			mCreateStatusMessageView.setText(R.string.create_editing);
+		}
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
@@ -113,11 +134,9 @@ public class CreateOrEditUserActivity extends Activity {
 		mPasswordView.setText(creatingUser.getPassword());
 		meMailView.setText(creatingUser.getEmail());
 		mPhoneView.setText(creatingUser.getPhone());
+		mSubscribePushView.setChecked(creatingUser.getPush_id() !="" && creatingUser.getPush_id() != null);
+			
 		
-		mNameView.setText("UnNom");
-		mPrenomView.setText("UnPrenom");
-		meMailView.setText("UnMail@mail.fr");
-		mPhoneView.setText("0202020202");
 		
 	}
 
@@ -149,6 +168,7 @@ public class CreateOrEditUserActivity extends Activity {
 		mName = mNameView.getText().toString();
 		mPhone = mPhoneView.getText().toString();
 		meMail = meMailView.getText().toString();
+		mSubscribePush = (mSubscribePushView.isChecked())?gcmHelper.getGCMID():"";
 
 		boolean cancel = false;
 		View focusView = null;
@@ -194,7 +214,6 @@ public class CreateOrEditUserActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mCreateStatusMessageView.setText(R.string.create_creating);
 			showProgress(true);
 			mAuthTask = new UserLoginTask(getApplicationContext(),editMode);
 			mAuthTask.execute((Void) null);
@@ -265,6 +284,7 @@ public class CreateOrEditUserActivity extends Activity {
 			creatingUser.setPhone(mPhone);
 			creatingUser.setLogin(mLogin);
 			creatingUser.setPassword(mPassword);
+			creatingUser.setPush_id(mSubscribePush);
 			
 			try {
 				MyApplication myapp = (MyApplication) getApplication();
@@ -300,8 +320,9 @@ public class CreateOrEditUserActivity extends Activity {
 				
 				}
 				else{
-					//on affiche un p'tit truc...
-					
+					MyApplication myapp = (MyApplication) getApplication();
+					myapp.getUserController().setUserConnected(creatingUser);
+					Toast.makeText(this.context, "Votre compte a été modifié !", 5000);
 				}
 				
 			} else {

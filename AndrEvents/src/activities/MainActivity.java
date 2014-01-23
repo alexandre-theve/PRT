@@ -18,18 +18,13 @@ package activities;
 
 import model.User;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
-import android.nfc.NdefMessage;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -56,6 +51,8 @@ import fragments.ScanFragment;
 import fragments.SearchFragment;
 
 public class MainActivity extends Activity implements OnQueryTextListener {
+
+	private boolean wasRunning = false;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -67,11 +64,16 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	private UserController userControler;
 	private Fragment displayedFragment;
 	private MenuItem searchItem;
+	static public MainActivity mainActivity = null;
+	
+	@SuppressWarnings("unused")
+	private BroadcastReceiver broadcastReceiver = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		MyApplication andrEvents = ((MyApplication) getApplicationContext());
+		mainActivity = this;
 		this.userControler = andrEvents.getUserController();
 		userControler.setUserConnected((User) getIntent().getExtras()
 				.getSerializable("user"));
@@ -126,6 +128,18 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	}
 
 	@Override
+	protected void onPause() {
+		wasRunning = false;
+		super.onPause();
+	}
+
+	@Override
+	protected void onDestroy() {
+		wasRunning = false;
+		super.onDestroy();
+	}
+
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -155,7 +169,6 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	
 	protected void displaySearch() {
 		Bundle args = new Bundle();
 		SearchFragment searchFragment = new SearchFragment();
@@ -177,16 +190,23 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		return super.onPrepareOptionsMenu(menu);
 	}
 
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
+		Intent intent;
 		switch (item.getItemId()) {
 		case R.id.action_preferences:
-			Intent intent = new Intent(this, PreferencesActivity.class);
-
+			intent = new Intent(this, PreferencesActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.action_editAccount:
+			intent = new Intent(this, CreateOrEditUserActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("editMode", true);
+			bundle.putSerializable("user", userControler.getUserConnected());
+			intent.putExtras(bundle);
 			startActivity(intent);
 			break;
 		}
@@ -233,21 +253,21 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			break;
 		case 2:
 			fragment = new AtAnEventListFragment();
-			args.getInt(((AtAnEventListFragment) fragment).FRAGMENT_NUMBER, position);
+			args.getInt(((AtAnEventListFragment) fragment).FRAGMENT_NUMBER,
+					position);
 			fragment.setArguments(args);
 			break;
 		case 3:
 			fragment = new ScanFragment();
-			args.getInt(((ScanFragment) fragment).FRAGMENT_NUMBER,
-					position);
+			args.getInt(((ScanFragment) fragment).FRAGMENT_NUMBER, position);
 			fragment.setArguments(args);
 			break;
 		}
 
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment)
-				.addToBackStack("home").commit();
+				.replace(R.id.content_frame, fragment).addToBackStack("home")
+				.commit();
 		FragmentTransaction fragmentTransaction = fragmentManager
 				.beginTransaction();
 		fragmentTransaction.replace(R.id.content_frame, fragment);
@@ -295,8 +315,9 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 		if (!(displayedFragment instanceof SearchFragment)) {
 			displaySearch();
-		} else if(displayedFragment != null){
-			System.out.println("onQueryTextChange " + arg0 + " - " + displayedFragment);
+		} else if (displayedFragment != null) {
+			System.out.println("onQueryTextChange " + arg0 + " - "
+					+ displayedFragment);
 			((SearchFragment) displayedFragment).updateQuery(this, arg0);
 		}
 		return true;
@@ -308,16 +329,21 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			displaySearch();
 
 		}
-		if(displayedFragment != null){
+		if (displayedFragment != null) {
 			((SearchFragment) displayedFragment).updateQuery(this, query);
-			}
+		}
 		return true;
 	}
-	
+
 	public Fragment getDisplayedFragment() {
 		return displayedFragment;
 	}
+
 	public void setDisplayedFragment(Fragment displayedFragment) {
 		this.displayedFragment = displayedFragment;
+	}
+
+	public boolean isRunning() {
+		return this.wasRunning;
 	}
 }

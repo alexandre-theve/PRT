@@ -1,5 +1,6 @@
 package controller;
 
+
 import helpers.GPSHelper;
 import helpers.RESTHelper;
 
@@ -100,41 +101,40 @@ public class UserController extends GenericController{
 		return false;
 	}
 
-	public User createUser(User creatingUser) {
+	public User createUser(User user) {
+		String JSON;
+		try {
+			JSON = RESTHelper.PUT(URL+"/AndrEventServer/user/",mapper.writeValueAsString(user));
+			Boolean result = JSON.equals("true");
+			return user;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 		
-			String JSON;
-			try {
-				String jsonCreate = mapper.writeValueAsString(creatingUser);
-				JSON = RESTHelper.POST(URL+"/AndrEventServer/user/",jsonCreate);
-				return mapper.readValue(JSON, User.class);
-			} catch (JsonParseException e) {
-				e.printStackTrace();
-				return creatingUser;
-			} catch (JsonMappingException e) {
-				e.printStackTrace();
-				return getErrorUser();
-			}
-			catch(ConnectException Ce){
-				Ce.printStackTrace();
-				return getErrorUser();
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-				return getErrorUser();
-			}
-			catch (Exception e){
-				e.printStackTrace();
-				return getErrorUser();
-			}
-			
-		
-		
+		return new User();
 		
 	}
 
-	public User editUser(User creatingUser) {
-		// TODO Auto-generated method stub
-		return null;
+	public User editUser(User editingUser) {
+		String JSON;
+		try {
+			JSON = RESTHelper.PUT(URL+"/AndrEventServer/user/",mapper.writeValueAsString(editingUser));
+			
+			Boolean result = JSON.equals("true");
+			
+			return editingUser;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		return new User();
 	}
 
 	public Location getUserCurrentPostition() {

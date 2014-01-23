@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.google.android.gms.internal.co;
 import com.ig2i.andrevents.R;
 
 public class EvenementAdapter extends BaseAdapter {
