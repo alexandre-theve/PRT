@@ -1,7 +1,11 @@
 package activities;
 
+import com.ig2i.andrevents.R;
+
+import model.User;
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import controller.EvenementController;
 import controller.UserController;
 
@@ -44,6 +48,14 @@ public class MyApplication extends Application {
 
 	public void setEvenementController(EvenementController evenementController) {
 		this.evenementController = evenementController;
+	}
+
+	public void setUserConnected(User user) {
+		this.userController.setUserConnected(user);
+		SharedPreferences prefs = this.getSharedPreferences(getString(R.string.app_package),Context.MODE_PRIVATE);
+		prefs.edit().putInt("loggedUserId", userController.getUserConnected().getId());
+		
+		
 	}
 
 }

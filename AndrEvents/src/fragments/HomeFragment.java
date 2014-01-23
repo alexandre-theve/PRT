@@ -140,15 +140,20 @@ public class HomeFragment extends ListFragment implements OnItemClickListener {
 			Evenement evenement = (Evenement) (evtadpt.getWrappedAdapter()
 					.getItem(position));
 
-			EventDetailFragment fragment = new EventDetailFragment();
-			Bundle bundle = new Bundle();
-			bundle.putSerializable("evenement", evenement);
-			fragment.setArguments(bundle);
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment)
-					.addToBackStack("MyEvents").commit();
+			displayEvent(evenement);
 		}
+	}
+
+	private void displayEvent(Evenement evenement) {
+		// TODO Auto-generated method stub
+		EventDetailFragment fragment = new EventDetailFragment();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("evenement", evenement);
+		fragment.setArguments(bundle);
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+				.replace(R.id.content_frame, fragment)
+				.addToBackStack("MyEvents").commit();
 	}
 
 }

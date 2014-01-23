@@ -18,6 +18,7 @@
 <resources>
 
     <string name="andrevent_app_name">AndrEvents</string>
+    <string name="app_package">com.ig2i.andrevents</string>
 
     <string-array name="titles_array">
         <item>Accueil</item>

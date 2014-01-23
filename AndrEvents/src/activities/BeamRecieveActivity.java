@@ -13,6 +13,7 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.widget.Toast;
+import assync.UserHasEvenementAsyncTask;
 
 import com.ig2i.andrevents.R;
 
@@ -65,24 +66,5 @@ public class BeamRecieveActivity extends Activity {
 			userHasEvenementAsyncTask.execute();
 	}
 	
-	public class UserHasEvenementAsyncTask extends AsyncTask<Void, Void, UserHasEvenement> {
-		private Context context;
-		private String code;
-		
-		public UserHasEvenementAsyncTask(Context cont, String code) {
-			// TODO Auto-generated constructor stub
-			this.context = cont;
-			this.code = code;
-		}
-
-		@Override
-		protected UserHasEvenement doInBackground(Void... params) {
-			return userControler.getUserHasEvenementByCode(code);
-		}
-
-		@Override
-		protected void onPostExecute(final UserHasEvenement userHasEvenement) {
-			Toast.makeText(context, userHasEvenement.getCode() + " : " + userHasEvenement.getUser().getNom() + " - " + userHasEvenement.getEvenement().getNom(),Toast.LENGTH_LONG).show();
-		}
-	}
+	
 }

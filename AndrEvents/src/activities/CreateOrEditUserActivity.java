@@ -6,10 +6,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,7 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+import assync.UserCreateOrEditAndLoginTask;
 
 import com.ig2i.andrevents.R;
 
@@ -41,7 +37,7 @@ public class CreateOrEditUserActivity extends Activity {
 	private User creatingUser;
 	private GCMHelper gcmHelper;
 	
-	private UserLoginTask mAuthTask = null;
+	public UserCreateOrEditAndLoginTask mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
 	private String mLogin;
@@ -215,7 +211,14 @@ public class CreateOrEditUserActivity extends Activity {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
 			showProgress(true);
-			mAuthTask = new UserLoginTask(getApplicationContext(),editMode);
+			creatingUser.setEmail(meMail);
+			creatingUser.setNom(mName);
+			creatingUser.setPrenom(mPrenom);
+			creatingUser.setPhone(mPhone);
+			creatingUser.setLogin(mLogin);
+			creatingUser.setPassword(mPassword);
+			creatingUser.setPush_id(mSubscribePush);
+			mAuthTask = new UserCreateOrEditAndLoginTask(this,editMode,creatingUser);
 			mAuthTask.execute((Void) null);
 		}
 	}
@@ -224,7 +227,7 @@ public class CreateOrEditUserActivity extends Activity {
 	 * Shows the progress UI and hides the login form.
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-	private void showProgress(final boolean show) {
+	public void showProgress(final boolean show) {
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
@@ -261,84 +264,5 @@ public class CreateOrEditUserActivity extends Activity {
 		}
 	}
 
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-		private Context context;
-		private Boolean editMode;
-		
-		public UserLoginTask(Context cont,Boolean editMode) {
-			// TODO Auto-generated constructor stub
-			this.context = cont;
-			this.editMode = editMode;
-		}
 
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-			creatingUser.setEmail(meMail);
-			creatingUser.setNom(mName);
-			creatingUser.setPrenom(mPrenom);
-			creatingUser.setPhone(mPhone);
-			creatingUser.setLogin(mLogin);
-			creatingUser.setPassword(mPassword);
-			creatingUser.setPush_id(mSubscribePush);
-			
-			try {
-				MyApplication myapp = (MyApplication) getApplication();
-				if (editMode){
-				creatingUser = myapp.getUserController().editUser(creatingUser);
-				}
-				else{
-					creatingUser = myapp.getUserController().createUser(creatingUser);
-				}
-				if (creatingUser.getId() != -1) {
-					return true;
-				}
-				return false;
-			} catch (Exception e) {
-				return false;
-			}
-
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
-				Intent myIntent;
-				Bundle params = new Bundle();
-				params.putSerializable("user", creatingUser);
-				if(!editMode){
-				myIntent= new Intent(context, MainActivity.class);
-				myIntent.putExtras(params);
-				startActivity(myIntent);
-				
-				}
-				else{
-					MyApplication myapp = (MyApplication) getApplication();
-					myapp.getUserController().setUserConnected(creatingUser);
-					Toast.makeText(this.context, "Votre compte a été modifié !", 5000);
-				}
-				
-			} else {
-					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-							context);
-					alertDialogBuilder.setTitle("Erreur de communication avec le serveur")
-					.setMessage("Veuillez rééssayer.")
-					.setCancelable(false).create().show();
-				
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-			showProgress(false);
-		}
-	}
 }

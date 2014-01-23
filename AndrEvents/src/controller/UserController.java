@@ -1,6 +1,7 @@
 package controller;
 
 
+
 import helpers.GPSHelper;
 import helpers.RESTHelper;
 
@@ -170,6 +171,27 @@ public class UserController extends GenericController{
 			}
 		}
 		return new UserHasEvenement();
+	}
+
+	public User getById(int id) {
+		String JSON;
+		try {
+			JSON = RESTHelper.GET(URL+"/AndrEventServer/user/id/"+id);
+			
+			User user = mapper.readValue(JSON, User.class);
+			
+			return user;
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}	
+		
+		return new User();
 	}
 	
 

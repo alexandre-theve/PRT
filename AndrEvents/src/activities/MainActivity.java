@@ -16,7 +16,7 @@
 
 package activities;
 
-import model.User;
+import model.Evenement;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -40,12 +40,14 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
+import assync.AssyncLogUser;
 
 import com.ig2i.andrevents.R;
 
 import controller.UserController;
 import fragments.AroundMeFragment;
 import fragments.AtAnEventListFragment;
+import fragments.EventDetailFragment;
 import fragments.HomeFragment;
 import fragments.ScanFragment;
 import fragments.SearchFragment;
@@ -75,9 +77,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		MyApplication andrEvents = ((MyApplication) getApplicationContext());
 		mainActivity = this;
 		this.userControler = andrEvents.getUserController();
-		userControler.setUserConnected((User) getIntent().getExtras()
-				.getSerializable("user"));
-
+		
 		setContentView(R.layout.activity_main);
 		mTitle = mDrawerTitle = getTitle();
 		mSectionsTitles = getResources().getStringArray(R.array.titles_array);
@@ -121,9 +121,8 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-		if (savedInstanceState == null) {
-			selectItem(0, true);
-		}
+		AssyncLogUser assyncLogUser = new AssyncLogUser(this);
+		assyncLogUser.execute();
 
 	}
 
@@ -139,6 +138,30 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		super.onDestroy();
 	}
 
+	public void userLoggedin(){
+		Intent intent = getIntent();
+		Evenement evt = null;
+		if (intent.getAction() != null && intent.getAction().equals("notificationRecieved") || intent.getExtras().containsKey("evenement")){
+			evt = (Evenement)intent.getExtras().getSerializable("evenement");
+		}
+		if (userControler.getUserConnected() == null){
+			Bundle params = new Bundle();
+			if (evt != null){
+				params.putSerializable("evenement", evt);
+			}
+			Intent myIntent = new Intent(this, LoginActivity.class);
+			myIntent.putExtras(params);
+			startActivityForResult(myIntent, 0);	
+			return;
+		}
+		if (evt != null){
+			displayEvent(evt);
+			return;
+		}
+		selectItem(0,true);
+		
+		
+	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
@@ -234,7 +257,17 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	private void selectItem(int position, String query) {
 		selectItem(position, false, query);
 	}
-
+	private void displayEvent(Evenement evenement) {
+		// TODO Auto-generated method stub
+		EventDetailFragment fragment = new EventDetailFragment();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("evenement", evenement);
+		fragment.setArguments(bundle);
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+				.replace(R.id.content_frame, fragment)
+				.addToBackStack("MyEvents").commit();
+	}
 	private void selectItem(int position, Boolean start, String query) {
 		// update the main content by replacing fragments
 		Bundle args = new Bundle();

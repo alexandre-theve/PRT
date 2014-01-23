@@ -110,17 +110,17 @@ public class GcmIntentService extends IntentService {
         			.setContentTitle("Notification AndrEvents!")
         	        .setContentText(text)
         	        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-        	/*
+        	
             Intent intent = new Intent(this, MainActivity.class);
             intent.setAction("notificationRecieved");
             intent.addCategory(Intent.CATEGORY_LAUNCHER);
         	intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             Bundle bundle = new Bundle();
             bundle.putSerializable("evenement", evt);
-            
+            intent.putExtras(bundle);
         	PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         	builder.setContentIntent(resultPendingIntent);
-        	*/
+        	
         	NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         	
         	notificationManager.notify(NOTIFICATION_ID, builder.build());
