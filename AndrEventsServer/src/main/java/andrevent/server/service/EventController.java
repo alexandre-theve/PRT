@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import andrevent.server.jpacontroller.EvenementJpaController;
 import andrevent.server.jpacontroller.TagsJpaController;
@@ -55,21 +56,26 @@ public class EventController {
 	
 	@RequestMapping(value = "/events/edit/{idEvent}", method = RequestMethod.GET)
 	public String getEditEvent(@PathVariable Integer idEvent, ModelMap model) {
-		logger.info("editing event " + idEvent);
+		logger.info("get editing event " + idEvent);
 		System.out.println("editing event " + idEvent);
-		model.addAttribute("event", evenementsJpaController.findEvenement(idEvent));
+		model.addAttribute("evenement", evenementsJpaController.findEvenement(idEvent));
 		
 		return "/edit";
 	}
 	
 	@RequestMapping(value = "/events/edit", method = RequestMethod.POST)
-	public String editEvent(@ModelAttribute("Evenement") Evenement evenement, ModelMap model) {
+	public String editEvent(@ModelAttribute Evenement evenement, Model m) {
 		logger.info("editing event " + evenement);
-		System.out.println("editing event " + evenement);
 		//model.addAttribute("event", evenementsJpaController.findEvenement(idEvent));
 		
 		return "redirect:/index";
 	}
+	
+	@RequestMapping(value="/get", method = RequestMethod.GET)
+    public ModelAndView get() {
+         
+        return new ModelAndView("evenement", "command", new Evenement());
+    }
 	
 	@RequestMapping(value = "/events", method = RequestMethod.GET)
     public @ResponseBody List<Evenement> getEvenements(Model model) {

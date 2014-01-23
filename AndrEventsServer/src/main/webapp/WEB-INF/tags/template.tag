@@ -35,7 +35,7 @@
                         </form>
                     </div>
                 
-                <div class="span10 well">
+                <div class="span9 offset1 well">
                     <p>
                         <jsp:invoke fragment="body"/>
                     </p>
