@@ -18,6 +18,7 @@ public class User implements Serializable {
 	private String prenom;
 	private String email;
 	private String phone;
+	private String push_id;
 	private List<Evenement> evenementList = new ArrayList<Evenement>();
 	private List<ListediffusionHasUser> listediffusionHasUserList = new ArrayList<ListediffusionHasUser>();
 	private List<Recherches> recherchesList = new ArrayList<Recherches>();
@@ -145,8 +146,16 @@ public class User implements Serializable {
     public void setUserHasEvenementList(List<UserHasEvenement> userHasEvenementList) {
         this.userHasEvenementList = userHasEvenementList;
     }
+    
+    public String getPush_id() {
+		return push_id;
+	}
 
-    @Override
+	public void setPush_id(String push_id) {
+		this.push_id = push_id;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
