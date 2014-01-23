@@ -16,7 +16,7 @@ public class RESTHelper {
 	
 	public static String POST(String URL, String authorisation, String param) throws IOException,
 			ConnectException {
-		System.out.println("sending " + param + " to " + URL);
+		System.out.println("sending to " + URL + " - Authorization:key=" + authorisation + " data " + param);
 		OutputStream out;
 		InputStream in = null;
 		try {
@@ -25,9 +25,7 @@ public class RESTHelper {
 					.openConnection();
 			urlConnection.setRequestMethod("POST");
 			urlConnection
-					.setRequestProperty("Content-Type", "application/json");
-			urlConnection
-					.setRequestProperty("Authorization:", "key="+authorisation);
+					.setRequestProperty("Authorization", "key="+authorisation);
 
 			urlConnection.setDoOutput(true);
 			

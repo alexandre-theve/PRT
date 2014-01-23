@@ -29,6 +29,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -76,9 +77,11 @@ public class Evenement implements Serializable {
     private String nom;
     @Column(name = "dateDebut")
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
     private Date dateDebut;
     @Column(name = "dateFin")
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
     private Date dateFin;
     @Size(max = 45)
     @Column(name = "lieu")

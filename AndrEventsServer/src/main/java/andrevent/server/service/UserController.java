@@ -59,7 +59,10 @@ public class UserController {
 	
 	@RequestMapping(value = "/user", method = RequestMethod.PUT)
     public @ResponseBody Boolean editUser(Model model, @RequestBody User user) {
-		logger.info("editing user : " + user);
+		logger.debug("editing user : " + user);
+		
+		System.out.println("editing user : " + user + ", push_id : " + user.getPush_id());
+		
 		if(user != null)
 			userJpaController.edit(user);
 		

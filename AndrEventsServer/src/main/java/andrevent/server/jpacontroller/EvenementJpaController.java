@@ -46,7 +46,7 @@ public class EvenementJpaController implements Serializable {
 
 	@Transactional
 	public void destroy(Integer evenement) {
-		em.remove(evenement);
+		em.remove(findEvenement(evenement));
 	}
 
 	public List<Evenement> findEvenementEntities() {

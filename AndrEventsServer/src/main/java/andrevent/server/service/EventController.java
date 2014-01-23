@@ -39,64 +39,6 @@ public class EventController {
 	@Autowired (required=true)
 	private TagsJpaController tagsJpaController;
 	
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String getUser(ModelMap model) {
-		model.addAttribute("evenements", evenementsJpaController.findEvenementEntities());
-		model.addAttribute("name", "Admin");
-				
-		return "/index";
-	}
-	
-	@RequestMapping(value = "/events/push/{idEvent}", method = RequestMethod.GET)
-	public String pushEventNotification(@PathVariable Integer idEvent, ModelMap model) {
-		logger.info("pushing event " + idEvent);
-		model.addAttribute("name", "Admin");
-		
-		Evenement evenement = evenementsJpaController.findEvenement(idEvent);
-		for (UserHasEvenement userHasEvenement : evenement.getUserHasEvenementList()) {
-			if(userHasEvenement.getNotifications() && userHasEvenement.getUser().getPush_id() != null && !userHasEvenement.getUser().getPush_id().equals("")) {
-				try {
-					String response = PushHelper.launchPush(userHasEvenement.getUser());
-					
-					logger.info("response :  " + response);
-				} catch (ConnectException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		model.addAttribute("message", "Push notfication envoyée !");
-		
-		return "redirect:/index";
-	}
-	
-	@RequestMapping(value = "/events/edit/{idEvent}", method = RequestMethod.GET)
-	public String getEditEvent(@PathVariable Integer idEvent, ModelMap model) {
-		logger.info("get editing event " + idEvent);
-		System.out.println("editing event " + idEvent);
-		model.addAttribute("evenement", evenementsJpaController.findEvenement(idEvent));
-		
-		return "/edit";
-	}
-	
-	@RequestMapping(value = "/events/edit", method = RequestMethod.POST)
-	public String editEvent(@ModelAttribute Evenement evenement, Model m) {
-		logger.info("editing event " + evenement);
-		//model.addAttribute("event", evenementsJpaController.findEvenement(idEvent));
-		
-		return "redirect:/index";
-	}
-	
-	@RequestMapping(value="/get", method = RequestMethod.GET)
-    public ModelAndView get() {
-         
-        return new ModelAndView("evenement", "command", new Evenement());
-    }
-	
 	@RequestMapping(value = "/events", method = RequestMethod.GET)
     public @ResponseBody List<Evenement> getEvenements(Model model) {
 		logger.info("getting user events : ");

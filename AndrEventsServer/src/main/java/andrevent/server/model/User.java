@@ -70,7 +70,7 @@ public class User implements Serializable {
     @Size(max = 45)
     @Column(name = "phone")
     private String phone;
-    @Size(max = 100)
+    @Size(max = 255)
     @Column(name = "push_id")
     private String push_id;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -97,6 +97,7 @@ public class User implements Serializable {
 		nom = user.getNom();
 		prenom = user.getPrenom();
 		phone = user.getPhone();
+		push_id = user.getPush_id();
 	}
 
     public User(Integer id) {

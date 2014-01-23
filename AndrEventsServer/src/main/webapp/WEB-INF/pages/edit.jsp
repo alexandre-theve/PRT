@@ -23,21 +23,43 @@
 						value="${evenement.nom}" />
 			    </div>
 			</div>
-      		
-      		<div class="form-group">
-			    <label for="dateDebut" class="col-sm-2 control-label">Date Debut : </label>
+			
+			<div class="form-group">
+      			<label for="lieu" class="col-sm-2 control-label">Lieu : </label>
 			    <div class="col-sm-10">
-					<form:input id="dateDebut" path="dateDebut" class="form-control"
-						value="${evenement.dateDebut}" />
+					<form:input id="lieu" path="lieu" class="form-control"
+						value="${evenement.lieu}" />
 			    </div>
 			</div>
-      		
-      		<div class="form-group">
-      			<label for="dateFin" class="col-sm-2 control-label">Date Fin : </label>
+			
+			<div class="form-group">
+      			<label for="latitude" class="col-sm-2 control-label">Latitude : </label>
 			    <div class="col-sm-10">
-					<form:input id="dateFin" path="dateFin" class="form-control"
-						value="${evenement.dateFin}" />
+					<form:input id="latitude" path="latitude" class="form-control"
+						value="${evenement.latitude}" />
 			    </div>
+			</div>
+			
+			<div class="form-group">
+      			<label for="longitude" class="col-sm-2 control-label">Longitude : </label>
+			    <div class="col-sm-10">
+					<form:input id="longitude" path="longitude" class="form-control"
+						value="${evenement.longitude}" />
+			    </div>
+			</div>
+			
+			<div class="form-group">
+      			<label for="description" class="col-sm-2 control-label">Description : </label>
+			    <div class="col-sm-10">
+					<form:input id="description" path="description" class="form-control"
+						value="${evenement.description}" />
+			    </div>
+			</div>
+			
+			<div class="form-group">
+      			<label for="valide" class="control-label">Valide : </label>
+				<form:checkbox id="valide" path="valide" class="form-control"
+						value="${evenement.valide}" />
 			</div>
       		
       		<div class="form-group">
