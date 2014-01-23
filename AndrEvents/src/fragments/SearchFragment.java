@@ -1,6 +1,5 @@
 package fragments;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import model.Evenement;
@@ -15,20 +14,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.HeaderViewListAdapter;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 import com.ig2i.andrevents.R;
 
 import controller.EvenementController;
 import controller.UserController;
-import fragments.HomeFragment.EventSuggestionTask;
 
 public class SearchFragment extends ListFragment implements OnItemClickListener{
 

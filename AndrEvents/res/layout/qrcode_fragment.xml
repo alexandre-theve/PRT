@@ -13,4 +13,14 @@
         android:layout_centerVertical="true"
         android:text="Scanner un ticket" />
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scan_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:text="@string/scann_activity_largetext"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+	
 </RelativeLayout>

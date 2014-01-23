@@ -2,14 +2,12 @@ package fragments;
 
 import helpers.GPSHelper;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import model.Evenement;
 import activities.MainActivity;
 import activities.MyApplication;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
@@ -24,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.internal.di;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;

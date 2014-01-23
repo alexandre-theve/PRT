@@ -1,16 +1,15 @@
 package fragments;
 
+import helpers.QRCodeHelper;
+
 import java.nio.charset.Charset;
 
-import helpers.QRCodeHelper;
 import model.Evenement;
-import model.User;
 import model.UserHasEvenement;
 import activities.MainActivity;
 import activities.MyApplication;
 import android.app.Fragment;
 import android.graphics.Bitmap;
-import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -23,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.internal.ee;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.ig2i.andrevents.R;
@@ -112,7 +110,7 @@ public class AtAnEventFragment extends Fragment implements
 
 	@Override
 	public NdefMessage createNdefMessage(NfcEvent event) {
-		return new NdefMessage( new NdefRecord[]{createMimeRecord("application/com.ig2i.andrevents.LoginActivity", this.inscription.getCode().getBytes())});
+		return new NdefMessage( new NdefRecord[]{createMimeRecord("application/com.ig2i.andrevents", this.inscription.getCode().getBytes())});
 		}
 
 	/**

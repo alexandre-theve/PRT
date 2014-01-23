@@ -1,52 +1,34 @@
 package fragments;
 
-import java.util.List;
-
-import model.Evenement;
-import model.User;
 import model.UserHasEvenement;
-import views.PullToRefreshListView;
-import views.PullToRefreshListView.OnRefreshListener;
 import activities.MainActivity;
 import activities.MyApplication;
-import adapters.EvenementAdapter;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.ListFragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.HeaderViewListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.client.android.CaptureActivity;
 import com.ig2i.andrevents.R;
 
-import controller.EvenementController;
 import controller.UserController;
 
 /**
  * Fragment that appears in the "content_frame", shows a planet
  */
-public class QRCodeFragment extends Fragment implements OnClickListener {
+public class ScanFragment extends Fragment implements OnClickListener {
 	public static final String FRAGMENT_NUMBER = "fragment_number";
 
 	private UserController userControler;
 	
-	public QRCodeFragment() {
+	public ScanFragment() {
 		// Empty constructor required for fragment subclasses
 	}
 

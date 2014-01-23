@@ -18,14 +18,18 @@ package activities;
 
 import model.User;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.SearchManager;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
+import android.nfc.NdefMessage;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -34,16 +38,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -53,7 +52,7 @@ import controller.UserController;
 import fragments.AroundMeFragment;
 import fragments.AtAnEventListFragment;
 import fragments.HomeFragment;
-import fragments.QRCodeFragment;
+import fragments.ScanFragment;
 import fragments.SearchFragment;
 
 public class MainActivity extends Activity implements OnQueryTextListener {
@@ -68,8 +67,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	private UserController userControler;
 	private Fragment displayedFragment;
 	private MenuItem searchItem;
-	
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -124,29 +122,30 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		if (savedInstanceState == null) {
 			selectItem(0, true);
 		}
-		
 
 	}
-	 @Override
+
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
-		 if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-		        // do something on back.
-			 searchItem.collapseActionView();
-			 ((SearchView)searchItem.getActionView()).setQuery("", false);
-		    }
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			// do something on back.
+			searchItem.collapseActionView();
+			((SearchView) searchItem.getActionView()).setQuery("", false);
+		}
 		return super.onKeyDown(keyCode, event);
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
+
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		searchItem = menu.findItem(R.id.action_eventSearch);
 		SearchView searchView = (SearchView) searchItem.getActionView();
 		searchView.setOnQueryTextListener(this);
 		searchView.setOnCloseListener(new OnCloseListener() {
-			
+
 			@Override
 			public boolean onClose() {
 				// TODO Auto-generated method stub
@@ -156,6 +155,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	
 	protected void displaySearch() {
 		Bundle args = new Bundle();
 		SearchFragment searchFragment = new SearchFragment();
@@ -164,7 +164,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, searchFragment)
 				.addToBackStack("home").commit();
-		
+
 	}
 
 	/* Called whenever we call invalidateOptionsMenu() */
@@ -177,11 +177,6 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		return super.onPrepareOptionsMenu(menu);
 	}
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		// TODO Auto-generated method stub
-		super.onNewIntent(intent);
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -211,7 +206,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	private void selectItem(int position) {
 		selectItem(position, false, "");
 	}
-	
+
 	private void selectItem(int position, Boolean start) {
 		selectItem(position, start, "");
 	}
@@ -219,7 +214,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	private void selectItem(int position, String query) {
 		selectItem(position, false, query);
 	}
-	
+
 	private void selectItem(int position, Boolean start, String query) {
 		// update the main content by replacing fragments
 		Bundle args = new Bundle();
@@ -242,19 +237,21 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			fragment.setArguments(args);
 			break;
 		case 3:
-			fragment = new QRCodeFragment();
-		   args.getInt(((QRCodeFragment) fragment).FRAGMENT_NUMBER, position);
-		   fragment.setArguments(args);
-		   break;
+			fragment = new ScanFragment();
+			args.getInt(((ScanFragment) fragment).FRAGMENT_NUMBER,
+					position);
+			fragment.setArguments(args);
+			break;
 		}
 
 		FragmentManager fragmentManager = getFragmentManager();
-		/*fragmentManager.beginTransaction()
+		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, fragment)
-				.addToBackStack("home").commit();*/
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+				.addToBackStack("home").commit();
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
 		fragmentTransaction.replace(R.id.content_frame, fragment);
-		if(!start)
+		if (!start)
 			fragmentTransaction.addToBackStack("home");
 		fragmentTransaction.commit();
 
@@ -271,7 +268,6 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		getActionBar().setTitle(mTitle);
 	}
 
-	
 	/**
 	 * When using the ActionBarDrawerToggle, you must call it during
 	 * onPostCreate() and onConfigurationChanged()...
@@ -293,11 +289,11 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 	@Override
 	public boolean onQueryTextChange(String arg0) {
-		if (arg0.equals("") && !(displayedFragment instanceof SearchFragment)){
+		if (arg0.equals("") && !(displayedFragment instanceof SearchFragment)) {
 			return true;
 		}
-		
-		if (!(displayedFragment instanceof SearchFragment))  {
+
+		if (!(displayedFragment instanceof SearchFragment)) {
 			displaySearch();
 		} else if(displayedFragment != null){
 			System.out.println("onQueryTextChange " + arg0 + " - " + displayedFragment);
@@ -308,9 +304,9 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
-		if (!(displayedFragment instanceof SearchFragment))  {
+		if (!(displayedFragment instanceof SearchFragment)) {
 			displaySearch();
-		
+
 		}
 		if(displayedFragment != null){
 			((SearchFragment) displayedFragment).updateQuery(this, query);
