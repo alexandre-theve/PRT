@@ -16,7 +16,6 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import andrevent.server.model.User;
 import andrevent.server.model.UserHasEvenement;
 import andrevent.server.model.UserHasEvenementPK;
 

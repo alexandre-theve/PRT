@@ -1,6 +1,5 @@
 package andrevent.server.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,11 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import andrevent.server.jpacontroller.EvenementJpaController;
 import andrevent.server.jpacontroller.ListediffusionJpaController;
-import andrevent.server.jpacontroller.TagsJpaController;
 import andrevent.server.jpacontroller.UserJpaController;
-import andrevent.server.model.Evenement;
 import andrevent.server.model.Listediffusion;
-import andrevent.server.model.Tags;
 import andrevent.server.model.User;
 
 @Controller

@@ -19,7 +19,7 @@
 		    </c:if>
 		    
 		    <div class="row">
-		    	<a type="submit" class="btn btn-success" href="events/edit/0">Créer un evemenent</a>
+		    	<a type="submit" class="btn btn-success" style="margin-bottom: 10px" href="events/edit/0">Créer un evemenent</a>
 		    </div>
 		    
 			<div class="row">
@@ -41,14 +41,12 @@
 	                            <td>${evenement.lieu}</td>
 	                            <td>${evenement.description}</td>
 	                            <td>	
-	                            	<form:form id="formPush${evenement.id}" action="/events/push/${evenement.id}" method="get" class="form-horizontal ">
-	                            		<input type="submit" value="Notification" class="btn btn-info"></input>
-	                            	</form:form>
-	                            	<form:form id="formValidate${evenement.id}" action="/events/edit/${evenement.id}" method="get" class="form-horizontal ">
-	                            		<input type="submit" value="Modifier" class="btn btn-warning"></input>
-	                            	</form:form>	
-	                            	<form:form id="formDelete${evenement.id}" action="/events/${evenement.id}" method="DELETE" class="form-horizontal ">
-	                            		<input type="submit" value="Supprimer" class="btn btn-danger"></input>
+	                            	<div style="margin-bottom: 10px">
+		                            	<a type="submit" class="btn btn-info" href="events/push/${evenement.id}" style="width: 49%;">Notification</a>
+		                            	<a type="submit" class="btn btn-warning" href="events/edit/${evenement.id}" style="width: 49%;">Modifier</a>
+	                            	</div>
+	                            	<form:form id="formDelete${evenement.id}" action="/events/${evenement.id}" method="DELETE" class="form-horizontal" style="margin-bottom: 10px;">
+	                            		<input type="submit" value="Supprimer" class="btn btn-danger" style="width: 100%;"></input>
 	                            	</form:form>
 	                            </td>
 	                         </tr>

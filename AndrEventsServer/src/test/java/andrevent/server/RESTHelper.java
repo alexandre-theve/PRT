@@ -12,7 +12,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class RESTHelper {
-	//public static String url = "http://192.168.70.233:8080";
 	public static String url = "http://localhost:8080";
 	
 	public static String DELETE(String URL) throws IOException,
@@ -194,7 +193,6 @@ public class RESTHelper {
 	
 	public static String GET(String URL) throws IOException, ConnectException {
 		System.out.println("sending to " + URL);
-		OutputStream out;
 		InputStream in = null;
 		try {
 			final URL url = new URL(URL);

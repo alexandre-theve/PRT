@@ -1,5 +1,8 @@
 package andrevent.server;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -7,16 +10,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import andrevent.server.model.Evenement;
 import andrevent.server.model.Listediffusion;
 import andrevent.server.model.ListediffusionHasUser;
 import andrevent.server.model.User;
-import andrevent.server.model.UserHasEvenement;
-import andrevent.server.service.ListeDiffusionController;
-import static org.junit.Assert.*;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class WSListeDiffusionTest {
 	ObjectMapper mapper = new ObjectMapper();

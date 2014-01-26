@@ -17,13 +17,13 @@
 <body>
 	<div class="container well">
 		<div class="row">
-			<div class="span4 offset5">
+			<div class="col-xs-12 col-sm-12">
 				<h1>
 					<jsp:invoke fragment="title" />
 				</h1>
 			</div>
 		</div>
-		<div class="row row-offcanvas row-offcanvas-right">
+		<div class="row-offcanvas row-offcanvas-right">
 			<!-- <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar"
 				role="navigation">
 				<div class="list-group">

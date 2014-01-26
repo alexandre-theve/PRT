@@ -1,5 +1,8 @@
 package andrevent.server;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -7,13 +10,10 @@ import java.util.List;
 
 import org.junit.Test;
 
+import andrevent.server.model.Tags;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import andrevent.server.model.Evenement;
-import andrevent.server.model.Tags;
-import andrevent.server.model.User;
-import static org.junit.Assert.*;
 
 public class WSTagsTest {
 	ObjectMapper mapper = new ObjectMapper();

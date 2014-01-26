@@ -2,21 +2,16 @@ package andrevent.server.service;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import andrevent.server.helper.PushHelper;
@@ -24,8 +19,6 @@ import andrevent.server.jpacontroller.EvenementJpaController;
 import andrevent.server.jpacontroller.TagsJpaController;
 import andrevent.server.jpacontroller.UserJpaController;
 import andrevent.server.model.Evenement;
-import andrevent.server.model.Tags;
-import andrevent.server.model.User;
 import andrevent.server.model.UserHasEvenement;
 
 @Controller
@@ -58,12 +51,10 @@ public class BackController {
 				try {
 					String response = PushHelper.launchPush(userHasEvenement.getUser(), evenement);
 					
-					logger.info("response :  " + response);
+					logger.info("response :  " + response);					
 				} catch (ConnectException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -115,9 +106,7 @@ public class BackController {
 			evenement.setCreateur(userJpaController.findUser(1));
 			evenementsJpaController.create(evenement);
 		}
-		
-		//model.addAttribute("event", evenementsJpaController.findEvenement(idEvent));
-		
+				
 		return "redirect:/index";
 	}
 	

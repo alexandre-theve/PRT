@@ -1,20 +1,20 @@
 package andrevent.server;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import andrevent.server.model.Evenement;
 import andrevent.server.model.Recherches;
 import andrevent.server.model.User;
 import andrevent.server.model.UserHasEvenement;
-import static org.junit.Assert.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class WSUserTest {
 	ObjectMapper mapper = new ObjectMapper();
