@@ -137,7 +137,11 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		wasRunning = false;
 		super.onDestroy();
 	}
-
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
 	public void userLoggedin(){
 		Intent intent = getIntent();
 		Evenement evt = null;

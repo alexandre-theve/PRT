@@ -109,6 +109,7 @@ public class GcmIntentService extends IntentService {
     	     	.setSmallIcon(R.drawable.ic_launcher)
         			.setContentTitle("Notification AndrEvents!")
         	        .setContentText(text)
+        	        .setAutoCancel(true)
         	        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         	
             Intent intent = new Intent(this, MainActivity.class);

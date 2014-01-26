@@ -40,12 +40,12 @@ public class AssyncLogUser  extends AsyncTask<Void, Void, Boolean>{
 	@Override
 	protected void onPostExecute(Boolean result) {
 		// TODO Auto-generated method stub
-		if(result && logingUser != null){
+		if(logingUser != null){
 			MyApplication andrEvents =(MyApplication)activity.getApplication();
 			andrEvents.setUserConnected(logingUser);
-			activity.userLoggedin();
 		}
-		super.onPostExecute(result);
+			activity.userLoggedin();
+			super.onPostExecute(result);
 	}
 
 }
