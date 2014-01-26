@@ -1,7 +1,5 @@
 package controller;
 
-
-
 import helpers.GPSHelper;
 import helpers.RESTHelper;
 
@@ -20,17 +18,16 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-public class UserController extends GenericController{
+public class UserController extends GenericController {
 
 	private User userConnected;
 	ObjectMapper mapper = new ObjectMapper();
 	private Context context;
 	private GPSHelper gps;
-	
-	public UserController(){
+
+	public UserController() {
 	}
-	
+
 	public void setContext(Context context) {
 		this.context = context;
 	}
@@ -41,20 +38,22 @@ public class UserController extends GenericController{
 
 	public List<Evenement> getEvenementsOfUSer(User user) {
 		ArrayList<Evenement> evenements = new ArrayList<Evenement>();
-		for(UserHasEvenement userHasEvenement : user.getUserHasEvenementList())
+		for (UserHasEvenement userHasEvenement : user.getUserHasEvenementList())
 			evenements.add(userHasEvenement.getEvenement());
 		return evenements;
 	}
-	
+
 	public List<Evenement> getEvenementsCreatedByUser(User user) {
 		return user.getEvenementList();
 	}
-	
-	private User getErrorUser(){
-		return new User(-1,"inconnu","inconnu", "inconnu", "inconnu","inconnu","inconnu");
-		
+
+	private User getErrorUser() {
+		return new User(-1, "inconnu", "inconnu", "inconnu", "inconnu",
+				"inconnu", "inconnu");
+
 	}
-	public void setUserConnected(User userConnected) {	
+
+	public void setUserConnected(User userConnected) {
 		this.userConnected = userConnected;
 	}
 
@@ -64,30 +63,24 @@ public class UserController extends GenericController{
 	}
 
 	public User loginUser(String login, String password) {
-		
+
 		try {
-			String JSON = RESTHelper.GET(URL+"/AndrEventServer/user/login/"+login);
-			
-			System.out.println("Response : " + JSON);
-			
+			String JSON = RESTHelper.GET(URL + "/AndrEventServer/user/login/"
+					+ login);
 			return mapper.readValue(JSON, User.class);
-		}
-		catch (JsonParseException e) {
+		} catch (JsonParseException e) {
 			e.printStackTrace();
 			return new User(-1, login, password, "", "", "", "");
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 			return getErrorUser();
-		}
-		catch(ConnectException Ce){
+		} catch (ConnectException Ce) {
 			Ce.printStackTrace();
 			return getErrorUser();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			return getErrorUser();
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return getErrorUser();
 		}
@@ -98,9 +91,13 @@ public class UserController extends GenericController{
 	}
 
 	public boolean isSubscribedTo(User user, Evenement evenement) {
-		System.out.println("isSubscribedTo " + user.getUserHasEvenementList() + " - " + evenement);
-		for(UserHasEvenement userHasEvenement : user.getUserHasEvenementList())
-			if(userHasEvenement.getUserHasEvenementPK().getEvenementid() == evenement.getId() && userHasEvenement.getUserHasEvenementPK().getUserid() == user.getId())
+		System.out.println("isSubscribedTo " + user.getUserHasEvenementList()
+				+ " - " + evenement);
+		for (UserHasEvenement userHasEvenement : user.getUserHasEvenementList())
+			if (userHasEvenement.getUserHasEvenementPK().getEvenementid() == evenement
+					.getId()
+					&& userHasEvenement.getUserHasEvenementPK().getUserid() == user
+							.getId())
 				return true;
 		return false;
 	}
@@ -108,7 +105,8 @@ public class UserController extends GenericController{
 	public User createUser(User user) {
 		String JSON;
 		try {
-			JSON = RESTHelper.PUT(URL+"/AndrEventServer/user/",mapper.writeValueAsString(user));
+			JSON = RESTHelper.PUT(URL + "/AndrEventServer/user/",
+					mapper.writeValueAsString(user));
 			Boolean result = JSON.equals("true");
 			return user;
 		} catch (ConnectException e) {
@@ -117,19 +115,20 @@ public class UserController extends GenericController{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
-		
+		}
+
 		return new User();
-		
+
 	}
 
 	public User editUser(User editingUser) {
 		String JSON;
 		try {
-			JSON = RESTHelper.PUT(URL+"/AndrEventServer/user/",mapper.writeValueAsString(editingUser));
-			
+			JSON = RESTHelper.PUT(URL + "/AndrEventServer/user/",
+					mapper.writeValueAsString(editingUser));
+
 			Boolean result = JSON.equals("true");
-			
+
 			return editingUser;
 		} catch (ConnectException e) {
 			// TODO Auto-generated catch block
@@ -137,24 +136,25 @@ public class UserController extends GenericController{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
 		return new User();
 	}
 
 	public Location getUserCurrentPostition() {
-		if(gps == null){
+		if (gps == null) {
 			gps = new GPSHelper(context);
 		}
-		return  gps.getLocation();
+		return gps.getLocation();
 	}
-	
-	public UserHasEvenement getUserHasEvenementByCode(String code){
+
+	public UserHasEvenement getUserHasEvenementByCode(String code) {
 		String JSON;
 		try {
-			JSON = RESTHelper.GET(URL+"/AndrEventServer/user/code/"+code);
-			
-			UserHasEvenement user = mapper.readValue(JSON, UserHasEvenement.class);
-			
+			JSON = RESTHelper.GET(URL + "/AndrEventServer/user/code/" + code);
+
+			UserHasEvenement user = mapper.readValue(JSON,
+					UserHasEvenement.class);
+
 			return user;
 		} catch (ConnectException e) {
 			// TODO Auto-generated catch block
@@ -162,14 +162,14 @@ public class UserController extends GenericController{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
-		
+		}
+
 		return new UserHasEvenement();
 	}
-	
-	public UserHasEvenement getInscription(User user,Evenement evt){
+
+	public UserHasEvenement getInscription(User user, Evenement evt) {
 		for (UserHasEvenement inscription : user.getUserHasEvenementList()) {
-			if(inscription.getEvenement().equals(evt)){
+			if (inscription.getEvenement().equals(evt)) {
 				return inscription;
 			}
 		}
@@ -179,23 +179,22 @@ public class UserController extends GenericController{
 	public User getById(int id) {
 		String JSON;
 		try {
-			JSON = RESTHelper.GET(URL+"/AndrEventServer/user/id/"+id);
-			
+			JSON = RESTHelper.GET(URL + "/AndrEventServer/user/id/" + id);
+
 			User user = mapper.readValue(JSON, User.class);
-			
+
 			return user;
 		} catch (ConnectException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
-		}	
-		
+
+		}
+
 		return new User();
 	}
-	
 
 }

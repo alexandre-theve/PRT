@@ -86,11 +86,11 @@ public class HomeFragment extends ListFragment implements OnItemClickListener {
 
 		liste.setRefreshing();
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		((MainActivity) getActivity()).setDisplayedFragment(this);	
+		((MainActivity) getActivity()).setDisplayedFragment(this);
 	}
 
 	public class EventSuggestionTask extends

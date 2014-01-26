@@ -19,14 +19,14 @@ public class GCMHelper {
 	private static final String PROPERTY_APP_VERSION = "appVersion";
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	String SENDER_ID = "585790850303";
-	
+
 	private static final String TAG = Consts.appName;
-	
+
 	private String GCMID;
 	private Activity activity;
 	private Context context;
 	private GoogleCloudMessaging gcm;
-	
+
 	public GCMHelper(Activity activity) {
 		this.activity = activity;
 		this.context = activity.getApplicationContext();
@@ -40,7 +40,7 @@ public class GCMHelper {
 		} else {
 			Log.i(TAG, "No valid Google Play Services APK found.");
 		}
-		
+
 	}
 
 	public String getGCMID() {
@@ -88,16 +88,18 @@ public class GCMHelper {
 		}
 	}
 
-		/**
+	/**
 	 * Check the device to make sure it has the Google Play Services APK. If it
 	 * doesn't, display a dialog that allows users to download the APK from the
 	 * Google Play Store or enable it in the device's system settings.
 	 */
 	private boolean checkPlayServices() {
-		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
+		int resultCode = GooglePlayServicesUtil
+				.isGooglePlayServicesAvailable(context);
 		if (resultCode != ConnectionResult.SUCCESS) {
 			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-				GooglePlayServicesUtil.getErrorDialog(resultCode, activity ,	PLAY_SERVICES_RESOLUTION_REQUEST).show();
+				GooglePlayServicesUtil.getErrorDialog(resultCode, activity,
+						PLAY_SERVICES_RESOLUTION_REQUEST).show();
 			} else {
 				Log.i(TAG, "This device is not supported.");
 			}
@@ -124,8 +126,6 @@ public class GCMHelper {
 		editor.putInt(PROPERTY_APP_VERSION, appVersion);
 		editor.commit();
 	}
-
-	
 
 	/**
 	 * Registers the application with GCM servers asynchronously.

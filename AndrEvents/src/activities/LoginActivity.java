@@ -1,17 +1,13 @@
 package activities;
 
 import model.Evenement;
-import model.User;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -198,7 +194,7 @@ public class LoginActivity extends Activity {
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 
-			mAuthTask = new UserLoginTask(this,mLogin,mPassword,evtPushed);
+			mAuthTask = new UserLoginTask(this, mLogin, mPassword, evtPushed);
 			mAuthTask.execute((Void) null);
 		}
 	}

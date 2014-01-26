@@ -27,7 +27,7 @@ public class ScanFragment extends Fragment implements OnClickListener {
 	public static final String FRAGMENT_NUMBER = "fragment_number";
 
 	private UserController userControler;
-	
+
 	public ScanFragment() {
 		// Empty constructor required for fragment subclasses
 	}
@@ -49,21 +49,22 @@ public class ScanFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		this.userControler = ((MyApplication) getActivity()
 				.getApplicationContext()).getUserController();
-		
+
 		super.onStart();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		((MainActivity) getActivity()).setDisplayedFragment(this);	
+		((MainActivity) getActivity()).setDisplayedFragment(this);
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 0) {
 			if (resultCode == Activity.RESULT_OK) {
-				UserHasEvenementAsyncTask userHasEvenementAsyncTask = new UserHasEvenementAsyncTask(getActivity(), data.getStringExtra("SCAN_RESULT"));
+				UserHasEvenementAsyncTask userHasEvenementAsyncTask = new UserHasEvenementAsyncTask(
+						getActivity(), data.getStringExtra("SCAN_RESULT"));
 				userHasEvenementAsyncTask.execute();
 			} else if (resultCode == Activity.RESULT_CANCELED) {
 				Toast.makeText(getActivity(), "Scan cancelled.",
@@ -79,10 +80,11 @@ public class ScanFragment extends Fragment implements OnClickListener {
 		startActivityForResult(intent, 0);
 	}
 
-	public class UserHasEvenementAsyncTask extends AsyncTask<Void, Void, UserHasEvenement> {
+	public class UserHasEvenementAsyncTask extends
+			AsyncTask<Void, Void, UserHasEvenement> {
 		private Context context;
 		private String code;
-		
+
 		public UserHasEvenementAsyncTask(Context cont, String code) {
 			// TODO Auto-generated constructor stub
 			this.context = cont;
@@ -96,7 +98,12 @@ public class ScanFragment extends Fragment implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(final UserHasEvenement userHasEvenement) {
-			Toast.makeText(context, userHasEvenement.getCode() + " : " + userHasEvenement.getUser().getNom() + " - " + userHasEvenement.getEvenement().getNom(),Toast.LENGTH_LONG).show();
+			Toast.makeText(
+					context,
+					userHasEvenement.getCode() + " : "
+							+ userHasEvenement.getUser().getNom() + " - "
+							+ userHasEvenement.getEvenement().getNom(),
+					Toast.LENGTH_LONG).show();
 		}
 	}
 }

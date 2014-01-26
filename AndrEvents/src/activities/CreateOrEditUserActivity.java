@@ -36,7 +36,7 @@ public class CreateOrEditUserActivity extends Activity {
 	 */
 	private User creatingUser;
 	private GCMHelper gcmHelper;
-	
+
 	public UserCreateOrEditAndLoginTask mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
@@ -47,7 +47,6 @@ public class CreateOrEditUserActivity extends Activity {
 	private String mPrenom;
 	private String mPhone;
 	private String mSubscribePush;
-	
 
 	// UI references.
 	private EditText mLoginView;
@@ -64,27 +63,27 @@ public class CreateOrEditUserActivity extends Activity {
 	private Button mSignInButton;
 
 	private Boolean editMode = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		creatingUser = (User)this.getIntent().getExtras().getSerializable("user");
+
+		creatingUser = (User) this.getIntent().getExtras()
+				.getSerializable("user");
 		gcmHelper = new GCMHelper(this);
-		
-		try{
-			//on passe en mode édition
-			editMode = this.getIntent().getExtras().getBoolean("editMode");	
-		}
-		catch (Exception e){
+
+		try {
+			// on passe en mode édition
+			editMode = this.getIntent().getExtras().getBoolean("editMode");
+		} catch (Exception e) {
 			// on ne fait rien, on est en mode création.
 		}
 		setContentView(R.layout.activity_create);
-		
-		
+
 		// Set up the login form.
 		mLoginView = (EditText) findViewById(R.id.loginCreate);
 		mLoginView.setText(creatingUser.getLogin());
-		
+
 		mPasswordView = (EditText) findViewById(R.id.passwordCreate);
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -109,11 +108,11 @@ public class CreateOrEditUserActivity extends Activity {
 		mPasswordView = (EditText) findViewById(R.id.passwordCreate);
 		mPhoneView = (EditText) findViewById(R.id.phoneCreate);
 		mSubscribePushView = (CheckBox) findViewById(R.id.subscribePushCreate);
-		
-		mWelcomeMessage = (TextView)findViewById(R.id.create_user_welcome);
-		mSignInButton = (Button)findViewById(R.id.sign_in_button);
-		
-		if(editMode){
+
+		mWelcomeMessage = (TextView) findViewById(R.id.create_user_welcome);
+		mSignInButton = (Button) findViewById(R.id.sign_in_button);
+
+		if (editMode) {
 			mWelcomeMessage.setText(R.string.edit_user_welcome);
 			mSignInButton.setText(R.string.action_editUser);
 			mCreateStatusMessageView.setText(R.string.create_editing);
@@ -130,10 +129,9 @@ public class CreateOrEditUserActivity extends Activity {
 		mPasswordView.setText(creatingUser.getPassword());
 		meMailView.setText(creatingUser.getEmail());
 		mPhoneView.setText(creatingUser.getPhone());
-		mSubscribePushView.setChecked(creatingUser.getPush_id() !="" && creatingUser.getPush_id() != null);
-			
-		
-		
+		mSubscribePushView.setChecked(creatingUser.getPush_id() != ""
+				&& creatingUser.getPush_id() != null);
+
 	}
 
 	@Override
@@ -164,7 +162,8 @@ public class CreateOrEditUserActivity extends Activity {
 		mName = mNameView.getText().toString();
 		mPhone = mPhoneView.getText().toString();
 		meMail = meMailView.getText().toString();
-		mSubscribePush = (mSubscribePushView.isChecked())?gcmHelper.getGCMID():"";
+		mSubscribePush = (mSubscribePushView.isChecked()) ? gcmHelper
+				.getGCMID() : "";
 
 		boolean cancel = false;
 		View focusView = null;
@@ -196,7 +195,7 @@ public class CreateOrEditUserActivity extends Activity {
 			focusView = mPrenomView;
 			cancel = true;
 		}
-		
+
 		if (TextUtils.isEmpty(mPhone)) {
 			mPhoneView.setError(getString(R.string.error_field_required));
 			focusView = mPhoneView;
@@ -218,7 +217,8 @@ public class CreateOrEditUserActivity extends Activity {
 			creatingUser.setLogin(mLogin);
 			creatingUser.setPassword(mPassword);
 			creatingUser.setPush_id(mSubscribePush);
-			mAuthTask = new UserCreateOrEditAndLoginTask(this,editMode,creatingUser);
+			mAuthTask = new UserCreateOrEditAndLoginTask(this, editMode,
+					creatingUser);
 			mAuthTask.execute((Void) null);
 		}
 	}
@@ -263,6 +263,5 @@ public class CreateOrEditUserActivity extends Activity {
 			mCreateFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
-
 
 }

@@ -101,17 +101,19 @@ public class AtAnEventFragment extends Fragment implements
 			}
 		}
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		((MainActivity) getActivity()).setDisplayedFragment(this);	
+		((MainActivity) getActivity()).setDisplayedFragment(this);
 	}
 
 	@Override
 	public NdefMessage createNdefMessage(NfcEvent event) {
-		return new NdefMessage( new NdefRecord[]{createMimeRecord("application/com.ig2i.andrevents", this.inscription.getCode().getBytes())});
-		}
+		return new NdefMessage(new NdefRecord[] { createMimeRecord(
+				"application/com.ig2i.andrevents", this.inscription.getCode()
+						.getBytes()) });
+	}
 
 	/**
 	 * Creates a custom MIME type encapsulated in an NDEF record

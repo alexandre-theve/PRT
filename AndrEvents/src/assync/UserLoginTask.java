@@ -6,7 +6,6 @@ import activities.CreateOrEditUserActivity;
 import activities.LoginActivity;
 import activities.MainActivity;
 import activities.MyApplication;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,7 +13,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import com.google.android.gms.internal.ac;
 import com.ig2i.andrevents.R;
 
 public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
@@ -29,12 +27,13 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 	// "USER_UNKNOWN_ERROR" =2
 	private Integer error = -1;
 
-	public UserLoginTask(LoginActivity activity, String login, String password, Evenement evenement) {
+	public UserLoginTask(LoginActivity activity, String login, String password,
+			Evenement evenement) {
 		// TODO Auto-generated constructor stub
-		this.activity= activity;
+		this.activity = activity;
 		this.context = activity.getApplicationContext();
 		this.mLogin = login;
-		this.mPassword =password;
+		this.mPassword = password;
 		this.evtPushed = evenement;
 	}
 
@@ -44,8 +43,8 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
 		try {
 			MyApplication myapp = (MyApplication) activity.getApplication();
-			loggingUser = myapp.getUserController().loginUser(mLogin,
-					mPassword);
+			loggingUser = myapp.getUserController()
+					.loginUser(mLogin, mPassword);
 			if (loggingUser.getId() == 0) {
 				// USER_UNKNOWN_ERROR
 				error = 2;
@@ -82,12 +81,12 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 			myApp.setUserConnected(loggingUser);
 			Bundle params = new Bundle();
 			params.putSerializable("user", loggingUser);
-			if(evtPushed != null){
+			if (evtPushed != null) {
 				params.putSerializable("evenement", evtPushed);
 			}
 			Intent myIntent = new Intent(context, MainActivity.class);
 			myIntent.putExtras(params);
-			
+
 			activity.startActivityForResult(myIntent, 0);
 		} else {
 			switch (error) {
@@ -96,13 +95,12 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 						context);
 				alertDialogBuilder
 						.setTitle("Veuillez rééssayer.")
-						.setMessage(
-								"Erreur de communication avec le serveur")
+						.setMessage("Erreur de communication avec le serveur")
 						.setPositiveButton("OK",
 								new DialogInterface.OnClickListener() {
 									@Override
-									public void onClick(
-											DialogInterface arg0, int arg1) {
+									public void onClick(DialogInterface arg0,
+											int arg1) {
 										// TODO Auto-generated method stub
 									}
 								}).setCancelable(false).create().show();
@@ -112,8 +110,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 				activity.setError(R.id.login, R.string.error_incorrect_password);
 				break;
 			case 2:
-				loggingUser = new User(null, mLogin, mPassword, "", "", "",
-						"");
+				loggingUser = new User(null, mLogin, mPassword, "", "", "", "");
 				Bundle params = new Bundle();
 				params.putSerializable("user", loggingUser);
 				Intent myIntent = new Intent(context,
@@ -131,4 +128,3 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		activity.showProgress(false);
 	}
 }
-

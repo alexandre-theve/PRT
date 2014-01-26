@@ -17,10 +17,10 @@ import org.joda.time.Period;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class EvenementController extends GenericController{
-	
+public class EvenementController extends GenericController {
+
 	ObjectMapper mapper = new ObjectMapper();
-	
+
 	public User subscribe(Integer idUser, Integer idEvent) {
 		String JSON;
 		try {
@@ -104,12 +104,11 @@ public class EvenementController extends GenericController{
 
 		return false;
 	}
-	
+
 	public List<Evenement> getEvents() {
 		String JSON;
 		try {
-			JSON = RESTHelper.GET(URL
-					+ "/AndrEventServer/events");
+			JSON = RESTHelper.GET(URL + "/AndrEventServer/events");
 
 			List<Evenement> events = mapper.readValue(JSON,
 					new TypeReference<List<Evenement>>() {
@@ -130,8 +129,7 @@ public class EvenementController extends GenericController{
 	public List<Evenement> getEventsByTag(Integer id) {
 		String JSON;
 		try {
-			JSON = RESTHelper.GET(URL
-					+ "/AndrEventServer/events/tag/" + id);
+			JSON = RESTHelper.GET(URL + "/AndrEventServer/events/tag/" + id);
 
 			List<Evenement> events = mapper.readValue(JSON,
 					new TypeReference<List<Evenement>>() {
@@ -176,8 +174,7 @@ public class EvenementController extends GenericController{
 	public List<Evenement> getEventsByUSer(Integer id) {
 		String JSON;
 		try {
-			JSON = RESTHelper.GET(URL
-					+ "/AndrEventServer/events/idUser/" + id);
+			JSON = RESTHelper.GET(URL + "/AndrEventServer/events/idUser/" + id);
 
 			List<Evenement> events = mapper.readValue(JSON,
 					new TypeReference<List<Evenement>>() {
@@ -194,7 +191,7 @@ public class EvenementController extends GenericController{
 
 		return new ArrayList<Evenement>();
 	}
-	
+
 	public List<Evenement> getEventsForUSer(Integer id) {
 		String JSON;
 		try {
@@ -216,7 +213,7 @@ public class EvenementController extends GenericController{
 
 		return new ArrayList<Evenement>();
 	}
-	
+
 	public List<Tags> getTagsForUSer(Integer id) {
 		String JSON;
 		try {
@@ -239,33 +236,37 @@ public class EvenementController extends GenericController{
 		return new ArrayList<Tags>();
 	}
 
-	public List<Evenement> getEventFromQuery(List<Evenement> evenements,String arg0) {
-		if(evenements == null) return new ArrayList<Evenement>();
-		if(arg0.equals("")) return evenements;
+	public List<Evenement> getEventFromQuery(List<Evenement> evenements,
+			String arg0) {
+		if (evenements == null)
+			return new ArrayList<Evenement>();
+		if (arg0.equals(""))
+			return evenements;
 		String criteria = arg0.toLowerCase().trim();
 		ArrayList<Evenement> toReturn = new ArrayList<Evenement>();
 		for (Evenement evenement : evenements) {
-			//recherche full text 
-			if(evenement.getNom().toLowerCase().trim().contains(criteria)
-					|| evenement.getDescription().toLowerCase().trim().contains(criteria)
-					|| evenement.getLieu().toLowerCase().trim().contains(criteria)
-					|| evenement.getCreateur().toString().toLowerCase().trim().contains(criteria)
-					){
+			// recherche full text
+			if (evenement.getNom().toLowerCase().trim().contains(criteria)
+					|| evenement.getDescription().toLowerCase().trim()
+							.contains(criteria)
+					|| evenement.getLieu().toLowerCase().trim()
+							.contains(criteria)
+					|| evenement.getCreateur().toString().toLowerCase().trim()
+							.contains(criteria)) {
 				toReturn.add(evenement);
 				continue;
 			}
-			DateTime dateDebut = new DateTime(evenement.getDateDebut().getTime());
-			Period period = new Period(dateDebut.plusDays(1),DateTime.now().plusDays(1));
-			if(criteria.equals("demain") && period.getDays() ==0){
+			DateTime dateDebut = new DateTime(evenement.getDateDebut()
+					.getTime());
+			Period period = new Period(dateDebut.plusDays(1), DateTime.now()
+					.plusDays(1));
+			if (criteria.equals("demain") && period.getDays() == 0) {
 				toReturn.add(evenement);
 				continue;
 			}
 		}
-		
+
 		return toReturn;
 	}
 
-	
-	
-	
 }
