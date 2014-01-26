@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.google.android.gms.maps.model.LatLng;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true,value = {"position"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@EvenementId")
 public class Evenement implements Serializable {
 	private Integer id;
@@ -51,7 +51,6 @@ public class Evenement implements Serializable {
 		this.valide = false;
 		this.createur = creator;
 	}
-
 	public LatLng getPosition(){
 		return new LatLng(latitude, longitude);
 	}

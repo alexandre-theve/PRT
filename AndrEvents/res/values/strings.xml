@@ -18,6 +18,7 @@
 <resources>
 
     <string name="andrevent_app_name">AndrEvents</string>
+    <string name="app_package">com.ig2i.andrevents</string>
 
     <string-array name="titles_array">
         <item>Accueil</item>
@@ -60,5 +61,6 @@
     <string name="title_activity_beam_recieve">BeamRecieveActivity</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="action_editAccount">Mon profil</string>
 
 </resources>

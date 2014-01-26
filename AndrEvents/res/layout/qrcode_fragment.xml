@@ -14,7 +14,7 @@
         android:text="Scanner un ticket" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/create_user_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/scan_button"

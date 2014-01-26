@@ -1,7 +1,6 @@
 package fragments;
 
 import model.Evenement;
-import model.User;
 import activities.MainActivity;
 import activities.MyApplication;
 import adapters.EvenementAdapter;
