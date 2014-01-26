@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@TypeNotificationId")
-public class Typenotification implements Serializable{
+public class Typenotification implements Serializable {
 
 	private Integer id;
 	private String titre;
@@ -20,56 +20,57 @@ public class Typenotification implements Serializable{
 	}
 
 	public Typenotification(Integer id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getTitre() {
-        return titre;
-    }
+	public String getTitre() {
+		return titre;
+	}
 
-    public void setTitre(String titre) {
-        this.titre = titre;
-    }
+	public void setTitre(String titre) {
+		this.titre = titre;
+	}
 
-    
-    public List<Notifications> getNotificationsList() {
-        return notificationsList;
-    }
+	public List<Notifications> getNotificationsList() {
+		return notificationsList;
+	}
 
-    public void setNotificationsList(List<Notifications> notificationsList) {
-        this.notificationsList = notificationsList;
-    }
+	public void setNotificationsList(List<Notifications> notificationsList) {
+		this.notificationsList = notificationsList;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+	@Override
+	public int hashCode() {
+		int hash = 0;
+		hash += (id != null ? id.hashCode() : 0);
+		return hash;
+	}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Typenotification)) {
-            return false;
-        }
-        Typenotification other = (Typenotification) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(Object object) {
+		// TODO: Warning - this method won't work in the case the id fields are
+		// not set
+		if (!(object instanceof Typenotification)) {
+			return false;
+		}
+		Typenotification other = (Typenotification) object;
+		if ((this.id == null && other.id != null)
+				|| (this.id != null && !this.id.equals(other.id))) {
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    public String toString() {
-        return "andrevent.server.model.Typenotification[ id=" + id + " ]";
-    }
+	@Override
+	public String toString() {
+		return "andrevent.server.model.Typenotification[ id=" + id + " ]";
+	}
 }

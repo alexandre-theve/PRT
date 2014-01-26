@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class RESTHelper {
-	
+
 	public static String DELETE(String URL) throws IOException,
 			ConnectException {
 		System.out.println("sending DELETE" + URL);
@@ -63,11 +63,10 @@ public class RESTHelper {
 		return "";
 	}
 
-	public static String PUT(String URL) throws IOException,
-			ConnectException {
+	public static String PUT(String URL) throws IOException, ConnectException {
 		return PUT(URL, "");
 	}
-	
+
 	public static String PUT(String URL, String param) throws IOException,
 			ConnectException {
 		System.out.println("sending PUT " + param + " to " + URL);
@@ -126,11 +125,10 @@ public class RESTHelper {
 		return "";
 	}
 
-	public static String POST(String URL) throws IOException,
-			ConnectException {
+	public static String POST(String URL) throws IOException, ConnectException {
 		return POST(URL, "");
 	}
-	
+
 	public static String POST(String URL, String param) throws IOException,
 			ConnectException {
 		System.out.println("sending POST " + param + " to " + URL);
@@ -196,7 +194,7 @@ public class RESTHelper {
 			final URL url = new URL(URL);
 			HttpURLConnection urlConnection = (HttpURLConnection) url
 					.openConnection();
-			//urlConnection.setRequestMethod("GET");
+			// urlConnection.setRequestMethod("GET");
 			urlConnection
 					.setRequestProperty("Content-Type", "application/json");
 

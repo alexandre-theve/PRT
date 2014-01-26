@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	private Fragment displayedFragment;
 	private MenuItem searchItem;
 	static public MainActivity mainActivity = null;
-	
+
 	@SuppressWarnings("unused")
 	private BroadcastReceiver broadcastReceiver = null;
 
@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		MyApplication andrEvents = ((MyApplication) getApplicationContext());
 		mainActivity = this;
 		this.userControler = andrEvents.getUserController();
-		
+
 		setContentView(R.layout.activity_main);
 		mTitle = mDrawerTitle = getTitle();
 		mSectionsTitles = getResources().getStringArray(R.array.titles_array);
@@ -137,35 +137,39 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		wasRunning = false;
 		super.onDestroy();
 	}
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 	}
-	public void userLoggedin(){
+
+	public void userLoggedin() {
 		Intent intent = getIntent();
 		Evenement evt = null;
-		if (intent.getAction() != null && intent.getAction().equals("notificationRecieved") || intent.getExtras().containsKey("evenement")){
-			evt = (Evenement)intent.getExtras().getSerializable("evenement");
+		if (intent.getAction() != null
+				&& intent.getAction().equals("notificationRecieved")
+				|| intent.getExtras().containsKey("evenement")) {
+			evt = (Evenement) intent.getExtras().getSerializable("evenement");
 		}
-		if (userControler.getUserConnected() == null){
+		if (userControler.getUserConnected() == null) {
 			Bundle params = new Bundle();
-			if (evt != null){
+			if (evt != null) {
 				params.putSerializable("evenement", evt);
 			}
 			Intent myIntent = new Intent(this, LoginActivity.class);
 			myIntent.putExtras(params);
-			startActivityForResult(myIntent, 0);	
+			startActivityForResult(myIntent, 0);
 			return;
 		}
-		if (evt != null){
+		if (evt != null) {
 			displayEvent(evt);
 			return;
 		}
-		selectItem(0,true);
-		
-		
+		selectItem(0, true);
+
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
@@ -261,6 +265,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	private void selectItem(int position, String query) {
 		selectItem(position, false, query);
 	}
+
 	private void displayEvent(Evenement evenement) {
 		// TODO Auto-generated method stub
 		EventDetailFragment fragment = new EventDetailFragment();
@@ -272,6 +277,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 				.replace(R.id.content_frame, fragment)
 				.addToBackStack("MyEvents").commit();
 	}
+
 	private void selectItem(int position, Boolean start, String query) {
 		// update the main content by replacing fragments
 		Bundle args = new Bundle();

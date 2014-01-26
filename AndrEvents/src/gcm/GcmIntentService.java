@@ -16,13 +16,13 @@
 
 package gcm;
 
+import helpers.Consts;
+
 import java.io.IOException;
 
 import model.Evenement;
-import helpers.Consts;
 import activities.MainActivity;
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;

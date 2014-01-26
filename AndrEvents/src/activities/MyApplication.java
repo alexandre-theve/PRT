@@ -1,11 +1,12 @@
 package activities;
 
-import com.ig2i.andrevents.R;
-
 import model.User;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.ig2i.andrevents.R;
+
 import controller.EvenementController;
 import controller.UserController;
 

@@ -25,16 +25,17 @@ import com.ig2i.andrevents.R;
 import controller.EvenementController;
 import controller.UserController;
 
-public class SearchFragment extends ListFragment implements OnItemClickListener{
+public class SearchFragment extends ListFragment implements OnItemClickListener {
 
 	public static final String FRAGMENT_NUMBER = "fragment_number";
 
 	private UserController userControler;
 	private EvenementController evenementControler;
-	
+
 	private ListView liste;
 	private List<Evenement> evenements;
 	private String query = "";
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class SearchFragment extends ListFragment implements OnItemClickListener{
 				.getApplicationContext()).getEvenementController();
 		return rootView;
 	}
+
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub
@@ -56,29 +58,34 @@ public class SearchFragment extends ListFragment implements OnItemClickListener{
 		liste = (ListView) getActivity().findViewById(R.id.list);
 		liste.setOnItemClickListener(this);
 		setListShown(true);
-		EventSearchTask eventSearchTask = new EventSearchTask(getActivity(), liste);
+		EventSearchTask eventSearchTask = new EventSearchTask(getActivity(),
+				liste);
 		eventSearchTask.execute();
 	}
+
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		((MainActivity) getActivity()).setDisplayedFragment(this);		
+		((MainActivity) getActivity()).setDisplayedFragment(this);
 		updateQuery(getActivity(), query);
 	}
-	
+
 	public void updateQuery(Context context, String arg0) {
-		this.query =arg0;
-		if (evenements != null &&  liste != null){
-		List<Evenement> toDisplay = evenementControler.getEventFromQuery(evenements,query);
-		liste.setAdapter(new EvenementAdapter(context, toDisplay));
+		this.query = arg0;
+		if (evenements != null && liste != null) {
+			List<Evenement> toDisplay = evenementControler.getEventFromQuery(
+					evenements, query);
+			liste.setAdapter(new EvenementAdapter(context, toDisplay));
 		}
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+			long arg3) {
 		if (arg0.getId() == R.id.list) {
-			Evenement evenement = (Evenement)(arg0.getAdapter().getItem(position));
+			Evenement evenement = (Evenement) (arg0.getAdapter()
+					.getItem(position));
 
 			EventDetailFragment fragment = new EventDetailFragment();
 			Bundle bundle = new Bundle();
@@ -89,29 +96,31 @@ public class SearchFragment extends ListFragment implements OnItemClickListener{
 					.replace(R.id.content_frame, fragment)
 					.addToBackStack("MyEvents").commit();
 		}
-		InputMethodManager inputManager = 
-		        (InputMethodManager) getActivity().getApplicationContext().
-		            getSystemService(Context.INPUT_METHOD_SERVICE); 
-		inputManager.hideSoftInputFromWindow(
-		        this.getActivity().getCurrentFocus().getWindowToken(),
-		        InputMethodManager.HIDE_NOT_ALWAYS); 
+		InputMethodManager inputManager = (InputMethodManager) getActivity()
+				.getApplicationContext().getSystemService(
+						Context.INPUT_METHOD_SERVICE);
+		inputManager.hideSoftInputFromWindow(this.getActivity()
+				.getCurrentFocus().getWindowToken(),
+				InputMethodManager.HIDE_NOT_ALWAYS);
 	}
 
 	public class EventSearchTask extends AsyncTask<Void, Void, List<Evenement>> {
 		private Context context;
 		private ProgressDialog dialog;
 		private ListView listView;
-		
+
 		public EventSearchTask(Context cont, ListView listView) {
 			// TODO Auto-generated constructor stub
 			this.context = cont;
 			this.listView = listView;
 		}
-		
+
 		@Override
 		public void onPreExecute() {
-			/*dialog = ProgressDialog.show(getActivity(), "Patientez...", 
-                    "Chargement de la liste d'evenements", true);*/
+			/*
+			 * dialog = ProgressDialog.show(getActivity(), "Patientez...",
+			 * "Chargement de la liste d'evenements", true);
+			 */
 		}
 
 		@Override
@@ -123,11 +132,12 @@ public class SearchFragment extends ListFragment implements OnItemClickListener{
 		protected void onPostExecute(final List<Evenement> results) {
 			evenements = results;
 			if (evenements.size() == 0) {
-				setEmptyText(getActivity().getResources().getText(R.string.noEventFoundForSearchMessage));
+				setEmptyText(getActivity().getResources().getText(
+						R.string.noEventFoundForSearchMessage));
 				return;
 			}
 			updateQuery(getActivity(), query);
 		}
 	}
-	
+
 }

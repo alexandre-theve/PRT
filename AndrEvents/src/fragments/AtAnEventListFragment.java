@@ -38,9 +38,11 @@ public class AtAnEventListFragment extends ListFragment implements
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.at_an_event_list_fragment,
 				container, false);
-		/*int i = getArguments().getInt(FRAGMENT_NUMBER);
-		String title = getResources().getStringArray(R.array.titles_array)[i];
-		getActivity().setTitle(title);*/
+		/*
+		 * int i = getArguments().getInt(FRAGMENT_NUMBER); String title =
+		 * getResources().getStringArray(R.array.titles_array)[i];
+		 * getActivity().setTitle(title);
+		 */
 		return rootView;
 	}
 
@@ -61,9 +63,9 @@ public class AtAnEventListFragment extends ListFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
-		((MainActivity) getActivity()).setDisplayedFragment(this);	
+		((MainActivity) getActivity()).setDisplayedFragment(this);
 	}
-	
+
 	private void fillListView(ListView liste) {
 		setListShown(true);
 		if (userControler.getUserConnected().getUserHasEvenementList().size() == 0) {
@@ -71,7 +73,8 @@ public class AtAnEventListFragment extends ListFragment implements
 					R.string.noEventMessage));
 			return;
 		}
-		liste.setAdapter(new EvenementAdapter(getActivity(), userControler.getEvenementsOfUSer(userControler.getUserConnected())));
+		liste.setAdapter(new EvenementAdapter(getActivity(), userControler
+				.getEvenementsOfUSer(userControler.getUserConnected())));
 
 	}
 
@@ -79,7 +82,7 @@ public class AtAnEventListFragment extends ListFragment implements
 	public void onItemClick(AdapterView<?> arg0, View parent, int position,
 			long id) {
 		if (arg0.getId() == R.id.list) {
-			Evenement evenement = (Evenement)arg0.getItemAtPosition(position);
+			Evenement evenement = (Evenement) arg0.getItemAtPosition(position);
 
 			AtAnEventFragment fragment = new AtAnEventFragment();
 			Bundle bundle = new Bundle();

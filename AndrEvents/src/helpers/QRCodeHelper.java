@@ -10,41 +10,42 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
-public class QRCodeHelper{
+public class QRCodeHelper {
 	private static final int WHITE = 0xFFFFFFFF;
-    private static final int BLACK = 0xFF000000;
-    
-	public static Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int dimension) throws WriterException {
+	private static final int BLACK = 0xFF000000;
+
+	public static Bitmap encodeAsBitmap(String contents, BarcodeFormat format,
+			int dimension) throws WriterException {
 		Hashtable hints = null;
 		String encoding = "UTF-8";
 		if (encoding != null) {
-		hints = new Hashtable();
-		hints.put(EncodeHintType.CHARACTER_SET, encoding);
+			hints = new Hashtable();
+			hints.put(EncodeHintType.CHARACTER_SET, encoding);
 		}
 		MultiFormatWriter writer = new MultiFormatWriter();
-		
-		BitMatrix result =writer.encode(contents, format, dimension, dimension, hints);
+
+		BitMatrix result = writer.encode(contents, format, dimension,
+				dimension, hints);
 		int width = result.getWidth();
-		int height =result.getHeight();
+		int height = result.getHeight();
 		int[] pixels = new int[width * height];
 		// All are 0, or black, by default
 		for (int y = 0; y < height; y++) {
-		int offset = y * width;
-		for (int x = 0; x < width; x++) {
+			int offset = y * width;
+			for (int x = 0; x < width; x++) {
 
-		if(result.get(x, y))
-		{
-		pixels[offset + x] = BLACK ;
-		}
-		else
-		pixels[offset + x] = WHITE ;
+				if (result.get(x, y)) {
+					pixels[offset + x] = BLACK;
+				} else
+					pixels[offset + x] = WHITE;
 
-		}
+			}
 		}
 
-		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		Bitmap bitmap = Bitmap.createBitmap(width, height,
+				Bitmap.Config.ARGB_8888);
 		bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 		return bitmap;
-		}
-	
+	}
+
 }

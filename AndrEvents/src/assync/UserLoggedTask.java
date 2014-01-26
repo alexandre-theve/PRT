@@ -1,8 +1,5 @@
 package assync;
 
-import com.google.android.gms.internal.ac;
-
-import model.Evenement;
 import model.User;
 import activities.LoginActivity;
 import activities.MainActivity;
@@ -23,11 +20,11 @@ public class UserLoggedTask extends AsyncTask<Void, Void, Boolean> {
 	// "USER_UNKNOWN_ERROR" =2
 	private Integer error = -1;
 
-	public UserLoggedTask(LoginActivity activity,int id) {
+	public UserLoggedTask(LoginActivity activity, int id) {
 		// TODO Auto-generated constructor stub
-		this.activity= activity;
+		this.activity = activity;
 		this.context = activity.getApplicationContext();
-		
+
 	}
 
 	@Override
@@ -46,7 +43,7 @@ public class UserLoggedTask extends AsyncTask<Void, Void, Boolean> {
 				error = 0;
 				return false;
 			}
-			
+
 			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,13 +54,13 @@ public class UserLoggedTask extends AsyncTask<Void, Void, Boolean> {
 
 	@Override
 	protected void onPostExecute(final Boolean success) {
-		if(success){
+		if (success) {
 			Bundle params = new Bundle();
 			params.putSerializable("user", loggingUser);
 			Intent myIntent = new Intent(context, MainActivity.class);
 			myIntent.putExtras(params);
-			activity.startActivityForResult(myIntent, 0);				
-		}	
+			activity.startActivityForResult(myIntent, 0);
+		}
 	}
 
 	@Override

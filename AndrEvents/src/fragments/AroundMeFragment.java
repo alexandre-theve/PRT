@@ -59,8 +59,8 @@ public class AroundMeFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
-	try {
+
+		try {
 			view = inflater.inflate(R.layout.fragment_aroundme, container,
 					false);
 		} catch (Exception e) {
@@ -74,19 +74,20 @@ public class AroundMeFragment extends Fragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		this.userControler = ((MyApplication) getActivity().getApplicationContext()).getUserController();
-		this.evenementControler = ((MyApplication) getActivity().getApplicationContext()).getEvenementController();
+		this.userControler = ((MyApplication) getActivity()
+				.getApplicationContext()).getUserController();
+		this.evenementControler = ((MyApplication) getActivity()
+				.getApplicationContext()).getEvenementController();
 	}
 
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		
-		((MainActivity) getActivity()).setDisplayedFragment(this);	
-		
+
+		((MainActivity) getActivity()).setDisplayedFragment(this);
+
 		loc = userControler.getUserCurrentPostition();
-		
 
 		if (googleMap == null) {
 			MapFragment frag = ((MapFragment) getFragmentManager()
@@ -139,12 +140,16 @@ public class AroundMeFragment extends Fragment implements
 			// TODO Auto-generated constructor stub
 			this.frag = frag;
 		}
- 
+
 		@Override
 		protected List<Evenement> doInBackground(Location... params) {
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-			distance = Double.valueOf(sharedPreferences.getString("distance", "100"));
-			return evenementControler.getEventsByLocation(params[0].getLatitude(), params[0].getLongitude(), distance);
+			SharedPreferences sharedPreferences = PreferenceManager
+					.getDefaultSharedPreferences(getActivity());
+			distance = Double.valueOf(sharedPreferences.getString("distance",
+					"100"));
+			return evenementControler
+					.getEventsByLocation(params[0].getLatitude(),
+							params[0].getLongitude(), distance);
 		}
 
 		@Override
@@ -152,29 +157,30 @@ public class AroundMeFragment extends Fragment implements
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			frag.setPOI(result);
-			
+
 			CameraPosition cameraPosition = new CameraPosition.Builder()
-				.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
-				.zoom(calculateZoomLevel(distance)).build();
+					.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
+					.zoom(calculateZoomLevel(distance)).build();
 			googleMap.animateCamera(CameraUpdateFactory
 					.newCameraPosition(cameraPosition));
 		}
-		
+
 		private int calculateZoomLevel(double distance) {
 			DisplayMetrics metrics = new DisplayMetrics();
-			getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-			
-		    double equatorLength = 40075004/2; // in meters
-		    double widthInPixels = metrics.widthPixels;
-		    double metersPerPixel = equatorLength / 256;
-		    int zoomLevel = 0;
-		    while ((metersPerPixel * widthInPixels) > distance * 1000) {
-		        metersPerPixel /= 2;
-		        zoomLevel++;
-		    }
-		    zoomLevel-=2;
-		    Log.i("ADNAN", "zoom level = "+zoomLevel);
-		    return zoomLevel;
+			getActivity().getWindowManager().getDefaultDisplay()
+					.getMetrics(metrics);
+
+			double equatorLength = 40075004 / 2; // in meters
+			double widthInPixels = metrics.widthPixels;
+			double metersPerPixel = equatorLength / 256;
+			int zoomLevel = 0;
+			while ((metersPerPixel * widthInPixels) > distance * 1000) {
+				metersPerPixel /= 2;
+				zoomLevel++;
+			}
+			zoomLevel -= 2;
+			Log.i("ADNAN", "zoom level = " + zoomLevel);
+			return zoomLevel;
 		}
 	}
 
@@ -200,5 +206,4 @@ public class AroundMeFragment extends Fragment implements
 
 	}
 
-	
 }
