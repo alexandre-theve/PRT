@@ -123,7 +123,7 @@ public class HomeFragment extends ListFragment implements OnItemClickListener {
 		protected void onPostExecute(final List<Evenement> evenements) {
 			if (evenements.size() == 0) {
 				setEmptyText(getActivity().getResources().getText(
-						R.string.noEventMessage));
+						R.string.noSuggestionMessage));
 				return;
 			}
 			liste.setAdapter(new EvenementAdapter(getActivity(), evenements));

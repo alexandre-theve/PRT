@@ -67,6 +67,9 @@ public class UserController extends GenericController{
 		
 		try {
 			String JSON = RESTHelper.GET(URL+"/AndrEventServer/user/login/"+login);
+			
+			System.out.println("Response : " + JSON);
+			
 			return mapper.readValue(JSON, User.class);
 		}
 		catch (JsonParseException e) {

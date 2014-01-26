@@ -12,7 +12,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
 -->
 
 <resources>
@@ -51,6 +51,7 @@
     <string name="error">Erreur</string>
     <string name="errorInscription">Votre inscription n\'a pu être validée, veuillez réssayer.</string>
     <string name="noEventMessage">Vous n\'êtes inscrit à aucun évènement !</string>
+    <string name="noSuggestionMessage">Nous n\'avons pas trouvé d\'évènements pour vous !</string>
     <string name="noEventFoundForSearchMessage">Nous n\'avons trouvé aucun évènement.... :((</string>
     <string name="atAnEventExplanationMessage">Vous êtes à cet évènement? Scannez votre ticket ou beamez avec l\'organisateur pour valider votre ticket!</string>
     <string name="ptr_pull_to_refresh">Pull to refresh</string>
