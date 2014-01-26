@@ -37,7 +37,13 @@
 	                    <c:forEach var="evenement" items="${evenements}">                 	
 	                        <tr>
 	                            <td>${evenement.nom}</td>
-	                            <td>${evenement.dateDebut}</td>
+	                            <td>
+	                            	<fmt:formatDate value="${evenement.dateDebut}" var="dateDebutString" pattern="dd/MM/yyyy HH:mm" />
+	                            	<fmt:formatDate value="${evenement.dateFin}" var="dateFinString" pattern="dd/MM/yyyy HH:mm" />
+	                            	${dateDebutString} 
+									<br/>
+									${dateFinString} 
+	                            </td>
 	                            <td>${evenement.lieu}</td>
 	                            <td>${evenement.description}</td>
 	                            <td>	

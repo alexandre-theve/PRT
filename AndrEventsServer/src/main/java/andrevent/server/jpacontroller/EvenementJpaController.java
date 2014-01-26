@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,9 @@ public class EvenementJpaController implements Serializable {
 	 */
 	private static final long serialVersionUID = -6063435764580818901L;
 
+	@Autowired (required=true)
+	private TagsJpaController tagsJpaController;
+	
 	@PersistenceContext
 	private EntityManager em;
 
@@ -98,10 +102,19 @@ public class EvenementJpaController implements Serializable {
 	}
 	
 	public List<Evenement> findEvenementsForUser(Integer id, List<Evenement> evenements) {
-		return em.createNamedQuery("Evenement.findBestEventsForUser", Evenement.class)
-				.setParameter("tags", this.findTagsForUser(id))
-				.setParameter("evenements", evenements)
-				.getResultList();
+		List<Tags> tags = this.findTagsForUser(id);
+		if(tags.isEmpty())
+			tags = tagsJpaController.findTagsEntities();
+		
+		if(evenements.isEmpty())
+			return em.createNamedQuery("Evenement.findBestEventsForUser", Evenement.class)
+					.setParameter("tags", tags)
+					.getResultList();
+		else
+			return em.createNamedQuery("Evenement.findBestEventsForUser2", Evenement.class)
+					.setParameter("tags", tags)
+					.setParameter("evenements", evenements)
+					.getResultList();
 	}
 
 	public List<Evenement> findByTags(List<Tags> list) {

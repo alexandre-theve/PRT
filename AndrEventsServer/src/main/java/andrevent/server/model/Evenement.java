@@ -61,6 +61,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 																"ORDER BY COUNT(t.id) DESC "),
 	@NamedQuery(name = "Evenement.findBestEventsForUser", query = "SELECT e FROM Tags t, IN (t.evenementList) e " +
 																  "WHERE t IN (:tags) AND " +
+																  "e.valide = true " + 
+																  "GROUP BY e.id " + 
+																  "ORDER BY e.dateDebut"),
+	@NamedQuery(name = "Evenement.findBestEventsForUser2", query = "SELECT e FROM Tags t, IN (t.evenementList) e " +
+																  "WHERE t IN (:tags) AND " +
 																  "e NOT IN(:evenements) AND e.valide = true " + 
 																  "GROUP BY e.id " + 
 																  "ORDER BY e.dateDebut")})

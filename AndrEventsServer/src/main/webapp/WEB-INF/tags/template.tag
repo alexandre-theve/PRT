@@ -8,11 +8,13 @@
 <title><jsp:invoke fragment="page_title" /></title>
 <link href="/AndrEventServer/resources/css/bootstrap.min.css"
 	rel="stylesheet">
-<link href="/AndrEventServer/resources/css/bootstrap-responsive.min.css"
-	rel="stylesheet">
 <link href="/AndrEventServer/resources/css/docs.css" rel="stylesheet">
-<script src="/AndrEventServer/resources/js/jquery.js"></script>
+<link href="/AndrEventServer/resources/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="/AndrEventServer/resources/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/AndrEventServer/resources/js/moment.min.js"></script>
+<script src="/AndrEventServer/resources/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/AndrEventServer/resources/js/bootstrap-datetimepicker.fr.js"></script>
 </head>
 <body>
 	<div class="container well">
