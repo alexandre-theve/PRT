@@ -56,7 +56,7 @@ public class BackController {
 		for (UserHasEvenement userHasEvenement : evenement.getUserHasEvenementList()) {
 			if(userHasEvenement.getNotifications() && userHasEvenement.getUser().getPush_id() != null && !userHasEvenement.getUser().getPush_id().equals("")) {
 				try {
-					String response = PushHelper.launchPush(userHasEvenement.getUser(), evenement);
+					String response = PushHelper.launchPush(userHasEvenement.getUser(), evenement.getId());
 					
 					logger.info("response :  " + response);					
 				} catch (ConnectException e) {

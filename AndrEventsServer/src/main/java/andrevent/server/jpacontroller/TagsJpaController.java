@@ -56,7 +56,6 @@ public class TagsJpaController implements Serializable {
 		return findTagsEntities(false, maxResults, firstResult);
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<Tags> findTagsEntities(boolean all, int maxResults,
 			int firstResult) {
 		CriteriaQuery<Tags> cq = em.getCriteriaBuilder().createQuery(Tags.class);

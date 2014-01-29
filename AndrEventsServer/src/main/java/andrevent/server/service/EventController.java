@@ -39,6 +39,16 @@ public class EventController {
 		return evenementsJpaController.findEvenementEntities();
     }
 	
+	@RequestMapping(value = "/events/id/{id}", method = RequestMethod.GET)
+    public @ResponseBody Evenement getEvenementsById(Model model, @PathVariable Integer id) {
+		logger.info("getting events by id : " + id);
+		if(id != null) {
+			return evenementsJpaController.findEvenement(id);
+		}
+		
+		return new Evenement();
+    }
+	
 	@RequestMapping(value = "/events/idUser/{id}", method = RequestMethod.GET)
     public @ResponseBody List<Evenement> getEvenementsByUser(Model model, @PathVariable Integer id) {
 		logger.info("getting user events by idUser : " + id);
